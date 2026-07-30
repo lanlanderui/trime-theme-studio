@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Trime 主题工坊</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <div>
+        <h1>Trime 主题工坊</h1>
+        <p>在部署到手机前，先把每一种颜色看清楚</p>
+      </div>
+    </div>
+
+    <div class="header-source" title="当前载入的 Trime 配置">
+      <span class="status-dot"></span>
+      <span id="sourceName">trime.yaml</span>
+      <span class="source-meta" id="sourceMeta">正在读取…</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="button button-ghost" id="undoButton" type="button" disabled title="撤销 (Ctrl+Z)">
+        <span aria-hidden="true">↶</span> 撤销
+      </button>
+      <button class="button button-ghost" id="importButton" type="button">
+        <span aria-hidden="true">↥</span> 导入配置
+      </button>
+      <button class="button button-primary" id="exportButton" type="button">
+        <span aria-hidden="true">↓</span> 导出
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel themes-panel" aria-label="主题方案">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">PRESET COLOR SCHEMES</span>
+          <h2>主题方案 <span class="count-badge" id="themeCount">0</span></h2>
+        </div>
+      </div>
+
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="themeSearch" type="search" placeholder="搜索名称、ID 或作者">
+        <kbd>/</kbd>
+      </label>
+
+      <div class="filter-tabs" id="themeFilters" role="tablist" aria-label="筛选主题">
+        <button class="filter-tab active" type="button" data-filter="all">全部</button>
+        <button class="filter-tab" type="button" data-filter="light">浅色</button>
+        <button class="filter-tab" type="button" data-filter="dark">深色</button>
+        <button class="filter-tab" type="button" data-filter="changed">已修改</button>
+      </div>
+
+      <div class="theme-list" id="themeList"></div>
+      <div class="empty-state" id="themeEmpty" hidden>
+        <span>没有匹配的主题</span>
+        <button class="text-button" id="clearSearchButton" type="button">清除筛选</button>
+      </div>
+    </aside>
+
+    <section class="preview-panel" aria-label="键盘实时预览">
+      <div class="preview-toolbar">
+        <div class="active-theme-title">
+          <span class="eyebrow">LIVE PREVIEW</span>
+          <h2 id="previewThemeName">—</h2>
+          <span class="theme-id" id="previewThemeId">—</span>
+        </div>
+
+        <div class="preview-controls">
+          <label class="select-control">
+            <span>键盘布局</span>
+            <select id="layoutSelect"></select>
+          </label>
+          <div class="view-toggle" role="group" aria-label="预览状态">
+            <button class="active" type="button" data-preview-state="normal">普通</button>
+            <button type="button" data-preview-state="pressed">按下</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-stage">
+        <div class="phone-shell" id="phoneShell">
+          <div class="phone-speaker" aria-hidden="true"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>09:41</span>
+              <span class="phone-status-icons">▮▮▮ ᴡɪꜰɪ ◉</span>
+            </div>
+
+            <div class="demo-app">
+              <div class="demo-app-bar">
+                <button type="button" aria-label="返回">‹</button>
+                <strong>新信息</strong>
+                <span>···</span>
+              </div>
+              <div class="message-canvas">
+                <div class="message-time">今天 09:41</div>
+                <div class="message-bubble">正在设计一套新的同文输入法配色。</div>
+              </div>
+              <div class="message-composer">
+                <span class="composer-plus">＋</span>
+                <input id="demoTextInput" value="先在网页里预览，再部署到手机" aria-label="预览文字">
+                <span>↑</span>
+              </div>
+            </div>
+
+            <div class="ime" id="imePreview">
+              <div class="preedit-row">
+                <span id="preeditText">tongwen</span>
+                <span class="preedit-caret"></span>
+                <span class="preedit-hint">拼音</span>
+              </div>
+              <div class="candidate-row" id="candidateRow"></div>
+              <div class="keyboard" id="keyboardPreview"></div>
+            </div>
+          </div>
+          <div class="phone-home" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="preview-insights" id="contrastInsights" aria-label="颜色对比度"></div>
+    </section>
+
+    <aside class="panel editor-panel" aria-label="主题与键盘布局编辑器">
+      <div class="editor-sticky-head">
+        <div class="panel-heading editor-heading">
+          <div>
+            <span class="eyebrow">INSPECTOR</span>
+            <h2 id="inspectorTitle">颜色编辑器</h2>
+          </div>
+          <span class="dirty-badge" id="dirtyBadge" hidden>已修改</span>
+        </div>
+
+        <div class="inspector-tabs" role="tablist" aria-label="编辑器模式">
+          <button class="active" type="button" data-inspector-mode="color">颜色</button>
+          <button type="button" data-inspector-mode="layout">键盘布局</button>
+        </div>
+
+        <div id="colorInspectorHead">
+          <div class="theme-fields">
+            <label>
+              <span>方案名称</span>
+              <input id="themeNameInput" type="text" autocomplete="off">
+            </label>
+            <label>
+              <span>作者</span>
+              <input id="themeAuthorInput" type="text" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="editor-tools">
+            <label class="search-box compact">
+              <span aria-hidden="true">⌕</span>
+              <input id="colorSearch" type="search" placeholder="搜索颜色项">
+            </label>
+            <button class="icon-button" id="resetThemeButton" type="button" title="重置当前主题">↺</button>
+          </div>
+        </div>
+
+        <div id="layoutInspectorHead" hidden>
+          <div class="layout-head-summary">
+            <span>
+              <small>正在编辑</small>
+              <strong id="layoutEditorName">—</strong>
+            </span>
+            <b id="layoutKeyCount">0 键</b>
+          </div>
+          <div class="layout-head-actions">
+            <button class="button button-primary" id="addKeyButton" type="button">＋ 添加按键</button>
+            <button class="icon-button" id="resetLayoutButton" type="button" title="重置当前布局">↺</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="inspector-body color-inspector-body" id="colorInspectorBody">
+        <div class="color-editor" id="colorEditor"></div>
+        <div class="editor-empty" id="colorEmpty" hidden>没有匹配的颜色项</div>
+
+        <div class="editor-tip">
+          <span aria-hidden="true">i</span>
+          <p><strong>已对齐官方 develop 参数</strong>　支持 <code>0xAARRGGBB</code>、YAML anchor 与背景图片路径。标记“继承”的颜色会在首次修改时写入主题；旧版字段会保留并提示替代项。</p>
+        </div>
+      </div>
+
+      <div class="inspector-body layout-inspector-body" id="layoutInspectorBody" hidden>
+        <section class="selected-key-card">
+          <div class="selected-key-heading">
+            <div>
+              <span class="eyebrow">SELECTED KEY</span>
+              <h3 id="selectedKeyTitle">选择一个按键</h3>
+            </div>
+            <span id="selectedKeyPosition">—</span>
+          </div>
+
+          <div class="key-property-grid">
+            <label class="field-wide">
+              <span>点击动作 / click</span>
+              <input data-key-prop="click" type="text" autocomplete="off" placeholder="例如 a、BackSpace、Return">
+            </label>
+            <label>
+              <span>显示文字 / label</span>
+              <input data-key-prop="label" type="text" autocomplete="off" placeholder="可留空">
+            </label>
+            <label>
+              <span>宽度 / width (%)</span>
+              <input data-key-prop="width" type="number" min="1" max="100" step="0.5">
+            </label>
+            <label class="field-wide">
+              <span>长按 / long_click</span>
+              <input data-key-prop="long_click" type="text" autocomplete="off" placeholder="可留空">
+            </label>
+            <label>
+              <span>上滑 / swipe_up</span>
+              <input data-key-prop="swipe_up" type="text" autocomplete="off">
+            </label>
+            <label>
+              <span>下滑 / swipe_down</span>
+              <input data-key-prop="swipe_down" type="text" autocomplete="off">
+            </label>
+            <label>
+              <span>左滑 / swipe_left</span>
+              <input data-key-prop="swipe_left" type="text" autocomplete="off">
+            </label>
+            <label>
+              <span>右滑 / swipe_right</span>
+              <input data-key-prop="swipe_right" type="text" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="selected-key-actions">
+            <button class="button button-ghost" type="button" data-key-move="-1">← 前移</button>
+            <button class="button button-ghost" type="button" data-key-move="1">后移 →</button>
+            <button class="button button-danger" id="deleteKeyButton" type="button">删除按键</button>
+          </div>
+        </section>
+
+        <section class="key-order-section">
+          <div class="key-order-heading">
+            <strong>按键顺序</strong>
+            <small>点击选择，也可以直接拖动中间预览里的按键</small>
+          </div>
+          <div class="key-order-list" id="keyOrderList"></div>
+        </section>
+
+        <div class="editor-tip layout-tip">
+          <span aria-hidden="true">i</span>
+          <p><strong>位置由顺序和宽度共同决定</strong>　布局会按宽度累计到 100% 后自动换行。拖动按键可以跨行移动；修改宽度可以控制留白、缩进和功能键占位。</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <input id="fileInput" type="file" accept=".yaml,.yml,.trime.yaml,text/yaml" hidden>
+
+  <div class="drop-overlay" id="dropOverlay" hidden>
+    <div>
+      <span class="drop-icon">↥</span>
+      <strong>放开以载入 Trime 配置</strong>
+      <small>支持 .yaml / .yml，原文件不会被改写</small>
+    </div>
+  </div>
+
+  <dialog class="export-dialog" id="exportDialog">
+    <form method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">EXPORT</span>
+          <h2>把调整带回 Trime</h2>
+        </div>
+        <button class="dialog-close" value="cancel" aria-label="关闭">×</button>
+      </div>
+      <div class="export-options">
+        <button class="export-option" id="downloadFullButton" type="button">
+          <span class="export-option-icon">Y</span>
+          <span>
+            <strong>下载完整配置</strong>
+            <small>保留其余配置与注释，写入改过的颜色和键盘布局</small>
+          </span>
+          <b>推荐</b>
+        </button>
+        <button class="export-option" id="copySchemeButton" type="button">
+          <span class="export-option-icon">{ }</span>
+          <span>
+            <strong>复制当前主题 YAML</strong>
+            <small>适合粘贴到 preset_color_schemes 中</small>
+          </span>
+        </button>
+        <button class="export-option" id="downloadSchemeButton" type="button">
+          <span class="export-option-icon">↓</span>
+          <span>
+            <strong>下载当前主题片段</strong>
+            <small>只包含当前方案，方便分享配色</small>
+          </span>
+        </button>
+      </div>
+      <div class="dialog-summary">
+        <span id="exportSummary">尚未修改任何内容</span>
+        <button class="text-button" id="resetAllButton" type="button">放弃全部修改</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="bundled-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
