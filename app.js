@@ -243,11 +243,15 @@
     undoStack: [],
     redoStack: [],
     toastTimer: 0,
+    androidFileUri: "",
+    androidFiles: [],
   };
 
   function cacheDom() {
     [
       "sourceName", "sourceMeta", "undoButton", "importButton", "exportButton",
+      "androidRimeBar", "androidOpenFileButton", "androidOpenFolderButton", "androidFileSelect",
+      "androidSaveButton", "androidSaveAsButton", "androidFileStatus",
       "themeCount", "themeSearch", "themeFilters", "themeList", "themeEmpty",
       "clearSearchButton", "previewThemeName", "previewThemeId", "layoutSelect",
       "phoneShell", "imePreview", "candidateRow", "keyboardPreview", "contrastInsights",
@@ -1460,6 +1464,75 @@
     state.toastTimer = window.setTimeout(() => dom.toast.classList.remove("show"), 1900);
   }
 
+  function isAndroidHost() {
+    return typeof window.AndroidRime !== "undefined";
+  }
+
+  function setAndroidStatus(message) {
+    if (dom.androidFileStatus) dom.androidFileStatus.textContent = message;
+  }
+
+  function callAndroid(method, ...args) {
+    if (!isAndroidHost() || typeof window.AndroidRime[method] !== "function") {
+      toast("当前环境不支持直接访问安卓文件");
+      return;
+    }
+    try {
+      window.AndroidRime[method](...args);
+    } catch (error) {
+      toast(`安卓文件操作失败：${error?.message || "未知错误"}`);
+    }
+  }
+
+  function renderAndroidFileList() {
+    if (!dom.androidFileSelect) return;
+    dom.androidFileSelect.hidden = !state.androidFiles.length;
+    dom.androidFileSelect.innerHTML = state.androidFiles.map((file) => (
+      `<option value="${escapeHtml(file.uri)}">${escapeHtml(file.name)}</option>`
+    )).join("");
+  }
+
+  function setupAndroidBridge() {
+    if (!isAndroidHost()) return;
+    document.body.classList.add("android-host");
+    dom.androidRimeBar.hidden = false;
+    setAndroidStatus("可打开 Rime 配置或授权整个文件夹");
+
+    window.TrimeAndroidBridge = {
+      receiveFile(name, text, uri) {
+        if (loadConfig(String(text || ""), name || "trime.yaml")) {
+          state.androidFileUri = uri || "";
+          setAndroidStatus(state.androidFileUri ? `已打开 ${state.sourceName}` : "已打开配置");
+          toast(`已载入 ${state.sourceName}`);
+        }
+      },
+      receiveFileList(payload, preferredUri) {
+        try {
+          const files = typeof payload === "string" ? JSON.parse(payload) : payload;
+          state.androidFiles = Array.isArray(files) ? files : [];
+          renderAndroidFileList();
+          if (state.androidFiles.length) {
+            const preferred = state.androidFiles.some((file) => file.uri === preferredUri)
+              ? preferredUri
+              : state.androidFiles[0].uri;
+            setAndroidStatus(`已找到 ${state.androidFiles.length} 个 YAML 配置`);
+            dom.androidFileSelect.value = preferred;
+            state.androidFileUri = preferred;
+            callAndroid("openTreeFile", preferred);
+          } else {
+            setAndroidStatus("这个文件夹里没有找到 YAML 配置");
+          }
+        } catch {
+          toast("读取文件夹列表失败");
+        }
+      },
+      notify(message) {
+        setAndroidStatus(String(message || ""));
+        toast(String(message || "操作完成"));
+      },
+    };
+  }
+
   function loadConfig(text, filename) {
     const parsed = parseTrimeYaml(text);
     if (!parsed.themes.length) {
@@ -1946,6 +2019,29 @@
     dom.resetThemeButton.addEventListener("click", resetCurrentTheme);
     dom.undoButton.addEventListener("click", undo);
 
+    dom.androidOpenFileButton.addEventListener("click", () => {
+      callAndroid("openFile");
+    });
+
+    dom.androidOpenFolderButton.addEventListener("click", () => {
+      callAndroid("openFolder");
+    });
+
+    dom.androidFileSelect.addEventListener("change", () => {
+      state.androidFileUri = dom.androidFileSelect.value;
+      callAndroid("openTreeFile", state.androidFileUri);
+    });
+
+    dom.androidSaveButton.addEventListener("click", () => {
+      const yaml = buildFullYaml();
+      if (state.androidFileUri) callAndroid("saveFile", yaml);
+      else callAndroid("saveAsFile", editedFilename(), yaml);
+    });
+
+    dom.androidSaveAsButton.addEventListener("click", () => {
+      callAndroid("saveAsFile", editedFilename(), buildFullYaml());
+    });
+
     dom.importButton.addEventListener("click", () => dom.fileInput.click());
     dom.fileInput.addEventListener("change", () => {
       readFile(dom.fileInput.files?.[0]);
@@ -2028,6 +2124,7 @@
 
   function initialize() {
     cacheDom();
+    setupAndroidBridge();
     bindEvents();
     if (!window.BUNDLED_TRIME_YAML) {
       dom.sourceMeta.textContent = "缺少 bundled-config.js";

@@ -46,6 +46,21 @@ node build-bundled-config.mjs tongwenfeng.trime.yaml
 
 项目没有在线依赖，断网也能使用。
 
+## Android App
+
+仓库现在包含一个 `android/` 工程，可把同一个编辑器打包成安卓 App。App 内部使用 WebView 加载离线网页，并通过安卓系统文件选择器访问 Rime 配置：
+
+- “打开配置”可选择单个 `.yaml` / `.yml` 文件。
+- “授权 Rime 文件夹”可选择 Rime 配置目录，App 会列出其中的 YAML 文件供切换。
+- “保存回文件”会把当前完整配置写回已打开的文件。
+- “另存为”会通过系统对话框新建一个 YAML 文件。
+
+受 Android 分区存储限制，App 不能在未授权时静默读写任意路径；第一次需要由用户在系统文件选择器中授予文件或文件夹权限。授权后，App 通过系统提供的 URI 读写配置，不需要 root。
+
+构建方式：用 Android Studio 打开 `android/` 目录，同步 Gradle 后执行 `Build > Build APK(s)`。构建时会自动把仓库根目录里的 `index.html`、`styles.css`、`app.js`、`bundled-config.js` 和内置模板复制进 APK。
+
+也可以在 GitHub 的 **Actions** 页面手动运行 `Android Debug APK` 工作流，或把相关改动推送到 `main` 分支后自动构建；构建完成后可在工作流页面下载 `trime-theme-studio-debug-apk`。
+
 ## GitHub Pages 发布方式
 
 本项目是纯静态网页，入口文件为仓库根目录的 `index.html`，不需要后端服务器和构建步骤。仓库使用 GitHub Pages 的 **Deploy from a branch** 模式，将 `main` 分支的 `/ (root)` 目录作为网站来源。GitHub 会自动把 HTML、CSS、JavaScript 和内置模板发布到：

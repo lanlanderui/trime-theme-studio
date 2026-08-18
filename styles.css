@@ -149,6 +149,49 @@ input[type="search"] {
   gap: 8px;
 }
 
+.android-rime-bar {
+  height: 48px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  background: #fbfdfd;
+}
+
+.android-rime-bar[hidden] {
+  display: none;
+}
+
+.android-file-actions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.android-file-select {
+  width: min(320px, 32vw);
+  height: 38px;
+  padding: 0 10px;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  font-size: 12px;
+}
+
+.android-file-status {
+  min-width: 160px;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
 .button,
 .icon-button {
   border: 1px solid transparent;
@@ -215,6 +258,10 @@ input[type="search"] {
   gap: 12px;
   padding: 12px;
   overflow: hidden;
+}
+
+body.android-host .workspace {
+  height: calc(100% - 120px);
 }
 
 .panel,

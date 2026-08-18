@@ -4,4 +4,9 @@ test-results/
 *.log
 .DS_Store
 Thumbs.db
-
+desktop.ini
+android/.gradle/
+android/**/build/
+android/app/src/main/assets/www/
+android/local.properties
+*.keystore

@@ -38,6 +38,25 @@
     </div>
   </header>
 
+  <div class="android-rime-bar" id="androidRimeBar" hidden>
+    <div class="android-file-actions">
+      <button class="button button-ghost" id="androidOpenFileButton" type="button">
+        <span aria-hidden="true">↥</span> 打开配置
+      </button>
+      <button class="button button-ghost" id="androidOpenFolderButton" type="button">
+        <span aria-hidden="true">▣</span> 授权 Rime 文件夹
+      </button>
+      <select class="android-file-select" id="androidFileSelect" aria-label="Rime 配置文件" hidden></select>
+      <button class="button button-primary" id="androidSaveButton" type="button">
+        <span aria-hidden="true">✓</span> 保存回文件
+      </button>
+      <button class="button button-ghost" id="androidSaveAsButton" type="button">
+        <span aria-hidden="true">↓</span> 另存为
+      </button>
+    </div>
+    <span class="android-file-status" id="androidFileStatus">等待选择 Rime 配置</span>
+  </div>
+
   <main class="workspace">
     <aside class="panel themes-panel" aria-label="主题方案">
       <div class="panel-heading">
