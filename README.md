@@ -16,6 +16,7 @@
 
 - 读取和筛选 `preset_color_schemes` 主题方案。
 - 实时预览候选栏、键盘、按键按下及弹出层配色。
+- 内置“图层关系”图解，按候选栏、键盘和编码区分支展示由底到顶的颜色覆盖顺序。
 - 编辑官方颜色字段，兼容 `0xAARRGGBB`、YAML anchor 与背景图片路径。
 - 新增、删除、拖动和调整按键宽度，编辑点击、长按与四向滑动动作。
 - 支持撤销、重置，并导出保留其余配置内容的完整 `.trime.yaml`。
@@ -85,7 +86,9 @@ https://lanlanderui.github.io/trime-theme-studio/
 - `hilited_popup_back_color`
 - `hilited_popup_text_color`
 
-旧配置中的 `preview_back_color`、`preview_text_color` 会继续显示，但会标记为已废弃并提示新的替代字段。`root_background`、`candidate_background`、`keyboard_background` 等背景项也支持直接保留图片路径。
+旧配置中的 `preview_back_color`、`preview_text_color` 会继续显示，但会标记为已废弃并提示新的替代字段。`root_background`、`candidate_background`、`keyboard_back_color` 等背景项也支持直接保留图片路径。
+
+预览按 Trime 的区域覆盖关系绘制：`root_background` 是候选栏与键盘的共同最底层；其上分别覆盖候选栏的 `candidate_background` 和键盘区的 `keyboard_back_color`，再往上才是高亮候选、按键状态、文字与按键提示浮层。`back_color` 主要是多个字段的默认回退源，不应理解为位置固定的额外图层。当前官方 schema 没有 `keyboard_background`，键盘区域请使用 `keyboard_back_color`。
 
 ## 许可
 

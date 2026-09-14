@@ -37,7 +37,6 @@
     root_background: "back_color",
     candidate_background: "back_color",
     keyboard_back_color: "border_color",
-    keyboard_background: "keyboard_back_color",
     liquid_keyboard_background: "keyboard_back_color",
     text_back_color: "back_color",
     long_text_color: "key_text_color",
@@ -54,7 +53,6 @@
     hilited_key_text_color: "0xFFFFFFFF",
     root_background: "0xFFFFFFFF",
     candidate_background: "0xFFFFFFFF",
-    keyboard_background: "0xFFE6EAEB",
     popup_back_color: "0xFFFFFFFF",
     popup_text_color: "0xFF20292D",
   };
@@ -79,7 +77,6 @@
       title: "键盘与按键",
       keys: [
         "keyboard_back_color",
-        "keyboard_background",
         "liquid_keyboard_background",
         "key_back_color",
         "key_border_color",
@@ -125,8 +122,8 @@
   ];
 
   const COLOR_LABELS = {
-    root_background: "输入法整体背景",
-    back_color: "候选区背景",
+    root_background: "输入法共同底层",
+    back_color: "基础候选色 / 回退源",
     candidate_background: "候选栏整体背景",
     text_back_color: "编码区背景",
     text_color: "编码文字",
@@ -137,8 +134,8 @@
     label_color: "候选序号",
     hilited_label_color: "高亮候选序号",
     hilited_candidate_button_color: "候选工具按钮按下背景",
-    keyboard_back_color: "键盘基础背景色",
-    keyboard_background: "键盘背景",
+    keyboard_back_color: "键盘区域背景",
+    keyboard_background: "非官方 keyboard_background",
     liquid_keyboard_background: "液态键盘背景",
     key_back_color: "普通按键背景",
     key_border_color: "按键边框",
@@ -201,10 +198,68 @@
     ["preview_text_color", "popup_text_color"],
   ]);
 
+  const COLOR_ROLES = {
+    root_background: {
+      badge: "底层 1",
+      tone: "base",
+      note: "候选栏与键盘的共同底图；半透明区域背景会透出这一层。未设置时回退到 back_color。",
+    },
+    back_color: {
+      badge: "回退源",
+      tone: "fallback",
+      note: "多个背景字段的默认取色来源，不等于位置固定的一块独立覆盖层。",
+    },
+    candidate_background: {
+      badge: "候选 2",
+      tone: "region",
+      note: "只盖住候选栏区域，位于 root_background 上方；未设置时回退到 back_color。",
+    },
+    text_back_color: {
+      badge: "编码 2",
+      tone: "region",
+      note: "编码区或悬浮编码窗的区域背景，位于共同底层上方。",
+    },
+    hilited_candidate_back_color: {
+      badge: "候选 3",
+      tone: "state",
+      note: "只覆盖当前选中的候选项，优先于 candidate_background。",
+    },
+    keyboard_back_color: {
+      badge: "键盘 2",
+      tone: "region",
+      note: "只盖住实体键盘区域，位于 root_background 上方；这是当前官方键盘背景字段。",
+    },
+    liquid_keyboard_background: {
+      badge: "液态 2",
+      tone: "region",
+      note: "液态键盘区域背景；未设置时回退到 keyboard_back_color。",
+    },
+    key_back_color: {
+      badge: "按键 3",
+      tone: "state",
+      note: "单个普通按键的背景，盖在 keyboard_back_color 上方。",
+    },
+    hilited_key_back_color: {
+      badge: "按下 4",
+      tone: "state",
+      note: "按键按下时替换普通按键背景；这是状态优先级，不是再混合一层颜色。",
+    },
+    popup_back_color: {
+      badge: "浮层 5",
+      tone: "overlay",
+      note: "按键提示弹层背景，显示时浮在按键和键盘之上。",
+    },
+    preview_back_color: {
+      badge: "浮层 5",
+      tone: "overlay",
+      note: "旧配置中的按键提示背景；工坊按现有兼容规则提示替代字段。",
+    },
+  };
+
   const DRAWABLE_COLOR_KEYS = new Set([
     "root_background",
     "candidate_background",
-    "keyboard_background",
+    "keyboard_back_color",
     "liquid_keyboard_background",
     "back_color",
     "key_back_color",
@@ -1072,7 +1127,7 @@
       "--trime-candidate-button-active": resolveColor(id, "hilited_candidate_button_color"),
       "--trime-label-active": resolveColor(id, "hilited_label_color"),
       "--trime-comment-active": resolveColor(id, "hilited_comment_text_color"),
-      "--trime-keyboard-bg": resolveColor(id, "keyboard_background"),
+      "--trime-keyboard-back": resolveColor(id, "keyboard_back_color"),
       "--trime-popup-bg": resolveColor(id, "popup_back_color"),
       "--trime-popup-text": resolveColor(id, "popup_text_color"),
       "--trime-popup-active-bg": resolveColor(id, "hilited_popup_back_color"),
@@ -1108,7 +1163,8 @@
   function propertyMatchesSearch(key) {
     const query = state.colorSearch.trim().toLocaleLowerCase();
     if (!query) return true;
-    return `${key} ${COLOR_LABELS[key] || ""}`.toLocaleLowerCase().includes(query);
+    const role = COLOR_ROLES[key];
+    return `${key} ${COLOR_LABELS[key] || ""} ${role?.badge || ""} ${role?.note || ""}`.toLocaleLowerCase().includes(query);
   }
 
   function isColorProperty(key, value) {
@@ -1126,6 +1182,7 @@
     const resolved = resolveColor(themeId, key);
     const imageValue = isImageValue(raw);
     const legacyReplacement = LEGACY_COLOR_KEYS.get(key);
+    const role = COLOR_ROLES[key];
     const alpha = imageValue ? "IMG" : resolved.a.toString(16).padStart(2, "0").toUpperCase();
     const label = COLOR_LABELS[key] || key.replace(/_/g, " ");
     return `
@@ -1137,6 +1194,7 @@
         <div class="color-row-main">
           <div class="color-row-head">
             <strong title="${escapeHtml(key)}">${escapeHtml(label)}</strong>
+            ${role ? `<span class="role-badge role-${escapeHtml(role.tone)}">${escapeHtml(role.badge)}</span>` : ""}
             ${explicit ? "" : '<span class="inherit-badge">继承</span>'}
             ${raw.startsWith("*") ? `<span class="anchor-badge">${escapeHtml(raw)}</span>` : ""}
             ${imageValue ? '<span class="image-badge">图片</span>' : ""}
@@ -1152,6 +1210,7 @@
             >
             <span class="alpha-label">A <b>${alpha}</b></span>
           </div>
+          ${role?.note ? `<p class="color-row-note">${escapeHtml(role.note)}</p>` : ""}
         </div>
       </div>
     `;

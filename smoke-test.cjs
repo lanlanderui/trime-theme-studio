@@ -29,6 +29,19 @@ const { chromium } = require("playwright");
   assert.ok(initialKeyCount >= 30, "应渲染完整键盘");
   assert.ok(initialColorRowCount >= 42, "应渲染官方完整颜色字段");
   assert.equal(await page.locator(".deprecated-badge").count(), 2, "两个 preview_* 旧字段应标记为已废弃");
+  assert.equal(await page.locator('[data-color-row="keyboard_background"]').count(), 0, "不应把 keyboard_background 当成官方字段");
+  assert.equal(await page.locator('[data-color-row="root_background"] .role-base').count(), 1, "共同底层应有明确标记");
+  assert.equal(await page.locator('[data-color-row="keyboard_back_color"] .role-region').count(), 1, "键盘区域层应有明确标记");
+  assert.equal(await page.locator("#layerGuide").count(), 1, "应提供颜色层级图解");
+
+  const previewLayers = await page.evaluate(() => ({
+    root: getComputedStyle(document.querySelector(".ime")).backgroundColor,
+    candidate: getComputedStyle(document.querySelector(".candidate-row")).backgroundColor,
+    keyboard: getComputedStyle(document.querySelector(".keyboard")).backgroundColor,
+  }));
+  assert.equal(previewLayers.root, "rgb(228, 231, 233)", "共同底层应读取 root_background → back_color");
+  assert.equal(previewLayers.candidate, "rgb(228, 231, 233)", "候选栏应读取 candidate_background → back_color");
+  assert.equal(previewLayers.keyboard, "rgb(255, 255, 255)", "键盘区应读取 keyboard_back_color");
   const themeIds = await page.locator(".theme-card").evaluateAll((cards) => cards.map((card) => card.dataset.themeId));
   const layoutIds = await page.locator("#layoutSelect option").evaluateAll((options) => options.map((option) => option.value));
 
@@ -54,10 +67,16 @@ const { chromium } = require("playwright");
   await page.locator("#undoButton").click();
   assert.equal(await page.locator("#dirtyBadge").isVisible(), false, "撤销后应恢复干净状态");
 
-  const keyboardImageInput = page.locator('.color-value-input[data-color-key="keyboard_background"]');
-  await keyboardImageInput.fill("paper.png");
+  const rootImageInput = page.locator('.color-value-input[data-color-key="root_background"]');
+  await rootImageInput.fill("paper.png");
+  await rootImageInput.dispatchEvent("change");
+  assert.equal(await page.locator('[data-color-row="root_background"] .image-badge').count(), 1, "背景图片路径应被保留");
+  await page.locator("#undoButton").click();
+
+  const keyboardImageInput = page.locator('.color-value-input[data-color-key="keyboard_back_color"]');
+  await keyboardImageInput.fill("keyboard-paper.png");
   await keyboardImageInput.dispatchEvent("change");
-  assert.equal(await page.locator('[data-color-row="keyboard_background"] .image-badge').count(), 1, "背景图片路径应被保留");
+  assert.equal(await page.locator('[data-color-row="keyboard_back_color"] .image-badge').count(), 1, "官方键盘背景应保留图片路径");
   await page.locator("#undoButton").click();
 
   for (const themeId of themeIds) {
@@ -129,7 +148,10 @@ const { chromium } = require("playwright");
   assert.equal(await page.locator("#dirtyBadge").isVisible(), false, "重置布局后应恢复干净状态");
 
   await page.waitForTimeout(2000);
-  await page.screenshot({ path: path.resolve(__dirname, "trime-theme-studio.png"), fullPage: true });
+  await page.screenshot({
+    path: process.env.TRIME_TEST_SCREENSHOT || path.resolve(__dirname, "trime-theme-studio.png"),
+    fullPage: true,
+  });
 
   assert.equal(await page.locator('[data-color-row="popup_back_color"]').count(), 1, "应显示新版 popup 字段");
   assert.deepEqual(errors, [], `浏览器错误：${errors.join("; ")}`);

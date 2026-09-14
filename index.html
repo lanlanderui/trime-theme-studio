@@ -95,6 +95,57 @@
         </div>
 
         <div class="preview-controls">
+          <details class="layer-guide" id="layerGuide">
+            <summary title="查看 Trime 颜色由底到顶的覆盖关系">
+              <span class="layer-guide-symbol" aria-hidden="true">▱</span>
+              <span>图层关系</span>
+              <b>1 → 5</b>
+            </summary>
+            <div class="layer-guide-popover">
+              <header>
+                <div>
+                  <span class="eyebrow">BOTTOM → TOP</span>
+                  <h3>颜色覆盖顺序</h3>
+                </div>
+                <small>半透明上层会透出下层</small>
+              </header>
+
+              <div class="layer-root-card">
+                <b>1</b>
+                <div>
+                  <span>共同最底层</span>
+                  <code>root_background</code>
+                  <small>覆盖候选栏与键盘的整块输入法区域</small>
+                </div>
+              </div>
+
+              <div class="layer-branches">
+                <section>
+                  <h4>候选栏分支</h4>
+                  <ol>
+                    <li><b>2</b><code>candidate_background</code><span>候选栏整区</span></li>
+                    <li><b>3</b><code>hilited_candidate_back_color</code><span>选中候选块</span></li>
+                    <li><b>4</b><code>*_text_color / label_color</code><span>文字、注释、序号</span></li>
+                  </ol>
+                </section>
+                <section>
+                  <h4>键盘分支</h4>
+                  <ol>
+                    <li><b>2</b><code>keyboard_back_color</code><span>键盘整区</span></li>
+                    <li><b>3</b><code>key_back_color / on / off</code><span>单个按键</span></li>
+                    <li><b>4</b><code>hilited_key_*</code><span>按下时替换按键状态</span></li>
+                    <li><b>5</b><code>preview_* / popup_*</code><span>按键提示浮层（依版本）</span></li>
+                  </ol>
+                </section>
+              </div>
+
+              <div class="layer-preedit-path">
+                <span>编码区</span>
+                <code>root_background</code><i>→</i><code>text_back_color</code><i>→</i><code>hilited_back_color / text_color</code>
+              </div>
+              <p class="layer-fallback-note"><code>back_color</code> 是常用回退源，不是位置固定的一块独立图层。</p>
+            </div>
+          </details>
           <label class="select-control">
             <span>键盘布局</span>
             <select id="layoutSelect"></select>
