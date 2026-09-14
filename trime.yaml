@@ -194,6 +194,264 @@ preset_color_schemes:
     shadow_color: 0x000000 #按鍵文字陰影
     text_color: 0x5a676e #編碼
     text_back_color: 0xcce4e7e9 #編碼區背景
+    bkg: 0xFFF8FAFA #空格键背景
+    tkg: 0xFF37474F #空格键文字
+    benter: 0xFF087F73 #回车键背景
+    tenter: 0xFFFFFFFF #回车键文字
+    bgn: 0xFFDCE2E4 #切换与功能键背景
+    tgn: 0xFF37474F #切换与功能键文字
+    bbs: 0xFFE8D6D5 #退格键背景
+    tbs: 0xFF842F2B #退格键文字
+
+  mist_jade:
+    name: 雾青白／Mist Jade
+    author: Trime 主题工坊
+    root_background: 0xFFF3F7F6
+    back_color: 0xFFEDF5F3
+    candidate_background: 0xFFEAF4F2
+    border_color: 0xFFC5D7D4
+    candidate_separator_color: 0xFFC5D7D4
+    candidate_text_color: 0xFF243533
+    comment_text_color: 0xFF647774
+    hilited_back_color: 0xFFD8ECE8
+    hilited_candidate_back_color: 0xFF0F766E
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFD7FFFA
+    hilited_key_back_color: 0xFF0F766E
+    hilited_key_symbol_color: 0xFFD7FFFA
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF315E58
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF0F766E
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFF0F766E
+    key_back_color: 0xFFFFFFFF
+    key_border_color: 0xFFD5E2E0
+    key_symbol_color: 0xFF6B7B79
+    key_text_color: 0xFF243533
+    keyboard_back_color: 0xFFDCE8E6
+    label_color: 0xFF46615D
+    off_key_back_color: 0xFFCADBD8
+    off_key_text_color: 0xFF29423E
+    on_key_back_color: 0xFF0F766E
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF0F766E
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF0F766E
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF094F4A
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x220F2F2B
+    text_color: 0xFF28423E
+    text_back_color: 0xFFE3F0ED
+    bkg: 0xFFE8F1EF
+    tkg: 0xFF28443F
+    benter: 0xFF0F766E
+    tenter: 0xFFFFFFFF
+    bgn: 0xFFB8CCC8
+    tgn: 0xFF173A36
+    bbs: 0xFFC4514B
+    tbs: 0xFFFFFFFF
+
+  apricot_cream:
+    name: 杏仁暖光／Apricot Cream
+    author: Trime 主题工坊
+    root_background: 0xFFFBF7F0
+    back_color: 0xFFFFF8ED
+    candidate_background: 0xFFFFF5E6
+    border_color: 0xFFE2D3BF
+    candidate_separator_color: 0xFFE2D3BF
+    candidate_text_color: 0xFF3F342D
+    comment_text_color: 0xFF806E60
+    hilited_back_color: 0xFFF4E3CD
+    hilited_candidate_back_color: 0xFFB45309
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFFFE8CC
+    hilited_key_back_color: 0xFF9A3412
+    hilited_key_symbol_color: 0xFFFFE5D5
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF74513E
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFFB45309
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFF9A3412
+    key_back_color: 0xFFFFFDFC
+    key_border_color: 0xFFE8DCCD
+    key_symbol_color: 0xFF8A7768
+    key_text_color: 0xFF3F342D
+    keyboard_back_color: 0xFFF0E6D8
+    label_color: 0xFF684F3F
+    off_key_back_color: 0xFFE0D1BF
+    off_key_text_color: 0xFF49392F
+    on_key_back_color: 0xFFB45309
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF9A3412
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF9A3412
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF7C2D12
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x222A1C13
+    text_color: 0xFF514238
+    text_back_color: 0xFFF7ECDD
+    bkg: 0xFFF4E9DA
+    tkg: 0xFF45372C
+    benter: 0xFF9A3412
+    tenter: 0xFFFFFFFF
+    bgn: 0xFFD8C5AE
+    tgn: 0xFF3D3026
+    bbs: 0xFFB42318
+    tbs: 0xFFFFFFFF
+
+  indigo_night:
+    name: 靛夜星河／Indigo Night
+    author: Trime 主题工坊
+    root_background: 0xFF111827
+    back_color: 0xFF172033
+    candidate_background: 0xFF172033
+    border_color: 0xFF334155
+    candidate_separator_color: 0xFF334155
+    candidate_text_color: 0xFFF1F5F9
+    comment_text_color: 0xFF94A3B8
+    hilited_back_color: 0xFF27345A
+    hilited_candidate_back_color: 0xFF4F46E5
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFE0E7FF
+    hilited_key_back_color: 0xFF475569
+    hilited_key_symbol_color: 0xFFE2E8F0
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF475569
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF4F46E5
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFFA5B4FC
+    key_back_color: 0xFF1E293B
+    key_border_color: 0xFF334155
+    key_symbol_color: 0xFF94A3B8
+    key_text_color: 0xFFF1F5F9
+    keyboard_back_color: 0xFF0F172A
+    label_color: 0xFFC7D2FE
+    off_key_back_color: 0xFF334155
+    off_key_text_color: 0xFFE2E8F0
+    on_key_back_color: 0xFF4F46E5
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF312E81
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF312E81
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF4F46E5
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x66000000
+    text_color: 0xFFE2E8F0
+    text_back_color: 0xFF1E293B
+    bkg: 0xFF243044
+    tkg: 0xFFF1F5F9
+    benter: 0xFF4F46E5
+    tenter: 0xFFFFFFFF
+    bgn: 0xFF334155
+    tgn: 0xFFF1F5F9
+    bbs: 0xFFBE123C
+    tbs: 0xFFFFFFFF
+
+  pine_ink:
+    name: 松墨深林／Pine Ink
+    author: Trime 主题工坊
+    root_background: 0xFF0E1B18
+    back_color: 0xFF132720
+    candidate_background: 0xFF132720
+    border_color: 0xFF315448
+    candidate_separator_color: 0xFF315448
+    candidate_text_color: 0xFFE8F3EE
+    comment_text_color: 0xFF9CB5AA
+    hilited_back_color: 0xFF1C3B31
+    hilited_candidate_back_color: 0xFF1F7A5A
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFD9FBEF
+    hilited_key_back_color: 0xFF315E50
+    hilited_key_symbol_color: 0xFFD8EAE3
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF315448
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF147D64
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFF6EE7B7
+    key_back_color: 0xFF1C332C
+    key_border_color: 0xFF315448
+    key_symbol_color: 0xFF9CB5AA
+    key_text_color: 0xFFE8F3EE
+    keyboard_back_color: 0xFF0B1714
+    label_color: 0xFFA7F3D0
+    off_key_back_color: 0xFF294B40
+    off_key_text_color: 0xFFF0F7F3
+    on_key_back_color: 0xFF147D64
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF0F5F4B
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF0F5F4B
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF147D64
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x66000000
+    text_color: 0xFFD8EAE3
+    text_back_color: 0xFF1C332C
+    bkg: 0xFF1A2D28
+    tkg: 0xFFE8F3EE
+    benter: 0xFF147D64
+    tenter: 0xFFFFFFFF
+    bgn: 0xFF294B40
+    tgn: 0xFFF0F7F3
+    bbs: 0xFFA33A3A
+    tbs: 0xFFFFFFFF
+
+  sakura_slate:
+    name: 樱灰晨雾／Sakura Slate
+    author: Trime 主题工坊
+    root_background: 0xFFF8F4F5
+    back_color: 0xFFFFF7F8
+    candidate_background: 0xFFFFF7F8
+    border_color: 0xFFD9C9CF
+    candidate_separator_color: 0xFFD9C9CF
+    candidate_text_color: 0xFF3D3338
+    comment_text_color: 0xFF806D75
+    hilited_back_color: 0xFFF3DDE5
+    hilited_candidate_back_color: 0xFF9D3156
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFFFDFEA
+    hilited_key_back_color: 0xFF8D3A5D
+    hilited_key_symbol_color: 0xFFFFE3ED
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF745361
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF9D3156
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFF8D3A5D
+    key_back_color: 0xFFFFFFFF
+    key_border_color: 0xFFE3D7DB
+    key_symbol_color: 0xFF88757D
+    key_text_color: 0xFF3D3338
+    keyboard_back_color: 0xFFECE5E8
+    label_color: 0xFF694B58
+    off_key_back_color: 0xFFD9CCD2
+    off_key_text_color: 0xFF46323A
+    on_key_back_color: 0xFF9D3156
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF8D3A5D
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF8D3A5D
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF6F2948
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x22322128
+    text_color: 0xFF55444C
+    text_back_color: 0xFFF5E9ED
+    bkg: 0xFFF3E9EC
+    tkg: 0xFF493840
+    benter: 0xFF8D3A5D
+    tenter: 0xFFFFFFFF
+    bgn: 0xFFD9CCD2
+    tgn: 0xFF46323A
+    bbs: 0xFFB33A3A
+    tbs: 0xFFFFFFFF
 
 
 liquid_keyboard:
@@ -426,7 +684,7 @@ preset_keyboards:
     - {click: 'k', long_click: ':'}
     - {click: 'l', long_click: ';'}
     - {width: 5}
-    - {click: Shift_L, send_bindings: false, width: 15}
+    - {click: Shift_L, send_bindings: false, width: 15, key_back_color: bgn, key_text_color: tgn}
     - {click: 'z', long_click: '`'}
     - {click: 'x', long_click: cut}
     - {click: 'c', long_click: copy}
@@ -434,14 +692,14 @@ preset_keyboards:
     - {click: 'b', long_click: Time, swipe_up: Date}
     - {click: 'n', long_click: '"'}
     - {click: 'm', long_click: "'"}
-    - {click: BackSpace, swipe_left: Escape, width: 15}
-    - {click: Mode_switch, long_click: Menu, width: 15}
-    - {click: Keyboard_symbols, long_click: Keyboard_number}
+    - {click: BackSpace, swipe_left: Escape, width: 15, key_back_color: bbs, key_text_color: tbs}
+    - {click: Mode_switch, long_click: Menu, width: 15, key_back_color: bgn, key_text_color: tgn}
+    - {click: Keyboard_symbols, long_click: Keyboard_number, key_back_color: bgn, key_text_color: tgn}
     - {click: ',', long_click: '<'}
-    - {click: space, width: 30}
+    - {click: space, width: 30, key_back_color: bkg, key_text_color: tkg}
     - {click: '.', long_click: '>'}
     - {click: '/', long_click: '?'}
-    - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
+    - {click: Return, composing: Return1, long_click: CommitComment, width: 15, key_back_color: benter, key_text_color: tenter}
 
   letter:
     __include: /preset_keyboards/default
@@ -477,10 +735,10 @@ preset_keyboards:
     - {click: '.'}
     - {click: ','}
     - {click: '='}
-    - {click: Keyboard_default, long_click: Keyboard_symbols}
-    - {click: space}
-    - {click: BackSpace}
-    - {click: Return}
+    - {click: Keyboard_default, long_click: Keyboard_symbols, key_back_color: bgn, key_text_color: tgn}
+    - {click: space, key_back_color: bkg, key_text_color: tkg}
+    - {click: BackSpace, key_back_color: bbs, key_text_color: tbs}
+    - {click: Return, key_back_color: benter, key_text_color: tenter}
   symbols:
     name: 符號
     author: "天真可愛的滿滿"
@@ -527,12 +785,11 @@ preset_keyboards:
     - {click: '”', ascii: "'", long_click: '’'}
     - {click: '，', ascii: ',', long_click: one_hand_switch_1}
     - {click: '？', ascii: '?', long_click: one_hand_switch_3}
-    - {click: BackSpace, long_click: Escape}
-    - {click: Keyboard_default, long_click: Menu, width: 15}
-    - {click: Keyboard_number, long_click: Color_switch}
-    - {click: Keyboard_mini, long_click: Theme_settings}
-    - {click: space, width: 30}
+    - {click: BackSpace, long_click: Escape, key_back_color: bbs, key_text_color: tbs}
+    - {click: Keyboard_default, long_click: Menu, width: 15, key_back_color: bgn, key_text_color: tgn}
+    - {click: Keyboard_number, long_click: Color_switch, key_back_color: bgn, key_text_color: tgn}
+    - {click: Keyboard_mini, long_click: Theme_settings, key_back_color: bgn, key_text_color: tgn}
+    - {click: space, width: 30, key_back_color: bkg, key_text_color: tkg}
     - {click: '。', ascii: '.'}
-    - {click: liquid_keyboard_switch, long_click: Delete}
-    - {click: Return, long_click: select_all, width: 15}
-
+    - {click: liquid_keyboard_switch, long_click: Delete, key_back_color: bgn, key_text_color: tgn}
+    - {click: Return, long_click: select_all, width: 15, key_back_color: benter, key_text_color: tenter}

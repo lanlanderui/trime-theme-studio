@@ -3,6 +3,26 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { chromium } = require("playwright");
 
+function cssRgb(value) {
+  const channels = String(value).match(/[\d.]+/g)?.slice(0, 3).map(Number);
+  assert.equal(channels?.length, 3, `无法解析 CSS 颜色：${value}`);
+  return channels;
+}
+
+function relativeLuminance(value) {
+  const [red, green, blue] = cssRgb(value).map((channel) => {
+    const normalized = channel / 255;
+    return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+}
+
+function cssContrastRatio(foreground, background) {
+  const a = relativeLuminance(foreground);
+  const b = relativeLuminance(background);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
+
 (async () => {
   const browser = await chromium.launch({
     headless: true,
@@ -21,7 +41,7 @@ const { chromium } = require("playwright");
   await page.waitForSelector(".theme-card");
 
   assert.equal(await page.locator("#sourceName").textContent(), "trime.yaml", "应使用用户提供的 trime.yaml 作为初始模板");
-  assert.equal(await page.locator(".theme-card").count(), 1, "初始模板应显示 1 套主题");
+  assert.equal(await page.locator(".theme-card").count(), 6, "初始模板应显示默认主题与 5 套新主题");
   const initialLayoutCount = await page.locator("#layoutSelect option").count();
   const initialKeyCount = await page.locator(".trime-key").count();
   const initialColorRowCount = await page.locator(".color-row").count();
@@ -44,6 +64,7 @@ const { chromium } = require("playwright");
   assert.equal(previewLayers.keyboard, "rgb(255, 255, 255)", "键盘区应读取 keyboard_back_color");
   const themeIds = await page.locator(".theme-card").evaluateAll((cards) => cards.map((card) => card.dataset.themeId));
   const layoutIds = await page.locator("#layoutSelect option").evaluateAll((options) => options.map((option) => option.value));
+  assert.deepEqual(themeIds, ["default", "mist_jade", "apricot_cream", "indigo_night", "pine_ink", "sakura_slate"]);
 
   await page.locator('[data-theme-id="default"]').click();
   assert.equal(await page.locator("#previewThemeId").textContent(), "default");
@@ -62,6 +83,8 @@ const { chromium } = require("playwright");
   let exported = "";
   for await (const chunk of stream) exported += chunk.toString("utf8");
   assert.match(exported, /  default:[\s\S]*?popup_back_color: 0xFFFF0000/);
+  assert.match(exported, /  mist_jade:[\s\S]*?benter: 0xFF0F766E/, "完整导出应保留内置主题及功能键色");
+  assert.match(exported, /key_back_color: bbs/, "完整导出应保留功能键颜色绑定");
   assert.match(exported, /preset_keyboards:/, "完整导出应保留键盘布局");
 
   await page.locator("#undoButton").click();
@@ -82,6 +105,25 @@ const { chromium } = require("playwright");
   for (const themeId of themeIds) {
     await page.locator(`[data-theme-id="${themeId}"]`).click();
     assert.equal(await page.locator("#previewThemeId").textContent(), themeId);
+    const keyStyles = await page.evaluate(() => {
+      const styleFor = (title) => {
+        const style = getComputedStyle(document.querySelector(`.trime-key[title="${title}"]`));
+        return { background: style.backgroundColor, foreground: style.color };
+      };
+      return {
+        regular: styleFor("q"),
+        function: styleFor("Shift_L"),
+        backspace: styleFor("BackSpace"),
+        space: styleFor("space"),
+        enter: styleFor("Return"),
+      };
+    });
+    const specialKeys = Object.entries(keyStyles).filter(([name]) => name !== "regular");
+    specialKeys.forEach(([name, colors]) => {
+      assert.notEqual(colors.background, keyStyles.regular.background, `${themeId} 的 ${name} 应区别于普通键`);
+      assert.ok(cssContrastRatio(colors.foreground, colors.background) >= 4.5, `${themeId} 的 ${name} 文字对比度应达到 4.5:1`);
+    });
+    assert.equal(new Set(specialKeys.map(([, colors]) => colors.background)).size, 4, `${themeId} 的四类功能键应使用不同背景`);
   }
   for (const layoutId of layoutIds) {
     await page.locator("#layoutSelect").selectOption(layoutId);
@@ -136,6 +178,7 @@ const { chromium } = require("playwright");
   });
   await validationPage.waitForFunction(() => document.querySelector("#sourceName")?.textContent === "layout-export.trime.yaml");
   assert.equal(await validationPage.locator(".trime-key").count(), initialKeyCount + 1, "导出的布局应能重新载入");
+  assert.equal(await validationPage.locator(".theme-card").count(), 6, "导出的配置应保留默认主题与 5 套新主题");
   await validationPage.close();
 
   await page.locator("#deleteKeyButton").click();
@@ -156,7 +199,7 @@ const { chromium } = require("playwright");
   assert.equal(await page.locator('[data-color-row="popup_back_color"]').count(), 1, "应显示新版 popup 字段");
   assert.deepEqual(errors, [], `浏览器错误：${errors.join("; ")}`);
   console.log(JSON.stringify({
-    themes: 1,
+    themes: themeIds.length,
     layouts: initialLayoutCount,
     keys: initialKeyCount,
     colorRows: initialColorRowCount,
