@@ -11,6 +11,7 @@ on:
       - "styles.css"
       - "app.js"
       - "bundled-config.js"
+      - "单手特化.trime.yaml"
       - "trime.yaml"
       - "tongwenfeng.trime.yaml"
       - ".github/workflows/android-debug.yml"

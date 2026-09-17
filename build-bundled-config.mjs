@@ -3,14 +3,14 @@ import { fileURLToPath } from "node:url";
 import { basename, resolve } from "node:path";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
-const sourcePath = resolve(root, process.argv[2] || "trime.yaml");
+const sourcePath = resolve(root, process.argv[2] || "单手特化.trime.yaml");
 const outputPath = resolve(root, "bundled-config.js");
 const yaml = readFileSync(sourcePath, "utf8");
 const sourceName = basename(sourcePath);
 
 writeFileSync(
   outputPath,
-  `/* Generated from ${sourceName}. Run: node build-bundled-config.mjs */\nwindow.BUNDLED_TRIME_YAML = ${JSON.stringify(yaml)};\n`,
+  `/* Generated from ${sourceName}. Run: node build-bundled-config.mjs */\nwindow.BUNDLED_TRIME_SOURCE_NAME = ${JSON.stringify(sourceName)};\nwindow.BUNDLED_TRIME_YAML = ${JSON.stringify(yaml)};\n`,
   "utf8",
 );
 

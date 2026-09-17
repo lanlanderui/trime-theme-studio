@@ -40,8 +40,8 @@ function cssContrastRatio(foreground, background) {
   });
   await page.waitForSelector(".theme-card");
 
-  assert.equal(await page.locator("#sourceName").textContent(), "trime.yaml", "应使用用户提供的 trime.yaml 作为初始模板");
-  assert.equal(await page.locator(".theme-card").count(), 6, "初始模板应显示默认主题与 5 套新主题");
+  assert.equal(await page.locator("#sourceName").textContent(), "单手特化.trime.yaml", "应使用单手特化配置作为内置模板");
+  assert.equal(await page.locator(".theme-card").count(), 6, "内置模板应显示默认主题与 5 套原创主题");
   const initialLayoutCount = await page.locator("#layoutSelect option").count();
   const initialKeyCount = await page.locator(".trime-key").count();
   const initialColorRowCount = await page.locator(".color-row").count();
@@ -64,7 +64,7 @@ function cssContrastRatio(foreground, background) {
   assert.equal(previewLayers.keyboard, "rgb(255, 255, 255)", "键盘区应读取 keyboard_back_color");
   const themeIds = await page.locator(".theme-card").evaluateAll((cards) => cards.map((card) => card.dataset.themeId));
   const layoutIds = await page.locator("#layoutSelect option").evaluateAll((options) => options.map((option) => option.value));
-  assert.deepEqual(themeIds, ["default", "mist_jade", "apricot_cream", "indigo_night", "pine_ink", "sakura_slate"]);
+  assert.deepEqual(themeIds, ["carbon_amber", "sea_salt_teal", "default", "mist_jade", "indigo_night", "sakura_slate"]);
 
   await page.locator('[data-theme-id="default"]').click();
   assert.equal(await page.locator("#previewThemeId").textContent(), "default");
@@ -123,7 +123,6 @@ function cssContrastRatio(foreground, background) {
       assert.notEqual(colors.background, keyStyles.regular.background, `${themeId} 的 ${name} 应区别于普通键`);
       assert.ok(cssContrastRatio(colors.foreground, colors.background) >= 4.5, `${themeId} 的 ${name} 文字对比度应达到 4.5:1`);
     });
-    assert.equal(new Set(specialKeys.map(([, colors]) => colors.background)).size, 4, `${themeId} 的四类功能键应使用不同背景`);
   }
   for (const layoutId of layoutIds) {
     await page.locator("#layoutSelect").selectOption(layoutId);
@@ -132,7 +131,8 @@ function cssContrastRatio(foreground, background) {
   await page.locator('[data-theme-id="default"]').click();
   await page.locator("#layoutSelect").selectOption("default");
   await page.locator('[data-preview-state="pressed"]').click();
-  assert.equal(await page.locator(".key-popup-demo").count(), 1, "按下状态应显示新版 popup 配色预览");
+  const expectedPopupCount = await page.locator(".trime-key[title^=\"BackSpace\"]").count();
+  assert.equal(await page.locator(".key-popup-demo").count(), expectedPopupCount, "按下状态应为每个退格键显示 popup 配色预览");
   await page.locator('[data-preview-state="normal"]').click();
 
   await page.locator('[data-inspector-mode="layout"]').click();

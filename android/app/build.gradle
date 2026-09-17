@@ -26,6 +26,7 @@ tasks.register("copyWebAssets", Copy) {
         include "styles.css"
         include "app.js"
         include "bundled-config.js"
+        include "单手特化.trime.yaml"
         include "trime.yaml"
         include "tongwenfeng.trime.yaml"
     }

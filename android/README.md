@@ -22,6 +22,7 @@ The Gradle build copies the web files from the repository root into the APK asse
 - `styles.css`
 - `app.js`
 - `bundled-config.js`
+- `单手特化.trime.yaml`
 - `trime.yaml`
 - `tongwenfeng.trime.yaml`
 

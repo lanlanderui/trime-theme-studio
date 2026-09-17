@@ -2190,7 +2190,7 @@
       toast("未找到内置配置，请先运行构建脚本");
       return;
     }
-    loadConfig(window.BUNDLED_TRIME_YAML, "trime.yaml");
+    loadConfig(window.BUNDLED_TRIME_YAML, window.BUNDLED_TRIME_SOURCE_NAME || "trime.yaml");
   }
 
   document.addEventListener("DOMContentLoaded", initialize);
