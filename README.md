@@ -85,6 +85,8 @@ node build-bundled-config.mjs tongwenfeng.trime.yaml
 
 用 Android Studio 打开 `android/` 目录即可构建，详细说明见 [`android/README.md`](android/README.md)。
 
+面向普通用户的签名 APK 与“单手特化”个人主题方案会随版本发布到 [GitHub Releases](https://github.com/lanlanderui/trime-theme-studio/releases)，无需从 Actions 中查找临时构建产物。
+
 ## GitHub Pages 发布方式
 
 本项目是纯静态网页，入口文件为仓库根目录的 `index.html`，不需要后端服务器和构建步骤。仓库使用 GitHub Pages 的 **Deploy from a branch** 模式，将 `main` 分支的 `/ (root)` 目录作为网站来源。GitHub 会自动把 HTML、CSS、JavaScript 和内置模板发布到：

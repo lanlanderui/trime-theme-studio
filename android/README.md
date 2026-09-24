@@ -32,6 +32,8 @@
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
+公开发布的稳定签名 APK 和“单手特化”个人主题方案可从项目的 [GitHub Releases](https://github.com/lanlanderui/trime-theme-studio/releases) 下载。推送 `v*` 标签时，Release 工作流会自动构建、签名并发布这两个文件。
+
 ## 使用生成结果
 
 推荐直接在 App 内点击“选择 YAML”，从 Rime 目录选择同文主题文件，再点击“一键写入”。App 会在现有 `preset_color_schemes` 中新增或更新 `material_you` 和 `material_you_dark`；如果该区块尚不存在，则自动创建。写入后在同文输入法里重新部署，并选择 `material_you` 配色。

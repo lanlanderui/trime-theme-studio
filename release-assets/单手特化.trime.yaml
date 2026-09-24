@@ -1,0 +1,984 @@
+# Trime custom style settings
+# encoding: utf-8
+config_version: "3.0"
+name: 单手特化         #方案名称
+author: 锐        #作者信息
+
+fallback_colors:
+  border_color: back_color
+  candidate_separator_color: back_color
+  candidate_text_color: hilited_text_color
+  comment_text_color: candidate_text_color
+  enter_back_color: on_key_back_color
+  enter_sym_back_color: off_sym_back_color
+  enter_sym_text_color: on_key_text_color
+  enter_symbol_color: enter_text_color
+  enter_text_color: on_key_text_color
+  hilited_back_color: back_color
+  hilited_candidate_back_color: back_color
+  hilited_candidate_text_color: text_color
+  hilited_comment_text_color: hilited_candidate_text_color
+  hilited_enter_back_color: hilited_on_key_back_color
+  hilited_enter_sym_back_color: hilited_off_sym_back_color
+  hilited_key_back_color: back_color
+  hilited_key_symbol_color: key_symbol_color
+  hilited_key_text_color: key_text_color
+  hilited_main_back_color: back_color
+  hilited_menu_back_color: key_back_color
+  hilited_menu_text_color: enter_sym_back_color
+  hilited_off_key_back_color: main_back_color
+  hilited_off_key_text_color: off_key_text_color
+  hilited_off_sym_back_color: key_back_color
+  hilited_off_sym_text_color: hilited_off_key_text_color
+  hilited_on_key_back_color: off_key_back_color
+  hilited_on_key_text_color: on_key_text_color
+  hilited_space_back_color: hilited_off_key_back_color
+  hilited_text_color: text_color
+  key_back_color: back_color
+  key_border_color: back_color
+  key_symbol_color: comment_text_color
+  key_text_color: candidate_text_color
+  keyboard_back_color: back_color
+  label_color: hilited_text_color
+  main_back_color: back_color
+  menu_back_color: off_sym_back_color
+  menu_text_color: off_sym_text_color
+  off_key_back_color: hilited_main_back_color
+  off_key_symbol_color: off_key_text_color
+  off_key_text_color: key_text_color
+  off_sym_back_color: hilited_key_back_color
+  off_sym_fy_text_color: hilited_off_sym_back_color
+  off_sym_text_color: off_key_text_color
+  on_key_back_color: hilited_off_key_back_color
+  on_key_text_color: hilited_key_text_color
+  preview_back_color: back_color
+  preview_text_color: key_text_color
+  shadow_color: back_color
+  space_back_color: off_key_back_color
+  text_back_color: back_color
+  bkg: on_key_back_color
+  tkg: on_key_text_color
+  benter: on_key_back_color
+  tenter: on_key_text_color
+  bgn: on_key_back_color
+  tgn: on_key_text_color
+  bbs: on_key_back_color
+  tbs: on_key_text_color
+
+style:
+  auto_caps: false
+  candidate_font: han.ttf
+  candidate_padding: 5
+  candidate_spacing: 0.0
+  candidate_text_size: 18
+  candidate_text_vertical_bias: 1.0
+  candidate_view_height: 25
+  comment_font: comment.ttf
+  comment_height: 12
+  comment_position: right
+  comment_text_size: 10
+  comment_vertical_bias: 0.0
+  enter_label_mode: 0
+  preview_font: latin.ttf
+  preview_height: 60
+  preview_offset: "-12"
+  preview_text_size: 40
+  enter_labels:
+    default: Enter
+    done: "完成"
+    go: "前往"
+    next: "下个"
+    pre: "上个"
+    search: "搜索"
+    send: "发送"
+  hanb_font: hanb.ttf
+  horizontal_gap: 3
+  key_font: symbol.ttf
+  key_height: 50
+  key_long_text_size: 16
+  key_text_size: 20
+  key_width: 10.0
+  keyboard_height: 220
+  keyboard_height_land: 200
+  keyboard_padding_bottom: 38
+  label_font: label.ttf
+  label_text_size: 22
+  latin_font: latin.ttf
+  popup_bottom_margin: 68
+  popup_font: latin.ttf
+  popup_height: 48
+  popup_key_height: 48
+  popup_text_size: 23
+  popup_width: 38
+  reset_ascii_mode_on_focus_change: false
+  round_corner: 5
+  shadow_radius: 10
+  symbol_font: symbol.ttf
+  symbol_text_size: 10
+  text_font: latin.ttf
+  vertical_gap: 4
+tool_bar:
+  ascii_mode_button:
+    action: Mode_switch
+    foreground: {font_size: 18, option_styles: ["中", En], padding: 10}
+  back_style: "ic@arrow-left"
+  button_font: iconfont.ttf
+  button_spacing: 5
+  buttons:
+    - {action: Hide, foreground: {fg_normal: candidate_text_color, style: "ic@keyboard_close"}}
+    - {action: clipboard_window, foreground: {style: "ic@clipboard"}}
+    - {action: Mode_switch, foreground: {font_size: 20, option_styles: ["中", "英"], padding: 10}}
+  clipboard_button:
+    action: clipboard_window
+    foreground: {style: "ic@clipboard"}
+  edit_button:
+    action: Keyboard_editor
+    foreground: {style: "ic@cursor_text"}
+  emoji_button:
+    action: liquid_keyboard_emoji
+    foreground: {style: "ic@emoticon"}
+  full_shape_button:
+    action: Zenkaku_Hankaku
+    foreground: {option_styles: ["ic@moon_full", "ic@moon_new"]}
+  hide_button:
+    action: Hide
+    foreground: {normal: candidate_text_color, style: "ic@keyboard_close"}
+  primary_button:
+    action: menu_keyboard
+    background: {corner_radius: 10, highlight: hilited_candidate_button_color, horizontal_inset: 4, normal: 0x00, type: circle, vertical_inset: 4}
+    foreground: {normal: candidate_text_color, padding: 10, style: "ic@dots_horizontal"}
+    long_press_action: Settings
+preedit:
+  foreground:
+    font_size: 18	
+  horizontal_padding: 8
+  top_end_radius: 4
+  top_start_radius: 4
+  #alpha: 0.5
+
+fallback_colors:
+  candidate_text_color: text_color
+    
+    
+#--------配色结束----------------#
+window:
+  foreground:
+    comment_font_size: 16
+    label_font_size: 20
+    text_font_size: 20
+  insets:
+    horizontal: 4
+    vertical: 4
+  item_padding:
+    horizontal: 4
+
+liquid_keyboard:
+  # 目前只能直接写参数，不支持变量或者fallback机制。
+  # 缺少参数时，自动从style中加载参数。除非要指定liquid_keyboard使用与主键盘不同的背景色、背景图，否则不应设置被注释掉的参数。
+  author: "tumuyan"
+  row: 6              #每屏最多显示多少行按键
+  row_land: 5         #横屏每屏最多显示多少行按键
+  key_height: 30      #按键高度
+  key_height_land: 40 #横屏模式按键 【【高度
+  single_width: 43    #single类型的按键宽度
+  vertical_gap: 2     #纵向按键间隙
+  margin_x: 2       #左右按键间隙的1/2
+  fixed_key_bar: # 固定按键条
+    position: bottom  # 摆放位置（在滚动区域的……） top|bottom|left|right
+    keys: # 按键（显示名称为对应的label，不能放太多）
+      - liquid_keyboard_exit
+      - space1
+      - BackSpace
+      - Return2
+      - menu_keyboard
+  keyboards: [encn, emoji]  #tab列表
+
+  emoji:
+    type: SINGLE
+    name: ' 🤣 '
+    keys: "😀😃😄😁😆😅🤣😂🙂🙃🫠😉"
+  encn:
+    type: SINGLE
+    name: ' 🔣 '
+    keys: ",.?!:;/\\|*-+=^$`'\"^~@#%&()[]{}_，。？！：、“”‘···……-（）【】《》［］｛｝「」『』～≈＝≠≌<>≤≥≡()[]{}-+±×*/÷&∥%‰‱°①②③④⑤⑥⑦⑧⑨⑩⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩➊➋➌➍➎➏➐➑➒➓㊀㊁㊂㊃㊄㊅㊆㊇㊈㊉ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ′″∫∮∯∬∭∰∞∑∧∏∈∵∴⊥∝∨∪•√〒∝∽∈∩∧⊙⌒∥∟∣∂∆∞≌∉∪∨⊕⊿⊥∠∫∬∭℃¥$€฿￡㎡m³℉￥£￠₠¹²³⁴⁵ⁿ⁶⁷⁸⁹⁰ˣ⁺⁻⁼⁽⁾½⅓¼⅔¾₁₂₃₄₅ₙ₆₇₈₉₀ₓ₊₋₌₍₎℅△▽○◇□☆▲▼●◆■★▷◁▶◀♻♲†⚝✡⚹✦✸✹￼�×⌫☑☒✅❎✔✘✓✗☀☼☽☾◑◐㏂㏘☭♀♂☹☻☠☜☝☞☚☟☛▪•‥…∷※♩♪♫♬§°♭♯♮‖¶№◎¤۞℗®©卍卐℡™㏇Φ⇦⇧⇨⇩⇪↖↑↗←↔→↙↓↘⇄⇅⇆⇤↩⇥▸◂▴▾◤◥◣◢㊤㊧㊥㊨㊦❏❐◲〼▢▣↶✁↷✍⏍ϟ📝✎✆☱☰☴⚿⛮⚙☲☯☵⛶☩☐☳☷☶💬🗨⟲ღ✈☂🎤🌐🔍"
+preset_keyboards:
+  default:
+    author: "锐"
+    name: 26键默认布局
+    lock: true
+    width: 10
+    ascii_mode: 0
+    key_hint_offset_x: 0
+    key_hint_offset_y: 0
+    key_press_offset_x: 2
+    key_press_offset_y: 2
+    key_symbol_offset_x: 10
+    key_symbol_offset_y: 0
+    key_text_offset_x: 0
+    key_text_offset_y: 0
+    keys:
+      # 第一排 按键
+      - {click: o,popup: [Date,Time] ,height: 30}
+      - {click: p}
+      - {click: l}
+      - {click: '/', width: 13, key_back_color: bgn, key_text_color: tgn}
+      - {click: Return3, composing: space1,  width: 13, key_back_color: benter, key_text_color: tenter}
+      - {click: BackSpace, width: 13, key_back_color: bbs, key_text_color: tbs}
+      - {click: q}
+      - {click: w}
+      - {click: e}
+      # 第二排 按键
+      - {click: q, long_click: 1, swipe_up: Page_Up}
+      - {click: w, long_click: 2, swipe_up: Page_Down}
+      - {click: e, long_click: 3, swipe_up: 3}
+      - {click: r, long_click: 4}
+      - {click: t, long_click: 5}
+      - {click: y, long_click: 6}
+      - {click: u, long_click: 7}
+      - {click: i, long_click: 8}
+      - {click: o, long_click: 9}
+      - {click: p, long_click: 0}
+      # 第三排 按键
+      - {width: 5}
+      - {click: a, long_click: select_all, popup: [select_all,"@"]}
+      - {click: s, long_click: "#"}
+      - {click: d, long_click: "-"}
+      - {click: f, long_click: '&'}
+      - {click: g, long_click: '%'}
+      - {click: h, long_click: "+"}
+      - {click: j, long_click: "'", popup: ['(','[','{','【','《','<','≤',"'"]}
+      - {click: k, long_click: '"', popup: [')',']','}','】','》','>','≥','"']}
+      - {click: l}
+      - {width: 5}
+      # 第四排 按键
+      - {click: Shift_L, popup: ['/', Shift_L], composing: '`', width: 15, key_back_color: bgn, key_text_color: tgn}
+      - {click: z, long_click: undo}
+      - {click: x, long_click: cut}
+      - {click: c, long_click: copy}
+      - {click: v, long_click: paste}
+      - {click: b, long_click: ':' }
+      - {click: n, long_click: '!' }
+      - {click: m, long_click: '?' }
+      - {click: BackSpace1, width: 15, key_back_color: bbs, key_text_color: tbs}
+      # 第五排 按键
+      - {click: Keyboard_numbers, composing: Return, popup: [Theme_settings,SaveDynamicColor,DynamicColor,Color_switch,liquid_keyboard_encn,zcci], width: 15, key_back_color: bgn, key_text_color: tgn} #
+      - {click: ',', popup: [Left, Right], width: 10, key_back_color: bgn, key_text_color: tgn}
+      - {click: Keyboard_number, key_back_color: bgn, key_text_color: tgn}
+      - {click: space, width: 33, key_back_color: bkg, key_text_color: tkg}
+      - {click: '.', label: ' 。' , width: 12, key_back_color: bgn, key_text_color: tgn}
+      - {click: Return, width: 20, key_back_color: benter, key_text_color: tenter}
+
+  numbers:
+    author: "锐"
+    name: 26键符号
+    lock: true
+    width: 10
+    ascii_mode: 1
+    keys:
+      # 第一排 按键
+      - {click: 1}
+      - {click: 2}
+      - {click: 3}
+      - {click: 4}
+      - {click: 5}
+      - {click: 6}
+      - {click: 7}
+      - {click: 8}
+      - {click: 9}
+      - {click: 0}
+      # 第二排 按键
+      - {click: '@'}
+      - {click: '#'}
+      - {click: '$'}
+      - {click: '_', long_click: '~'}
+      - {click: '&'}
+      - {click: '-'}
+      - {click: '+'}
+      - {click: '('}
+      - {click: ')'}
+      - {click: '/'}
+      # 第三排 按键
+      - {click: '~'}
+      - {click: '{'}
+      - {click: '}'}
+      - {click: '['}
+      - {click: Return3, key_back_color: benter, key_text_color: tenter}
+      - {click: BackSpace, key_back_color: bbs, key_text_color: tbs}
+      - {click: ']'}
+      - {click: '【'}
+      - {click: '】'}
+      - {click: 6}
+      # 第四排 按键
+      - {click: Keyboard_number,width: 15, key_back_color: bgn, key_text_color: tgn}
+      - {click: '*'}
+      - {click: '"'}
+      - {click: "'"}
+      - {click: ':'}
+      - {click: ';'}
+      - {click: '!'}
+      - {click: '?'}
+      - {click: BackSpace1, width: 15, key_back_color: bbs, key_text_color: tbs}
+      # 第五排 按键
+      - {click: Keyboard_default, long_click: Theme_settings,width: 20, key_back_color: bgn, key_text_color: tgn}
+      - {click: ',',width: 12, key_back_color: bgn, key_text_color: tgn}
+      - {click: space, width: 36, key_back_color: bkg, key_text_color: tkg}
+      - {click: '.',width: 12, key_back_color: bgn, key_text_color: tgn}
+      - {click: Return, width: 20, key_back_color: benter, key_text_color: tenter}
+
+  number:
+    author: "暖暖"
+    name: 数字+
+    width: 12
+    ascii_mode: 0
+    lock: true
+    keys:
+      - {click: '!'}
+      - {click: '+'}
+      - {click: 1,width: 21}
+      - {click: 2,width: 21}
+      - {click: 3,width: 21}
+      - {click: space1, key_back_color: bkg, key_text_color: tk}
+
+      - {click: '!'}
+      - {click: '-'}
+      - {click: 4,width: 21}
+      - {click: 5,width: 21}
+      - {click: 6,width: 21}
+      - {label: EN, click: Keyboard_defaulten, key_back_color: bgn, key_text_color: tgn}
+
+      - {click: '(){Left}'}
+      - {click: '*'}
+      - {click: 7,width: 21}
+      - {click: 8, width: 21}
+      - {click: 9,width: 21}
+      - {click: BackSpace, key_back_color: bbs, key_text_color: tbs}
+
+      - {click: Keyboard_default, key_back_color: bgn, key_text_color: tgn}
+      - {click: Keyboard_number_lh, key_back_color: bgn, key_text_color: tgn}
+      - {click: ., width: 21}
+      - {click: 0, width: 21}
+      - {click: '=',width: 21}
+      - {click: Return, key_back_color: benter, key_text_color: tenter}
+
+
+
+preset_keys:
+  # 编辑📇
+
+  Shift_L: {label: Shift, preview: '⇪', functional: true, send: Shift_L}
+  Return: { label: enter_labels, preview: '↩', functional: true, send: Return }
+  Returnk: { label: Enter, preview: '↩', functional: true, send: Return }
+  Return1: {label: Enter, preview: '↩', functional: true, send: Return}
+  Return2: {label: 回车, functional: true, send: Return }
+  Return3: {label: ✦, functional: true, send: Return }
+  Hide: {label: 隐藏, functional: true, send: BACK} 
+  BackSpace: {label: ⊗, preview: '⇦', repeatable: true, functional: true, send: BackSpace}
+  BackSpace1: {label: ⌫, preview: '⇦', repeatable: true, functional: true, send: BackSpace}
+  space: {repeatable: false, preview: ' ', functional: true, label: '_______', send: space}
+  space2: {repeatable: false, preview: ' ', functional: true, label: 'Ω', send: space}
+  space1: {repeatable: false, label: '上屏', functional: true, send: space}
+  Escape: {label: 取消, functional: false, send: Escape}
+  Home: {label: 行首, send: Home, functional: false}
+  Insert: {label: 插入, send: Insert}
+  Delete: {label: 删除, send: Delete, functional: false}
+  End: {label: 行尾, send: End, functional: false}
+  Page_Up: {label: ↑, send: Page_Up, functional: false}
+  Page_Down: {label: ↓, send: Page_Down, functional: false}
+  Left: {label: '←', send: Left, repeatable: true, functional: false}
+  Down: {label: '↓', send: Down, functional: false}
+  Up: {label: '↑', send: Up, functional: false}
+  Right: {label: '→', send: Right, repeatable: true, functional: false}
+  select_all: {label: all, functional: false, send: Control+a}
+  cut: {label: cut, functional: false, send: Control+x}
+  copy: {label: copy, functional: false, send: Control+c}
+  paste: {label: paste, functional: false, send: Control+v}
+  paste_text: {label: 貼上文本, send: Control+Shift+Alt+v} #>=Android 6.0
+  share_text: {label: 分享文本, send: Control+Alt+s} #>=Android 6.0
+  redo: {label: 重做, functional: false, send: Control+Shift+z} #>=Android 6.0
+  undo: {label: undo, functional: false, send: Control+z} #>=Android 6.0
+  delimiter: {label: 分词, text: ''''}
+  zcci: {label: 造, text: '`'}
+
+  # rime组合键
+  Keyboard_lh: { label: '◂', send: Eisu_toggle, select: lh }
+  Keyboard_rh: { label: '▸', send: Eisu_toggle, select: rh }
+ 
+  F4: {label: 方案菜单, send: F4}
+  BackToPreviousSyllable: {label: 删音节, send: Control+BackSpace}
+  
+  CommitRawInput: {label: 编码, send: Control+Return}
+  CommitScriptText: {label: 编码, send: Shift+Return}
+  CommitComment: {label: 编码, send: Control+Shift+Return}
+  DeleteCandidate: {label: 删词, send: Control+Delete, functional: false}
+  #切换键盘
+  Keyboard_letter: { label: 字母, functional: true, send: Eisu_toggle, select: default }
+  Keyboard_number_lh: { label: 123, functional: true, send: Eisu_toggle, select: number_lh }
+  Keyboard_number_rh: { label: 123, functional: true, send: Eisu_toggle, select: number_rh }
+  Keyboard_default: { label: 返回, functional: true, send: Eisu_toggle, select: .default }
+  Keyboard_default_1: { label: ✦, functional: true, send: Eisu_toggle, select: default_1 }
+  Keyboard_switch: { label: 键盘, functional: true, send: Eisu_toggle, select: .next }
+  Keyboard_number: { label: 123, functional: true, send: Eisu_toggle, select: number }
+  Keyboard_numbers: { label: ❖, functional: true, send: Eisu_toggle, select: numbers }
+  Keyboard_numberb: { label: 123, functional: true, send: Eisu_toggle, select: numberb }
+  Keyboard_symbols: { label: 更多, functional: true, send: Eisu_toggle, select: symbols }
+  Keyboard_move: { label: ❖, functional: true, send: Eisu_toggle, select: move }
+  Keyboard_next: { label: 后退, functional: true, send: Eisu_toggle, select: .next }
+  Keyboard_last: { label: 后退, functional: true, send: Eisu_toggle, select: .last }
+  Keyboard_last_lock: { label: 返回, functional: true, send: Eisu_toggle, select: .last_lock } #直接切換到下一键盘
+  liquid_keyboard_exit: {label: 返回, functional: true,  command: liquid_keyboard, option: "-1"}  #退出liquidkeyboard
+  liquid_keyboard_switch: { label: 更多,  command: liquid_keyboard, option: "特殊" }
+  liquid_keyboard_switch2: { toggle: _liquid_keyboard,  states: [ 更多, 更多 ] }
+  liquid_keyboard_tabs: { label: 更多,  command: liquid_keyboard, option: "更多" }
+  liquid_keyboard_emoji: { label: 🙂,  command: liquid_keyboard, option: " 🤣 " }
+  liquid_keyboard_clipboard: { label: 剪贴,  command: liquid_keyboard, option: " 📋 " }
+  liquid_keyboard_encn: { label: 🔣,  command: liquid_keyboard, option: " 🔣 " }
+  menu_keyboard: { label: 菜单, functional: true,  command: menu_keyboard }
+  # rime状态
+  Mode_switch: {toggle: ascii_mode, functional: false, send: SWITCH_CHARSET, states: [ 中文, 西文 ]}
+  Zenkaku_Hankaku: {toggle: full_shape,  states: [ 半角, 全角 ]}
+  Henkan: {toggle: simplification,  states: [ 汉字, 汉字 ]}
+  Charset_switch: {toggle: extended_charset,  states: [ 常用, 增广 ]}
+  Punct_switch: {toggle: ascii_punct,  states: [ 。，, ．， ]}
+  # trime设置
+  IME_switch: {label: 🌐, send: LANGUAGE_SWITCH} #彈出對話框選擇輸入法
+  IME_last: {label: 上一输入法, send: LANGUAGE_SWITCH, select: .last} #直接切換到上一輸入法
+  IME_next: {label: 下一输入法, send: LANGUAGE_SWITCH, select: .next} #直接切換到下一輸入法
+  Schema_switch: {label: 下一方案, functional: false, send: Control+Shift+1}
+  Schema_Eng: {label: En, functional: true, send: Control+Shift+0}
+  Theme_settings: {label: 主题, send: SETTINGS, option: "theme"}
+  Color_switch: {label: 配色, functional: false, send: PROG_RED}
+
+  Settings: {label: 设置, functional: false, send: SETTINGS}
+  # trime命令
+  Date: {label: 日期,  command: date, option: " yyyy-MM-dd "}
+  Time: {label: 時間,  command: date, option: "HH:mm:ss"} #時間： date 格式
+
+  Left1: {label: '⬅︎', send: Control+Left, repeatable: true, functional: false}
+  Right1: {label: '➡︎', send: Control+Right, repeatable: true, functional: false}
+  Shift_L2: {label: 选择, preview: '⇪', functional: false, send: Shift_L}
+
+  # 22自定义功能键
+
+  Keyboard_defaulten: {label: EN, functional: true, send: Eisu_toggle, select: letter}
+  Schema_switchen1: {label: EN, send: Control+Shift+5, functional: true}
+  Schema_switchen: {label: EN, send: Control+Shift+5, functional: false}
+  Schema_switchcn: {label: 中文, send: Control+Shift+6, functional: false}
+
+  Keyboard_fc: {label: "'分词", send: apostrophe, functional: false}
+  Control_L: {label: "退格", send: Control_L, functional: false}
+  clipboard_window:
+    command: clipboard_window
+    label: "剪贴"
+  Keyboard_a3: {label: "……", functional: false, send: asciicircum}
+
+  # 同文动态配色快捷键（由 App 管理）
+  DynamicColor:
+    command: run
+    label: "更新配色"
+    option: "com.lanlanderui.trimedynamiccolors/.QuickApplyActivity"
+  SaveDynamicColor:
+    command: run
+    label: "收藏配色"
+    option: "com.lanlanderui.trimedynamiccolors/.QuickSaveActivity"
+
+preset_color_schemes:
+  default1:
+    name: 碳黑琥珀
+    author: 锐 × Codex
+    # 整体与候选栏
+    back_color: 0xff101010
+    border_color: 0xff343434
+    shadow_color: 0x88000000
+    text_back_color: 0xee181818
+    text_color: 0xfff5f5f4
+    hilited_back_color: 0xff3a2a12
+    hilited_text_color: 0xffffd58a
+    candidate_text_color: 0xffededeb
+    comment_text_color: 0xff9c9891
+    candidate_separator_color: 0xff2d2d2d
+    hilited_candidate_back_color: 0xff513613
+    hilited_candidate_text_color: 0xffffe2ad
+    hilited_comment_text_color: 0xffffc766
+    hilited_candidate_button_color: 0xffd97706
+    preview_back_color: 0xffd97706
+    preview_text_color: 0xff1f1303
+    # 普通输入键
+    keyboard_back_color: 0xff151515
+    key_back_color: 0xff272727
+    key_border_color: 0xff383838
+    key_text_color: 0xfff5f5f4
+    key_symbol_color: 0xffa8a29e
+    label_color: 0xffa8a29e
+    hilited_key_back_color: 0xff484848
+    hilited_key_text_color: 0xffffffff
+    hilited_key_symbol_color: 0xffd6d3d1
+    # 功能键：琥珀棕；按下或开启后变亮
+    off_key_back_color: 0xff59370b
+    off_key_border_color: 0xff8a570d
+    off_key_text_color: 0xffffdda0
+    off_key_symbol_color: 0xffffc55c
+    hilited_off_key_back_color: 0xffd97706
+    hilited_off_key_border_color: 0xfff59e0b
+    hilited_off_key_text_color: 0xff1f1303
+    hilited_off_key_symbol_color: 0xff1f1303
+    on_key_back_color: 0xfff59e0b
+    on_key_border_color: 0xffffc04a
+    on_key_text_color: 0xff211503
+    on_key_symbol_color: 0xff211503
+    hilited_on_key_back_color: 0xffffbd3e
+    hilited_on_key_border_color: 0xffffd27a
+    hilited_on_key_text_color: 0xff211503
+    hilited_on_key_symbol_color: 0xff211503
+
+  sea_salt_teal:
+    name: 海盐青
+    author: 锐 × Codex
+    # 整体与候选栏
+    back_color: 0xffedf6f6
+    border_color: 0xffbfd2d3
+    shadow_color: 0x33000000
+    text_back_color: 0xfaf8fcfc
+    text_color: 0xff17383a
+    hilited_back_color: 0xffd4e8e7
+    hilited_text_color: 0xff075e59
+    candidate_text_color: 0xff254648
+    comment_text_color: 0xff6d8586
+    candidate_separator_color: 0xffccdddd
+    hilited_candidate_back_color: 0xffbce5e1
+    hilited_candidate_text_color: 0xff064e4a
+    hilited_comment_text_color: 0xff0f766e
+    hilited_candidate_button_color: 0xff0f766e
+    preview_back_color: 0xff0f766e
+    preview_text_color: 0xffffffff
+    # 普通输入键
+    keyboard_back_color: 0xffdfecec
+    key_back_color: 0xffffffff
+    key_border_color: 0xffcadadb
+    key_text_color: 0xff17383a
+    key_symbol_color: 0xff6a8182
+    label_color: 0xff6a8182
+    hilited_key_back_color: 0xffcbdcdc
+    hilited_key_text_color: 0xff17383a
+    hilited_key_symbol_color: 0xff496567
+    # 功能键：浅青；按下或开启后变为深青
+    off_key_back_color: 0xffb8dfdc
+    off_key_border_color: 0xff8fc8c3
+    off_key_text_color: 0xff075e59
+    off_key_symbol_color: 0xff0f6b65
+    hilited_off_key_back_color: 0xff0f766e
+    hilited_off_key_border_color: 0xff0a625c
+    hilited_off_key_text_color: 0xffffffff
+    hilited_off_key_symbol_color: 0xffffffff
+    on_key_back_color: 0xff0f766e
+    on_key_border_color: 0xff0a625c
+    on_key_text_color: 0xffffffff
+    on_key_symbol_color: 0xffffffff
+    hilited_on_key_back_color: 0xff0a625c
+    hilited_on_key_border_color: 0xff074d49
+    hilited_on_key_text_color: 0xffffffff
+    hilited_on_key_symbol_color: 0xffffffff
+
+
+  plum_gold:
+    name: 紫檀鎏金
+    author: 锐 × Codex
+    # 整体与候选栏
+    back_color: 0xff1a1220
+    border_color: 0xff493653
+    shadow_color: 0x88000000
+    text_back_color: 0xee25192c
+    text_color: 0xfff7eef9
+    hilited_back_color: 0xff493355
+    hilited_text_color: 0xffffd78b
+    candidate_text_color: 0xffeee2f1
+    comment_text_color: 0xffa590aa
+    candidate_separator_color: 0xff3a2943
+    hilited_candidate_back_color: 0xff5a3d68
+    hilited_candidate_text_color: 0xffffe3aa
+    hilited_comment_text_color: 0xffddb968
+    hilited_candidate_button_color: 0xffb8862d
+    preview_back_color: 0xffb8862d
+    preview_text_color: 0xff241604
+    # 普通输入键
+    keyboard_back_color: 0xff211628
+    key_back_color: 0xff33243b
+    key_border_color: 0xff4b3655
+    key_text_color: 0xfff7eef9
+    key_symbol_color: 0xffb39fba
+    label_color: 0xffb39fba
+    hilited_key_back_color: 0xff624472
+    hilited_key_text_color: 0xffffffff
+    hilited_key_symbol_color: 0xffffe1a3
+    # 功能键：深金色；按下或开启后变为亮金色
+    off_key_back_color: 0xff58411e
+    off_key_border_color: 0xff866329
+    off_key_text_color: 0xffffdfa0
+    off_key_symbol_color: 0xffe8bc62
+    hilited_off_key_back_color: 0xffb8862d
+    hilited_off_key_border_color: 0xffd7a849
+    hilited_off_key_text_color: 0xff241604
+    hilited_off_key_symbol_color: 0xff241604
+    on_key_back_color: 0xffd1a13f
+    on_key_border_color: 0xffffce6b
+    on_key_text_color: 0xff241604
+    on_key_symbol_color: 0xff241604
+    hilited_on_key_back_color: 0xffffc95c
+    hilited_on_key_border_color: 0xffffdf99
+    hilited_on_key_text_color: 0xff241604
+    hilited_on_key_symbol_color: 0xff241604
+  default:
+    name: 預設／default #方案名稱
+    author: osfans #作者資訊
+    back_color: 0xe4e7e9 #候選區背景
+    border_color: 0xc1c7ca #邊框
+    candidate_separator_color: 0xc1c7ca #候選分割背景
+    candidate_text_color: 0x5a676e #候選文字
+    comment_text_color: 0x7b868c #提示
+    hilited_back_color: 0xccd3d7da #標明編碼背景
+    hilited_candidate_back_color: 0xd3d7da #標明候選背景
+    hilited_candidate_text_color: 0x000000 #標明候選文字
+    hilited_comment_text_color: 0x000000 #標明提示
+    hilited_key_back_color: 0xd3d7da #標明按鍵背景
+    hilited_key_symbol_color: 0x000000 #標明按鍵符號
+    hilited_key_text_color: 0x000000 #標明按鍵文字
+    hilited_off_key_back_color: 0xd3d7da #標明按鍵關閉狀態背景
+    hilited_off_key_text_color: 0x000000 #標明按鍵關閉狀態文字
+    hilited_on_key_back_color: 0xd3d7da #標明按鍵打開狀態背景
+    hilited_on_key_text_color: 0x000000 #標明按鍵打開狀態文字
+    hilited_text_color: 0x23948e #標明編碼
+    key_back_color: 0xeceff1 #按鍵背景
+    key_border_color: 0xeceff1 #按鍵邊框
+    key_symbol_color: 0x5f6b73 #按鍵符號
+    key_text_color: 0x37474f #按鍵文字
+    keyboard_back_color: 0xffffff #鍵盤背景
+    label_color: 0x000000 #標籤
+    off_key_back_color: 0xd3d7da #按鍵關閉狀態背景
+    off_key_text_color: 0x000000 #按鍵關閉狀態文字
+    on_key_back_color: 0x23948e #按鍵打開狀態背景
+    on_key_text_color: 0x37474f #按鍵打開狀態文字
+    preview_back_color: 0x55bfbfbf #按鍵提示背景
+    preview_text_color: 0x23948e #按鍵提示文字
+    shadow_color: 0x000000 #按鍵文字陰影
+    text_color: 0x5a676e #編碼
+    text_back_color: 0xcce4e7e9 #編碼區背景
+    bkg: 0xFFDCE2E4 #空格键背景
+    tkg: 0xFF37474F #空格键文字
+    benter: 0xFF087F73 #回车键背景
+    tenter: 0xFFFFFFFF #回车键文字
+    bgn: 0xFFDCE2E4 #切换与功能键背景
+    tgn: 0xFF37474F #切换与功能键文字
+    bbs: 0xFFE8D6D5 #退格键背景
+    tbs: 0xFF842F2B #退格键文字
+
+  mist_jade:
+    name: 雾青白／Mist Jade
+    author: Trime 主题工坊
+    root_background: 0xFFF3F7F6
+    back_color: 0xFFEDF5F3
+    candidate_background: 0xFFEAF4F2
+    border_color: 0xFFC5D7D4
+    candidate_separator_color: 0xFFC5D7D4
+    candidate_text_color: 0xFF243533
+    comment_text_color: 0xFF647774
+    hilited_back_color: 0xFFD8ECE8
+    hilited_candidate_back_color: 0xFF0F766E
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFD7FFFA
+    hilited_key_back_color: 0xFF0F766E
+    hilited_key_symbol_color: 0xFFD7FFFA
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF315E58
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF0F766E
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFF0F766E
+    key_back_color: 0xFFFFFFFF
+    key_border_color: 0xFFD5E2E0
+    key_symbol_color: 0xFF6B7B79
+    key_text_color: 0xFF243533
+    keyboard_back_color: 0xFFDCE8E6
+    label_color: 0xFF46615D
+    off_key_back_color: 0xFFCADBD8
+    off_key_text_color: 0xFF29423E
+    on_key_back_color: 0xFF0F766E
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF0F766E
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF0F766E
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF094F4A
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x220F2F2B
+    text_color: 0xFF28423E
+    text_back_color: 0xFFE3F0ED
+    bkg: 0xFFB8CCC8
+    tkg: 0xFF173A36
+    benter: 0xFF0F766E
+    tenter: 0xFFFFFFFF
+    bgn: 0xFFB8CCC8
+    tgn: 0xFF173A36
+    bbs: 0xFFC4514B
+    tbs: 0xFFFFFFFF
+
+  dark_temple:
+    name: 暗堂／Dark Temple
+    author: 佛振 <chen.sst@gmail.com>, based on ir_black
+    text_color: 0xffdaf692
+    candidate_text_color: 0xffe6e3d8
+    back_color: 0xff222222
+    border_color: 0xff222222
+    hilited_text_color: 0xff9acfff
+    hilited_back_color: 0xff222222
+    hilited_candidate_text_color: 0xffdaf692
+    hilited_candidate_back_color: 0xff333333
+    comment_text_color: 0xffff6c60
+
+  indigo_night:
+    name: 靛夜星河／Indigo Night
+    author: Trime 主题工坊
+    root_background: 0xFF111827
+    back_color: 0xFF172033
+    candidate_background: 0xFF172033
+    border_color: 0xFF334155
+    candidate_separator_color: 0xFF334155
+    candidate_text_color: 0xFFF1F5F9
+    comment_text_color: 0xFF94A3B8
+    hilited_back_color: 0xFF27345A
+    hilited_candidate_back_color: 0xFF4F46E5
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_comment_text_color: 0xFFE0E7FF
+    hilited_key_back_color: 0xFF475569
+    hilited_key_symbol_color: 0xFFE2E8F0
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_off_key_back_color: 0xFF475569
+    hilited_off_key_text_color: 0xFFFFFFFF
+    hilited_on_key_back_color: 0xFF4F46E5
+    hilited_on_key_text_color: 0xFFFFFFFF
+    hilited_text_color: 0xFFA5B4FC
+    key_back_color: 0xFF1E293B
+    key_border_color: 0xFF334155
+    key_symbol_color: 0xFF94A3B8
+    key_text_color: 0xFFF1F5F9
+    keyboard_back_color: 0xFF0F172A
+    label_color: 0xFFC7D2FE
+    off_key_back_color: 0xFF334155
+    off_key_text_color: 0xFFE2E8F0
+    on_key_back_color: 0xFF4F46E5
+    on_key_text_color: 0xFFFFFFFF
+    preview_back_color: 0xFF312E81
+    preview_text_color: 0xFFFFFFFF
+    popup_back_color: 0xFF312E81
+    popup_text_color: 0xFFFFFFFF
+    hilited_popup_back_color: 0xFF4F46E5
+    hilited_popup_text_color: 0xFFFFFFFF
+    shadow_color: 0x66000000
+    text_color: 0xFFE2E8F0
+    text_back_color: 0xFF1E293B
+    bkg: 0xFF243044
+    tkg: 0xFFF1F5F9
+    benter: 0xFF4F46E5
+    tenter: 0xFFFFFFFF
+    bgn: 0xFF334155
+    tgn: 0xFFF1F5F9
+    bbs: 0xFFBE123C
+    tbs: 0xFFFFFFFF
+
+  # 永久保存的配色快照
+  saved_20260924_222032_765:
+    name: "Material You_褐红色（浅色）"
+    author: "Android Material You"
+    dark_scheme: saved_20260924_222032_765_dark
+
+    back_color: 0xFFFFFBFF
+    border_color: 0xFFD8C2BE
+    candidate_separator_color: 0xFFD8C2BE
+    candidate_text_color: 0xFF231918
+    comment_text_color: 0xFF534341
+    hilited_back_color: 0xFFFFDAD5
+    hilited_candidate_back_color: 0xFFFFDAD5
+    hilited_candidate_text_color: 0xFF3B0905
+    hilited_comment_text_color: 0xFF3B0905
+    hilited_text_color: 0xFF904A41
+
+    keyboard_back_color: 0xFFFFFBFF
+    key_back_color: 0xFFFFEDEA
+    key_border_color: 0xFFD8C2BE
+    key_text_color: 0xFF231918
+    key_symbol_color: 0xFF534341
+    label_color: 0xFF904A41
+    hilited_key_back_color: 0xFF904A41
+    hilited_key_border_color: 0xFF904A41
+    hilited_key_text_color: 0xFFFFFFFF
+    hilited_key_symbol_color: 0xFFFFFFFF
+    off_key_back_color: 0xFFFFDAD5
+    off_key_text_color: 0xFF2C1512
+    on_key_back_color: 0xFF904A41
+    on_key_text_color: 0xFFFFFFFF
+
+    preview_back_color: 0xFF904A41
+    preview_text_color: 0xFFFFFFFF
+    text_color: 0xFF904A41
+    text_back_color: 0xFFFFEDEA
+    root_background: 0xFFFFFBFF
+    candidate_background: 0xFFFFFBFF
+    liquid_keyboard_background: 0xFFFFFBFF
+    long_text_back_color: 0xFFFFEDEA
+
+    bkg: 0xFFFFEDEA
+    tkg: 0xFF231918
+    benter: 0xFF904A41
+    tenter: 0xFFFFFFFF
+    bgn: 0xFFFFDAD5
+    tgn: 0xFF2C1512
+    bbs: 0xFFFFDAD5
+    tbs: 0xFF2C1512
+
+  saved_20260924_222032_765_dark:
+    name: "Material You_褐红色（深色）"
+    author: "Android Material You"
+    light_scheme: saved_20260924_222032_765
+
+    back_color: 0xFF231918
+    border_color: 0xFF534341
+    candidate_separator_color: 0xFF534341
+    candidate_text_color: 0xFFF1DEDC
+    comment_text_color: 0xFFD8C2BE
+    hilited_back_color: 0xFF73342B
+    hilited_candidate_back_color: 0xFF73342B
+    hilited_candidate_text_color: 0xFFFFDAD5
+    hilited_comment_text_color: 0xFFFFDAD5
+    hilited_text_color: 0xFFFFB4A9
+
+    keyboard_back_color: 0xFF231918
+    key_back_color: 0xFF392E2C
+    key_border_color: 0xFF534341
+    key_text_color: 0xFFF1DEDC
+    key_symbol_color: 0xFFD8C2BE
+    label_color: 0xFFFFB4A9
+    hilited_key_back_color: 0xFFFFB4A9
+    hilited_key_border_color: 0xFFFFB4A9
+    hilited_key_text_color: 0xFF561E17
+    hilited_key_symbol_color: 0xFF561E17
+    off_key_back_color: 0xFF5D3F3B
+    off_key_text_color: 0xFFFFDAD5
+    on_key_back_color: 0xFFFFB4A9
+    on_key_text_color: 0xFF561E17
+
+    preview_back_color: 0xFFFFB4A9
+    preview_text_color: 0xFF561E17
+    text_color: 0xFFFFB4A9
+    text_back_color: 0xFF392E2C
+    root_background: 0xFF231918
+    candidate_background: 0xFF231918
+    liquid_keyboard_background: 0xFF231918
+    long_text_back_color: 0xFF392E2C
+
+    bkg: 0xFF392E2C
+    tkg: 0xFFF1DEDC
+    benter: 0xFFFFB4A9
+    tenter: 0xFF561E17
+    bgn: 0xFF5D3F3B
+    tgn: 0xFFFFDAD5
+    bbs: 0xFF5D3F3B
+    tbs: 0xFFFFDAD5
+
+  # 永久保存的配色快照
+
+  # Material You 动态配色（由 App 管理）
+  material_you:
+    name: "Material You（浅色）"
+    author: "自选主色生成"
+    dark_scheme: material_you_dark
+
+    back_color: 0xFFFCFDFC
+    border_color: 0xFFC3D5CC
+    candidate_separator_color: 0xFFC3D5CC
+    candidate_text_color: 0xFF171C19
+    comment_text_color: 0xFF3F5A4C
+    hilited_back_color: 0xFFCFFCE5
+    hilited_candidate_back_color: 0xFFCFFCE5
+    hilited_candidate_text_color: 0xFF000000
+    hilited_comment_text_color: 0xFF000000
+    hilited_text_color: 0xFF0CC066
+
+    keyboard_back_color: 0xFFFCFDFC
+    key_back_color: 0xFFF1F4F2
+    key_border_color: 0xFFC3D5CC
+    key_text_color: 0xFF171C19
+    key_symbol_color: 0xFF3F5A4C
+    label_color: 0xFF0CC066
+    hilited_key_back_color: 0xFF0CC066
+    hilited_key_border_color: 0xFF0CC066
+    hilited_key_text_color: 0xFF000000
+    hilited_key_symbol_color: 0xFF000000
+    off_key_back_color: 0xFFDAF1E5
+    off_key_text_color: 0xFF000000
+    on_key_back_color: 0xFF0CC066
+    on_key_text_color: 0xFF000000
+
+    preview_back_color: 0xFF0CC066
+    preview_text_color: 0xFF000000
+    text_color: 0xFF0CC066
+    text_back_color: 0xFFF1F4F2
+    root_background: 0xFFFCFDFC
+    candidate_background: 0xFFFCFDFC
+    liquid_keyboard_background: 0xFFFCFDFC
+    long_text_back_color: 0xFFF1F4F2
+
+    bkg: 0xFFF1F4F2
+    tkg: 0xFF171C19
+    benter: 0xFF0CC066
+    tenter: 0xFF000000
+    bgn: 0xFFDAF1E5
+    tgn: 0xFF000000
+    bbs: 0xFFDAF1E5
+    tbs: 0xFF000000
+
+  material_you_dark:
+    name: "Material You（深色）"
+    author: "自选主色生成"
+    light_scheme: material_you
+
+    back_color: 0xFF171C19
+    border_color: 0xFF3F5A4C
+    candidate_separator_color: 0xFF3F5A4C
+    candidate_text_color: 0xFFE3E8E5
+    comment_text_color: 0xFFC3D5CC
+    hilited_back_color: 0xFF09904C
+    hilited_candidate_back_color: 0xFF09904C
+    hilited_candidate_text_color: 0xFF000000
+    hilited_comment_text_color: 0xFF000000
+    hilited_text_color: 0xFF9FF9CC
+
+    keyboard_back_color: 0xFF171C19
+    key_back_color: 0xFF2E3833
+    key_border_color: 0xFF3F5A4C
+    key_text_color: 0xFFE3E8E5
+    key_symbol_color: 0xFFC3D5CC
+    label_color: 0xFF9FF9CC
+    hilited_key_back_color: 0xFF9FF9CC
+    hilited_key_border_color: 0xFF9FF9CC
+    hilited_key_text_color: 0xFF000000
+    hilited_key_symbol_color: 0xFF000000
+    off_key_back_color: 0xFF29704C
+    off_key_text_color: 0xFFFFFFFF
+    on_key_back_color: 0xFF9FF9CC
+    on_key_text_color: 0xFF000000
+
+    preview_back_color: 0xFF9FF9CC
+    preview_text_color: 0xFF000000
+    text_color: 0xFF9FF9CC
+    text_back_color: 0xFF2E3833
+    root_background: 0xFF171C19
+    candidate_background: 0xFF171C19
+    liquid_keyboard_background: 0xFF171C19
+    long_text_back_color: 0xFF2E3833
+
+    bkg: 0xFF2E3833
+    tkg: 0xFFE3E8E5
+    benter: 0xFF9FF9CC
+    tenter: 0xFF000000
+    bgn: 0xFF29704C
+    tgn: 0xFFFFFFFF
+    bbs: 0xFF29704C
+    tbs: 0xFFFFFFFF
