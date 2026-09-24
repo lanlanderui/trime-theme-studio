@@ -7,13 +7,7 @@ on:
       - main
     paths:
       - "android/**"
-      - "index.html"
-      - "styles.css"
-      - "app.js"
-      - "bundled-config.js"
-      - "单手特化.trime.yaml"
-      - "trime.yaml"
-      - "tongwenfeng.trime.yaml"
+      - "README.md"
       - ".github/workflows/android-debug.yml"
 
 jobs:
@@ -34,18 +28,16 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install Android platform
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: sdkmanager "platforms;android-28" "build-tools;36.0.0"
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: "8.9"
-
-      - name: Build debug APK
-        run: gradle -p android assembleDebug
+      - name: Build and lint
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug lintDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: trime-theme-studio-debug-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: trime-dynamic-colors-v1.5.0-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

@@ -1,36 +1,28 @@
-plugins {
-    id "com.android.application"
-}
+apply plugin: "com.android.application"
 
 android {
-    namespace "com.lanlanderui.trimethemestudio"
-    compileSdk 35
+    namespace "com.lanlanderui.trimedynamiccolors"
+    // Dynamic colors are resolved by resource name at runtime, so the app stays
+    // source-compatible with a compact SDK while still reading Android 12+ colors.
+    compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.lanlanderui.trimethemestudio"
+        applicationId "com.lanlanderui.trimedynamiccolors"
         minSdk 23
         targetSdk 35
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 6
+        versionName "1.5.0"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
     }
 }
-
-tasks.register("copyWebAssets", Copy) {
-    from(rootProject.projectDir.parentFile) {
-        include "index.html"
-        include "styles.css"
-        include "app.js"
-        include "bundled-config.js"
-        include "单手特化.trime.yaml"
-        include "trime.yaml"
-        include "tongwenfeng.trime.yaml"
-    }
-    into(layout.projectDirectory.dir("src/main/assets/www"))
-}
-
-preBuild.dependsOn(copyWebAssets)

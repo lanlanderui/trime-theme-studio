@@ -65,20 +65,23 @@ node build-bundled-config.mjs tongwenfeng.trime.yaml
 
 项目没有在线依赖，断网也能使用。
 
-## Android App
+## Android 动态配色 App
 
-仓库现在包含一个 `android/` 工程，可把同一个编辑器打包成安卓 App。App 内部使用 WebView 加载离线网页，并通过安卓系统文件选择器访问 Rime 配置：
+仓库的 [`android`](android/) 目录包含一个独立的原生 App，用于把 Android 12+ 的 Material You 系统动态配色转换为同文输入法主题代码。它不是网页编辑器的 WebView 封装，界面、取色、预览和导出均由 Android 原生实现。
 
-- “打开配置”可选择单个 `.yaml` / `.yml` 文件。
-- “授权 Rime 文件夹”可选择 Rime 配置目录，App 会列出其中的 YAML 文件供切换。
-- “保存回文件”会把当前完整配置写回已打开的文件。
-- “另存为”会通过系统对话框新建一个 YAML 文件。
+- 自动读取壁纸生成的系统动态色板。
+- 支持指定一个主色，自动生成协调的浅色、深色与功能键配色。
+- 同时生成浅色 `material_you` 与深色 `material_you_dark`，并配置自动切换关系。
+- 可从 Rime 目录选择现有主题 YAML 并一键安全写入，原布局、注释和其它配色会被保留。
+- 可把当前配色永久追加为独立收藏方案，之后更新动态色不会覆盖。
+- 写入前自动保存最近备份，支持在 App 内撤销。
+- 提供同文键盘可直接调用的 `QuickApplyActivity`，按当前配色来源一键写入并请求重新部署。
+- 提供 `QuickSaveActivity`，可从同文按键直接把当前配色永久收藏为独立方案。
+- 可一键将更新与收藏两个快捷键定义合并到主题的 `preset_keys`，无需手动复制粘贴。
+- 提供键盘预览、方案名编辑、一键复制、分享和 `.yaml` 文件导出。
+- 无网络权限、无存储权限；Android 11 及以下会使用内置备用配色。
 
-受 Android 分区存储限制，App 不能在未授权时静默读写任意路径；第一次需要由用户在系统文件选择器中授予文件或文件夹权限。授权后，App 通过系统提供的 URI 读写配置，不需要 root。
-
-构建方式：用 Android Studio 打开 `android/` 目录，同步 Gradle 后执行 `Build > Build APK(s)`。构建时会自动把仓库根目录里的 `index.html`、`styles.css`、`app.js`、`bundled-config.js` 和内置模板复制进 APK。
-
-也可以在 GitHub 的 **Actions** 页面手动运行 `Android Debug APK` 工作流，或把相关改动推送到 `main` 分支后自动构建；构建完成后可在工作流页面下载 `trime-theme-studio-debug-apk`。
+用 Android Studio 打开 `android/` 目录即可构建，详细说明见 [`android/README.md`](android/README.md)。
 
 ## GitHub Pages 发布方式
 
