@@ -1,10 +1,27 @@
-# Trime 主题工坊
+# Trime 主题工坊 & 同文动态取色app
 
-一个完全离线、可直接双击打开的 Trime 配色与键盘布局预览编辑网页。
-
-**方便用户自定义键盘布局以及配色，内置几套配色方案，以及本上自用的键盘布局，可自行更改**
-
+## 省流介绍
 > 项目说明：本项目由 **lanlanderui** 提出需求并提供初始 Trime 配置模板，界面设计、功能开发、官方参数整理、自动化测试与项目文档由 **OpenAI Codex** 完成。
+
+主题工坊
+点击进入：[Trime 主题工坊在线版](https://lanlanderui.github.io/trime-theme-studio/)
+功能1: 自定义颜色
+按键可以自己选颜色, 同时也内置了一些配色方案
+<table>
+  <tr>
+    <th>雾青白／Mist Jade</th>
+    <th>靛夜星河／Indigo Night</th>
+  </tr>
+  <tr>
+    <td><img src="docs/images/theme-mist-jade.png" alt="雾青白主题与功能键配色预览"></td>
+    <td><img src="docs/images/theme-indigo-night.png" alt="靛夜星河主题与功能键配色预览"></td>
+  </tr>
+</table>
+
+功能2: 自定义键盘布局
+可以直接鼠标拖动按键来调整布局, 可以增删按键,可以为每个按键设置宽度, 长按动作,上下左右滑动动作
+![Trime 主题工坊界面](trime-theme-studio.png)
+
 
 ## 在线使用
 
