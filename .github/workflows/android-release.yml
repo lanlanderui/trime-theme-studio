@@ -45,9 +45,10 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon assembleRelease lintRelease
           cp app/build/outputs/apk/release/app-release.apk "../trime-dynamic-colors-${GITHUB_REF_NAME}.apk"
+          cp "../release-assets/单手特化.trime.yaml" "../trime-one-hand-personal.trime.yaml"
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" "trime-dynamic-colors-${GITHUB_REF_NAME}.apk" "release-assets/单手特化.trime.yaml" --verify-tag --generate-notes --title "同文动态配色 $GITHUB_REF_NAME"
+          gh release create "$GITHUB_REF_NAME" "trime-dynamic-colors-${GITHUB_REF_NAME}.apk" "trime-one-hand-personal.trime.yaml#单手特化个人方案" --verify-tag --generate-notes --title "同文动态配色 $GITHUB_REF_NAME"
