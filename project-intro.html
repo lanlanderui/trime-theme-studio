@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Trime 主题工坊｜项目介绍</title>
+  <style>
+    :root {
+      --ink: #16231f;
+      --muted: #607069;
+      --paper: #fbfcf9;
+      --card: #ffffff;
+      --line: #dfe8e3;
+      --mint: #21a27c;
+      --mint-dark: #0c6d52;
+      --mint-soft: #dff5ed;
+      --peach: #f0a17c;
+      --peach-soft: #fff0e7;
+      --violet: #8c83e7;
+      --night: #0d201a;
+      --shadow: 0 24px 70px rgba(18, 49, 39, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      min-width: 1080px;
+      color: var(--ink);
+      background: #dfe5e1;
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+
+    .poster {
+      width: 1080px;
+      margin: 0 auto;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 4% 23%, rgba(33,162,124,.08), transparent 18%),
+        radial-gradient(circle at 94% 48%, rgba(240,161,124,.09), transparent 18%),
+        var(--paper);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 1240px;
+      padding: 62px 76px 0;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 83% 10%, rgba(48, 201, 151, .28), transparent 28%),
+        radial-gradient(circle at 10% 58%, rgba(140, 131, 231, .2), transparent 30%),
+        linear-gradient(145deg, #102b23 0%, #0b1f19 55%, #071510 100%);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+    }
+
+    .hero::before { width: 520px; height: 520px; right: -260px; top: 140px; }
+    .hero::after { width: 360px; height: 360px; left: -210px; top: 440px; }
+
+    .brand-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 82px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 13px;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: #55d3aa;
+      border-radius: 4px;
+    }
+
+    .brand-mark::before { width: 19px; height: 8px; left: 6px; top: 7px; }
+    .brand-mark::after { width: 8px; height: 19px; right: 6px; bottom: 7px; }
+
+    .hero-index {
+      padding: 10px 17px;
+      color: #b8d8cc;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      font-size: 14px;
+      letter-spacing: .12em;
+    }
+
+    .hero-copy { position: relative; z-index: 1; max-width: 890px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      color: #7ee3bf;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 3px;
+      background: currentColor;
+      border-radius: 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 79px;
+      line-height: 1.12;
+      letter-spacing: -.045em;
+    }
+
+    h1 span {
+      color: transparent;
+      background: linear-gradient(90deg, #72e0ba, #c7f5e5 58%, #ffd0ba);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-lead {
+      max-width: 790px;
+      margin: 32px 0 30px;
+      color: #c4d6cf;
+      font-size: 25px;
+      line-height: 1.75;
+    }
+
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .hero-pills span {
+      padding: 11px 18px;
+      color: #e8f7f1;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      font-size: 16px;
+    }
+
+    .browser {
+      position: relative;
+      z-index: 2;
+      margin-top: 60px;
+      padding: 14px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 45px 90px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 18px;
+      background: #eef4f1;
+      border-radius: 17px 17px 0 0;
+    }
+
+    .browser-dots { display: flex; gap: 8px; }
+    .browser-dots i { width: 10px; height: 10px; border-radius: 50%; background: #b8c7c0; }
+    .browser-dots i:first-child { background: #f29979; }
+    .browser-dots i:nth-child(2) { background: #edc96c; }
+    .browser-dots i:last-child { background: #62c9a4; }
+
+    .browser-url {
+      width: 460px;
+      margin: 0 auto;
+      padding: 7px 14px;
+      color: #63736c;
+      background: #fff;
+      border-radius: 9px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .browser img { width: 100%; border-radius: 0 0 16px 16px; background: #fff; }
+
+    .section { padding: 104px 76px; }
+    .section.compact { padding-top: 84px; padding-bottom: 84px; }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 48px;
+    }
+
+    .section-kicker {
+      margin-bottom: 13px;
+      color: var(--mint-dark);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h2 { margin: 0; font-size: 49px; line-height: 1.22; letter-spacing: -.035em; }
+
+    .section-note {
+      max-width: 370px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      text-align: right;
+    }
+
+    .dual-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    .tool-card {
+      min-height: 330px;
+      padding: 38px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--card);
+      box-shadow: 0 16px 45px rgba(28, 64, 52, .07);
+    }
+
+    .tool-card.android { background: linear-gradient(145deg, #fff8f3, #fff); border-color: #f3ddd0; }
+
+    .tool-icon {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 30px;
+      color: #fff;
+      background: var(--mint);
+      border-radius: 18px;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .android .tool-icon { background: var(--peach); }
+    .tool-card h3 { margin: 0 0 14px; font-size: 29px; }
+    .tool-card p { margin: 0; color: var(--muted); font-size: 18px; line-height: 1.75; }
+
+    .tool-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; }
+    .tool-tags span { padding: 8px 12px; color: var(--mint-dark); background: var(--mint-soft); border-radius: 9px; font-size: 14px; font-weight: 700; }
+    .android .tool-tags span { color: #9a5536; background: var(--peach-soft); }
+
+    .web-section { background: #edf7f2; }
+
+    .showcase-frame {
+      padding: 16px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #d5e6de;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .showcase-frame img { width: 100%; border-radius: 16px; }
+
+    .caption-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 22px 4px 0;
+      color: #5d7068;
+      font-size: 16px;
+    }
+
+    .caption-row strong { color: var(--ink); font-size: 19px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 42px; }
+
+    .feature-card {
+      min-height: 230px;
+      padding: 28px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #d8e8e0;
+      border-radius: 22px;
+    }
+
+    .feature-no { color: var(--mint); font-size: 14px; font-weight: 900; letter-spacing: .14em; }
+    .feature-card h3 { margin: 25px 0 11px; font-size: 23px; }
+    .feature-card p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+
+    .web-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 68px; }
+    .gallery-item { overflow: hidden; background: #fff; border-radius: 24px; box-shadow: 0 18px 50px rgba(20,60,46,.09); }
+    .gallery-item img { width: 100%; }
+    .gallery-copy { padding: 22px 25px 26px; }
+    .gallery-copy strong { display: block; margin-bottom: 6px; font-size: 20px; }
+    .gallery-copy span { color: var(--muted); font-size: 15px; }
+
+    .layout-card {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      align-items: center;
+      gap: 34px;
+      margin-top: 22px;
+      padding: 34px;
+      background: #102b23;
+      border-radius: 28px;
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .layout-card h3 { margin: 0 0 16px; font-size: 31px; }
+    .layout-card p { margin: 0; color: #bdd3ca; font-size: 17px; line-height: 1.8; }
+    .layout-card img { border-radius: 17px; }
+
+    .android-section {
+      position: relative;
+      color: #fff;
+      background:
+        radial-gradient(circle at 94% 22%, rgba(240,161,124,.22), transparent 26%),
+        radial-gradient(circle at 4% 77%, rgba(33,162,124,.2), transparent 30%),
+        var(--night);
+    }
+
+    .android-section .section-kicker { color: #7fe3c0; }
+    .android-section .section-note { color: #b7cbc3; }
+
+    .android-main { display: grid; grid-template-columns: 360px 1fr; gap: 58px; align-items: start; }
+
+    .phone {
+      position: relative;
+      width: 330px;
+      margin: 0 auto;
+      padding: 13px;
+      background: #050807;
+      border: 1px solid #35443e;
+      border-radius: 46px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      top: 19px;
+      left: 50%;
+      width: 78px;
+      height: 20px;
+      transform: translateX(-50%);
+      background: #050807;
+      border-radius: 20px;
+    }
+
+    .phone img { width: 100%; border-radius: 34px; }
+
+    .android-copy { padding-top: 28px; }
+    .android-copy h3 { margin: 0 0 22px; font-size: 41px; line-height: 1.3; }
+    .android-copy > p { margin: 0 0 30px; color: #bed0c9; font-size: 19px; line-height: 1.8; }
+
+    .android-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .android-point {
+      min-height: 150px;
+      padding: 22px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+    }
+
+    .android-point b { display: block; margin-bottom: 9px; color: #fff; font-size: 19px; }
+    .android-point span { color: #b8cbc3; font-size: 15px; line-height: 1.65; }
+
+    .android-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 66px; align-items: start; }
+
+    .tall-shot {
+      padding: 16px;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 26px;
+    }
+
+    .tall-shot .crop {
+      height: 610px;
+      overflow: hidden;
+      border-radius: 17px;
+      background: #fff;
+    }
+
+    .tall-shot .crop img { width: 100%; }
+    .tall-shot.quick .crop img { height: 100%; object-fit: cover; object-position: top; }
+
+    .tall-shot figcaption { padding: 20px 8px 7px; color: #c6d8d1; font-size: 16px; line-height: 1.7; }
+    .tall-shot figcaption strong { display: block; margin-bottom: 5px; color: #fff; font-size: 22px; }
+
+    .save-banner {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 36px 40px;
+      color: #4d2b1d;
+      background: linear-gradient(115deg, #ffe8da, #fff6ef);
+      border-radius: 26px;
+    }
+
+    .save-icon { display: grid; place-items: center; width: 94px; height: 94px; color: #fff; background: var(--peach); border-radius: 28px; font-size: 43px; }
+    .save-banner h3 { margin: 0 0 9px; font-size: 29px; }
+    .save-banner p { margin: 0; color: #785342; font-size: 17px; line-height: 1.75; }
+
+    .effects-section { background: #fffaf6; }
+    .effect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+    .effect-card {
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #efe2da;
+      border-radius: 24px;
+      box-shadow: 0 16px 45px rgba(91,55,35,.07);
+    }
+
+    .effect-card img { width: 100%; }
+    .effect-label { display: flex; align-items: center; justify-content: space-between; padding: 20px 23px; }
+    .effect-label strong { font-size: 19px; }
+    .effect-label span { color: #a5694d; font-size: 14px; font-weight: 700; }
+
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+    .step {
+      position: relative;
+      min-height: 248px;
+      padding: 27px 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      top: 43px;
+      right: -24px;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: var(--mint-dark);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .step-no { color: var(--mint); font-size: 38px; font-weight: 900; }
+    .step h3 { margin: 28px 0 10px; font-size: 21px; }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+    .footer {
+      position: relative;
+      padding: 88px 76px 74px;
+      color: #fff;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1b9d77, #0b6049);
+    }
+
+    .footer::after {
+      content: "";
+      position: absolute;
+      width: 430px;
+      height: 430px;
+      right: -190px;
+      bottom: -270px;
+      border: 70px solid rgba(255,255,255,.08);
+      border-radius: 50%;
+    }
+
+    .footer h2 { max-width: 720px; font-size: 53px; }
+    .footer-lead { max-width: 760px; margin: 21px 0 40px; color: #d8f2e8; font-size: 20px; line-height: 1.75; }
+
+    .links { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .link-card {
+      padding: 23px 25px;
+      color: #fff;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+    }
+
+    .link-card span { display: block; margin-bottom: 7px; color: #bce8d8; font-size: 13px; font-weight: 800; letter-spacing: .1em; }
+    .link-card strong { font-size: 16px; word-break: break-all; }
+
+    .footer-bottom {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 54px;
+      padding-top: 28px;
+      color: #c8e9dd;
+      border-top: 1px solid rgba(255,255,255,.18);
+      font-size: 14px;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .poster { margin: 0; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="hero">
+      <div class="brand-row">
+        <div class="brand"><span class="brand-mark"></span>Trime 主题工坊</div>
+        <div class="hero-index">OPEN SOURCE · OFFLINE FIRST</div>
+      </div>
+
+      <div class="hero-copy">
+        <div class="eyebrow">为同文输入法而生</div>
+        <h1>让你的键盘<br><span>跟着壁纸一起换新装</span></h1>
+        <p class="hero-lead">一套工具，完成主题配色、按键布局、Material You 动态取色与 YAML 一键写入。无需反复手改代码，也能做出真正属于自己的同文主题。</p>
+        <div class="hero-pills">
+          <span>可视化编辑</span><span>动态配色</span><span>一键写入</span><span>永久收藏</span><span>完全离线</span>
+        </div>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><i></i><i></i><i></i></div>
+          <div class="browser-url">lanlanderui.github.io/trime-theme-studio</div>
+        </div>
+        <img src="trime_github_pic/主题工坊使用展示.webp" alt="Trime 主题工坊操作演示">
+      </div>
+    </header>
+
+    <section class="section compact">
+      <div class="section-heading">
+        <div><div class="section-kicker">ONE PROJECT · TWO TOOLS</div><h2>一个项目，两种使用方式</h2></div>
+        <p class="section-note">电脑上精细编辑，手机上随时取色。两部分相互独立，也能配合使用。</p>
+      </div>
+
+      <div class="dual-tools">
+        <article class="tool-card">
+          <div class="tool-icon">W</div>
+          <h3>网页主题工坊</h3>
+          <p>直接拖入主题文件，在浏览器中编辑配色与键盘布局，边改边看，最后导出完整 YAML。</p>
+          <div class="tool-tags"><span>免安装</span><span>离线可用</span><span>布局编辑</span></div>
+        </article>
+        <article class="tool-card android">
+          <div class="tool-icon">A</div>
+          <h3>Android 动态配色</h3>
+          <p>读取系统 Material You 色板，或手选一个主色，自动补全整套同文浅色与深色主题。</p>
+          <div class="tool-tags"><span>系统取色</span><span>自选主色</span><span>一键写入</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section web-section">
+      <div class="section-heading">
+        <div><div class="section-kicker">01 · WEB STUDIO</div><h2>看得见的主题编辑</h2></div>
+        <p class="section-note">不用在几十个颜色字段之间来回猜测，修改结果会立即出现在键盘预览中。</p>
+      </div>
+
+      <div class="showcase-frame">
+        <img src="trime_github_pic/主题工坊_配色展示1.png" alt="网页主题工坊配色编辑界面">
+      </div>
+      <div class="caption-row"><strong>配色方案 · 实时预览</strong><span>导入、编辑、预览、导出，一页完成</span></div>
+
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-no">COLOR</div><h3>完整配色字段</h3><p>候选栏、键盘背景、按键状态、文字与弹出层，分区清晰，快速定位。</p></article>
+        <article class="feature-card"><div class="feature-no">LAYOUT</div><h3>可视化改按键</h3><p>拖动顺序、调整宽度，并设置点击、长按与四向滑动动作。</p></article>
+        <article class="feature-card"><div class="feature-no">YAML</div><h3>保留原始配置</h3><p>导出完整主题文件，原有布局、注释和其他方案都能继续保留。</p></article>
+      </div>
+
+      <div class="web-gallery">
+        <article class="gallery-item">
+          <img src="trime_github_pic/主题工坊_配色展示2.png" alt="深色主题预览">
+          <div class="gallery-copy"><strong>浅色、深色自由切换</strong><span>不同主题方案可快速对比</span></div>
+        </article>
+        <article class="gallery-item">
+          <img src="trime_github_pic/按键布局编辑示例图.png" alt="按键布局编辑">
+          <div class="gallery-copy"><strong>布局也能直接编辑</strong><span>不再靠反复部署确认位置</span></div>
+        </article>
+      </div>
+
+      <div class="layout-card">
+        <div><h3>编辑的不只是颜色</h3><p>按键顺序、宽度、点击动作与滑动手势都可以在预览中确认，再一次性导出。</p></div>
+        <img src="trime_github_pic/按键布局编辑示例图.png" alt="按键布局细节">
+      </div>
+    </section>
+
+    <section class="section android-section">
+      <div class="section-heading">
+        <div><div class="section-kicker">02 · ANDROID APP</div><h2>把 Material You<br>带进同文输入法</h2></div>
+        <p class="section-note">壁纸换了，键盘也能一起变。也可以跳过系统配色，亲手指定喜欢的主色。</p>
+      </div>
+
+      <div class="android-main">
+        <div class="phone"><img src="trime_github_pic/实机演示_app使用展示.webp" alt="Android 动态配色 App 操作演示"></div>
+        <div class="android-copy">
+          <h3>选颜色，选文件，<br>然后一键写入</h3>
+          <p>App 会自动生成协调的浅色、深色与功能键颜色，并安全更新你选择的主题 YAML。</p>
+          <div class="android-list">
+            <div class="android-point"><b>系统动态色</b><span>读取 Android 12+ 根据壁纸生成的 Material You 色板。</span></div>
+            <div class="android-point"><b>自选主色</b><span>只需指定一种颜色，其余语义色自动生成。</span></div>
+            <div class="android-point"><b>方案管理</b><span>批量改名或删除已有方案，最后统一保存并部署一次。</span></div>
+            <div class="android-point"><b>键盘快捷调用</b><span>从同文按键直接更新或收藏当前配色。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="android-shots">
+        <figure class="tall-shot">
+          <div class="crop"><img src="trime_github_pic/实机演示_app截图.webp" alt="Android App 完整功能界面"></div>
+          <figcaption><strong>功能集中在一个页面</strong>预览、取色、文件选择、写入、备份和收藏，操作路径清晰。</figcaption>
+        </figure>
+        <figure class="tall-shot quick">
+          <div class="crop"><img src="trime_github_pic/实机演示_快捷键配置.webp" alt="快捷键配置展示"></div>
+          <figcaption><strong>快捷键也能一键配置</strong>无需手工复制代码，自动合并到主题的 preset_keys。</figcaption>
+        </figure>
+      </div>
+
+      <div class="save-banner">
+        <div class="save-icon">♥</div>
+        <div><h3>遇到喜欢的配色，就永久保存</h3><p>每次收藏都会追加为独立的浅色 / 深色方案。以后刷新动态色，也不会覆盖已经留下的那一套。</p></div>
+      </div>
+    </section>
+
+    <section class="section effects-section">
+      <div class="section-heading">
+        <div><div class="section-kicker">03 · REAL RESULTS</div><h2>不止是预览，<br>这就是实际使用效果</h2></div>
+        <p class="section-note">从系统动态色到手选主色，不同界面都能保持统一、清晰且有层次。</p>
+      </div>
+
+      <div class="effect-grid">
+        <article class="effect-card"><img src="trime_github_pic/实际演示_安卓动态颜色展示1.webp" alt="Android 动态颜色主题"><div class="effect-label"><strong>Android 动态颜色</strong><span>MATERIAL YOU</span></div></article>
+        <article class="effect-card"><img src="trime_github_pic/实际演示_自定义主色系展示1.webp" alt="自定义主色系主题"><div class="effect-label"><strong>自定义主色系</strong><span>CUSTOM SEED</span></div></article>
+        <article class="effect-card"><img src="trime_github_pic/实际演示_实际使用截图展示1.webp" alt="同文主题实际效果一"><div class="effect-label"><strong>输入场景实拍</strong><span>SCHEME 01</span></div></article>
+        <article class="effect-card"><img src="trime_github_pic/实际演示_实际使用截图展示2.webp" alt="同文主题实际效果二"><div class="effect-label"><strong>输入场景实拍</strong><span>SCHEME 02</span></div></article>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="section-heading">
+        <div><div class="section-kicker">QUICK START</div><h2>四步换上你的主题</h2></div>
+        <p class="section-note">网页端和 Android 端都围绕同一份 `.trime.yaml` 工作。</p>
+      </div>
+
+      <div class="steps">
+        <article class="step"><div class="step-no">01</div><h3>选择主题文件</h3><p>导入或选择 Rime 目录中的 `.trime.yaml`。</p></article>
+        <article class="step"><div class="step-no">02</div><h3>调整想要的效果</h3><p>编辑具体字段，或让 App 根据主色自动生成。</p></article>
+        <article class="step"><div class="step-no">03</div><h3>导出或一键写入</h3><p>网页下载完整文件，手机端直接安全更新。</p></article>
+        <article class="step"><div class="step-no">04</div><h3>回到同文重新部署</h3><p>选择新方案，即可看到最终键盘效果。</p></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="section-kicker" style="color:#bdebd9">TRIME THEME STUDIO</div>
+      <h2>让每一次输入，都更像你自己</h2>
+      <p class="footer-lead">项目开源、离线可用。网页端无需安装；Android APK 与“单手特化”示例主题可直接从 GitHub Releases 下载。</p>
+      <div class="links">
+        <div class="link-card"><span>在线主题工坊</span><strong>lanlanderui.github.io/trime-theme-studio/</strong></div>
+        <div class="link-card"><span>项目与下载</span><strong>github.com/lanlanderui/trime-theme-studio</strong></div>
+      </div>
+      <div class="footer-bottom"><span>Web Theme Studio + Android Dynamic Colors</span><span>MIT License · 2026</span></div>
+    </footer>
+  </main>
+</body>
+</html>

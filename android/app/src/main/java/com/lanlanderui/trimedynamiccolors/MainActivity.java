@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public final class MainActivity extends Activity {
@@ -77,6 +78,28 @@ public final class MainActivity extends Activity {
     private Uri selectedThemeUri;
     private String selectedThemeName = "";
     private String pendingExport = "";
+
+    private static final class SchemeManagerSession {
+        final Uri target;
+        final String originalYaml;
+        String draftYaml;
+        List<TrimeThemePatcher.SchemeInfo> schemes;
+        int editCount;
+
+        SchemeManagerSession(
+                Uri target,
+                String originalYaml,
+                List<TrimeThemePatcher.SchemeInfo> schemes) {
+            this.target = target;
+            this.originalYaml = originalYaml;
+            this.draftYaml = originalYaml;
+            this.schemes = schemes;
+        }
+
+        boolean hasChanges() {
+            return !originalYaml.equals(draftYaml);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -399,6 +422,14 @@ public final class MainActivity extends Activity {
         container.addView(actions);
 
         container.addView(space(8));
+        Button manageSchemes = button("管理已有配色方案", false, colors);
+        manageSchemes.setEnabled(selectedThemeUri != null);
+        manageSchemes.setAlpha(selectedThemeUri == null ? 0.45f : 1f);
+        manageSchemes.setOnClickListener(v -> openSchemeManager(manageSchemes));
+        container.addView(manageSchemes, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, dp(46)));
+
+        container.addView(space(8));
         Button saveSnapshot = button("永久保存当前配色", false, colors);
         saveSnapshot.setEnabled(selectedThemeUri != null);
         saveSnapshot.setAlpha(selectedThemeUri == null ? 0.45f : 1f);
@@ -640,6 +671,223 @@ public final class MainActivity extends Activity {
                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivityForResult(intent, REQUEST_THEME_FILE);
+    }
+
+    private void openSchemeManager(Button action) {
+        if (selectedThemeUri == null) return;
+        Uri target = selectedThemeUri;
+        action.setEnabled(false);
+        selectedFileStatus.setText("正在读取已有配色方案……");
+        new Thread(() -> {
+            try {
+                String original = readText(target);
+                List<TrimeThemePatcher.SchemeInfo> schemes =
+                        TrimeThemePatcher.listSchemes(original);
+                runOnUiThread(() -> {
+                    action.setEnabled(true);
+                    if (schemes.isEmpty()) {
+                        selectedFileStatus.setText("所选文件中没有找到 preset_color_schemes");
+                        Toast.makeText(this, "没有找到可管理的配色方案", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    selectedFileStatus.setText(String.format(
+                            Locale.ROOT, "已读取 %d 个配色方案", schemes.size()));
+                    showSchemeManagerDialog(new SchemeManagerSession(target, original, schemes));
+                });
+            } catch (Exception error) {
+                runOnUiThread(() -> {
+                    action.setEnabled(true);
+                    selectedFileStatus.setText("读取方案失败：" + safeMessage(error));
+                    Toast.makeText(this,
+                            "没有修改文件：" + safeMessage(error), Toast.LENGTH_LONG).show();
+                });
+            }
+        }, "trime-scheme-reader").start();
+    }
+
+    private void showSchemeManagerDialog(SchemeManagerSession session) {
+        DynamicPalette.Scheme colors = previewDark ? palette.dark : palette.light;
+        ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        LinearLayout list = column();
+        list.setPadding(dp(4), dp(8), dp(4), dp(8));
+        scroll.addView(list, new ScrollView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        TextView hint = text(
+                session.hasChanges()
+                        ? String.format(Locale.ROOT,
+                                "已有 %d 项调整待保存。继续编辑，完成后点击“保存并部署”。",
+                                session.editCount)
+                        : "改名和删除会先保存在临时草稿中，点击“保存并部署”后才会写入文件。",
+                12, colors.onSurfaceVariant, Typeface.NORMAL);
+        hint.setLineSpacing(dp(2), 1f);
+        list.addView(hint);
+        list.addView(space(12));
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(String.format(
+                        Locale.ROOT, "配色方案管理（%d）", session.schemes.size()))
+                .setView(scroll)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("保存并部署", null)
+                .create();
+
+        boolean canDelete = session.schemes.size() > 1;
+        for (int index = 0; index < session.schemes.size(); index++) {
+            TrimeThemePatcher.SchemeInfo scheme = session.schemes.get(index);
+            LinearLayout item = card(colors, 13, 12);
+            item.addView(text(scheme.name, 16, colors.onSurface, Typeface.BOLD));
+            TextView id = text("ID：" + scheme.id, 12,
+                    colors.onSurfaceVariant, Typeface.NORMAL);
+            id.setPadding(0, dp(3), 0, 0);
+            item.addView(id);
+            item.addView(space(10));
+
+            LinearLayout actions = new LinearLayout(this);
+            actions.setOrientation(LinearLayout.HORIZONTAL);
+            Button rename = button("修改名称", false, colors);
+            Button delete = button("删除", false, colors);
+            delete.setTextColor(previewDark ? 0xFFFFB4AB : 0xFFBA1A1A);
+            delete.setEnabled(canDelete);
+            delete.setAlpha(canDelete ? 1f : 0.42f);
+            rename.setOnClickListener(v -> showRenameSchemeDialog(dialog, session, scheme));
+            delete.setOnClickListener(v -> showDeleteSchemeDialog(dialog, session, scheme));
+            actions.addView(rename, new LinearLayout.LayoutParams(0, dp(42), 1f));
+            LinearLayout.LayoutParams deleteParams =
+                    new LinearLayout.LayoutParams(0, dp(42), 1f);
+            deleteParams.setMargins(dp(8), 0, 0, 0);
+            actions.addView(delete, deleteParams);
+            item.addView(actions);
+            list.addView(item, new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (index < session.schemes.size() - 1) list.addView(space(9));
+        }
+        dialog.show();
+        Button save = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        save.setEnabled(session.hasChanges());
+        save.setOnClickListener(v -> {
+            dialog.dismiss();
+            applySchemeManagerChanges(session);
+        });
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            if (!session.hasChanges()) {
+                dialog.dismiss();
+                return;
+            }
+            new AlertDialog.Builder(this)
+                    .setTitle("放弃未保存的调整？")
+                    .setMessage("当前所有改名和删除都还没有写入主题文件。")
+                    .setNegativeButton("继续编辑", null)
+                    .setPositiveButton("放弃", (confirm, which) -> dialog.dismiss())
+                    .show();
+        });
+    }
+
+    private void showRenameSchemeDialog(
+            AlertDialog manager,
+            SchemeManagerSession session,
+            TrimeThemePatcher.SchemeInfo scheme) {
+        DynamicPalette.Scheme colors = previewDark ? palette.dark : palette.light;
+        EditText input = new EditText(this);
+        input.setSingleLine(true);
+        input.setText(scheme.name);
+        input.setSelectAllOnFocus(true);
+        input.setTextColor(colors.onSurface);
+        input.setHintTextColor(withAlpha(colors.onSurfaceVariant, 0.72f));
+        input.setPadding(dp(16), 0, dp(16), 0);
+        input.setBackground(roundRect(colors.surfaceContainer, 14, colors.outlineVariant, 1));
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("修改方案名称")
+                .setMessage("方案 ID：" + scheme.id
+                        + "\n只修改显示名称，不会改变方案 ID 和浅／深色切换关系。")
+                .setView(input)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("保存", null)
+                .create();
+        dialog.setOnShowListener(ignored -> dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setOnClickListener(v -> {
+                    String name = input.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        input.setError("方案名称不能为空");
+                        return;
+                    }
+                    if (name.equals(scheme.name)) {
+                        dialog.dismiss();
+                        return;
+                    }
+                    try {
+                        session.draftYaml = TrimeThemePatcher.renameScheme(
+                                session.draftYaml, scheme.id, name);
+                        session.schemes = TrimeThemePatcher.listSchemes(session.draftYaml);
+                        session.editCount++;
+                    } catch (Exception error) {
+                        input.setError(safeMessage(error));
+                        return;
+                    }
+                    dialog.dismiss();
+                    manager.dismiss();
+                    showSchemeManagerDialog(session);
+                }));
+        dialog.show();
+    }
+
+    private void showDeleteSchemeDialog(
+            AlertDialog manager,
+            SchemeManagerSession session,
+            TrimeThemePatcher.SchemeInfo scheme) {
+        new AlertDialog.Builder(this)
+                .setTitle("删除配色方案")
+                .setMessage("确定删除“" + scheme.name + "”吗？\n\n方案 ID：" + scheme.id
+                        + "\n如果其他方案引用了这个 ID，对应的浅／深色自动切换可能失效。"
+                        + "\n\n确认后只会加入待保存调整，尚不会写入文件或重新部署。")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("删除", (dialog, which) -> {
+                    try {
+                        session.draftYaml = TrimeThemePatcher.deleteScheme(
+                                session.draftYaml, scheme.id);
+                        session.schemes = TrimeThemePatcher.listSchemes(session.draftYaml);
+                        session.editCount++;
+                        manager.dismiss();
+                        showSchemeManagerDialog(session);
+                    } catch (Exception error) {
+                        Toast.makeText(this,
+                                "无法删除：" + safeMessage(error), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+    }
+
+    private void applySchemeManagerChanges(SchemeManagerSession session) {
+        if (!session.hasChanges()) return;
+        String editorName = currentName();
+        selectedFileStatus.setText("正在保存全部方案调整……");
+        new Thread(() -> {
+            try {
+                String current = readText(session.target);
+                if (!current.equals(session.originalYaml)) {
+                    throw new IllegalStateException("主题文件已在管理期间发生变化，请重新打开方案管理器");
+                }
+                saveBackup(session.target, current);
+                writeText(session.target, session.draftYaml);
+                requestTrimeDeploy();
+                runOnUiThread(() -> {
+                    buildUi(editorName);
+                    selectedFileStatus.setText(String.format(
+                            Locale.ROOT, "已保存 %d 项方案调整", session.editCount));
+                    Toast.makeText(this,
+                            "全部调整已写入，仅请求了一次同文重新部署",
+                            Toast.LENGTH_LONG).show();
+                });
+            } catch (Exception error) {
+                runOnUiThread(() -> {
+                    selectedFileStatus.setText("保存方案调整失败：" + safeMessage(error));
+                    Toast.makeText(this,
+                            "没有修改文件：" + safeMessage(error), Toast.LENGTH_LONG).show();
+                });
+            }
+        }, "trime-scheme-batch-writer").start();
     }
 
     private void writeIntoSelectedTheme(Button action) {

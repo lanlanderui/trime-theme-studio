@@ -159,6 +159,243 @@ final class TrimeThemePatcher {
         return new Result(String.join(newline, output), false, replaced);
     }
 
+    /** Lists the direct children of preset_color_schemes without parsing unrelated YAML. */
+    static List<SchemeInfo> listSchemes(String source) {
+        String normalized = normalize(source);
+        List<String> lines = new ArrayList<>(Arrays.asList(normalized.split("\n", -1)));
+        int sectionStart = findSection(lines);
+        if (sectionStart < 0) return new ArrayList<>();
+
+        int sectionEnd = findSectionEnd(lines, sectionStart + 1);
+        int childIndent = findChildIndent(lines, sectionStart + 1, sectionEnd);
+        List<SchemeInfo> schemes = new ArrayList<>();
+        for (int i = sectionStart + 1; i < sectionEnd;) {
+            String id = schemeId(lines.get(i), childIndent);
+            if (id == null) {
+                i++;
+                continue;
+            }
+            int blockEnd = findSchemeEnd(lines, i + 1, sectionEnd, childIndent);
+            int propertyIndent = findDirectChildIndent(lines, i + 1, blockEnd, childIndent);
+            String name = findSchemeName(lines, i + 1, blockEnd, propertyIndent);
+            schemes.add(new SchemeInfo(id, name == null || name.isEmpty() ? id : name));
+            i = blockEnd;
+        }
+        return schemes;
+    }
+
+    /** Changes only a scheme's display name. The stable scheme ID is never modified. */
+    static String renameScheme(String source, String schemeId, String newName) {
+        String cleanName = newName == null ? "" : newName.replace('\r', ' ')
+                .replace('\n', ' ').trim();
+        if (cleanName.isEmpty()) throw new IllegalArgumentException("方案名称不能为空");
+
+        String newline = newlineOf(source);
+        String normalized = normalize(source);
+        List<String> lines = new ArrayList<>(Arrays.asList(normalized.split("\n", -1)));
+        int sectionStart = findSection(lines);
+        if (sectionStart < 0) throw new IllegalArgumentException("未找到 preset_color_schemes");
+
+        int sectionEnd = findSectionEnd(lines, sectionStart + 1);
+        int childIndent = findChildIndent(lines, sectionStart + 1, sectionEnd);
+        for (int i = sectionStart + 1; i < sectionEnd;) {
+            String id = schemeId(lines.get(i), childIndent);
+            if (id == null) {
+                i++;
+                continue;
+            }
+            int blockEnd = findSchemeEnd(lines, i + 1, sectionEnd, childIndent);
+            if (!id.equals(schemeId)) {
+                i = blockEnd;
+                continue;
+            }
+
+            String inlineValue = mappingValue(lines.get(i).trim());
+            if (!inlineValue.isEmpty() && !inlineValue.startsWith("&")) {
+                throw new IllegalArgumentException("该方案使用行内 YAML，暂不支持重命名");
+            }
+            int propertyIndent = findDirectChildIndent(lines, i + 1, blockEnd, childIndent);
+            for (int lineIndex = i + 1; lineIndex < blockEnd; lineIndex++) {
+                if (indent(lines.get(lineIndex)) == propertyIndent
+                        && "name".equals(mappingKey(lines.get(lineIndex).trim()))) {
+                    lines.set(lineIndex, spaces(propertyIndent) + "name: " + yamlQuote(cleanName));
+                    return String.join(newline, lines);
+                }
+            }
+            int indentStep = findIndentStep(lines, sectionStart + 1, sectionEnd, childIndent);
+            lines.add(i + 1, spaces(childIndent + indentStep) + "name: " + yamlQuote(cleanName));
+            return String.join(newline, lines);
+        }
+        throw new IllegalArgumentException("找不到方案 ID：" + schemeId);
+    }
+
+    /** Removes one complete scheme block while preserving all other theme content. */
+    static String deleteScheme(String source, String targetId) {
+        List<SchemeInfo> existing = listSchemes(source);
+        if (existing.size() <= 1) throw new IllegalStateException("主题中至少需要保留一个配色方案");
+
+        String newline = newlineOf(source);
+        String normalized = normalize(source);
+        List<String> lines = new ArrayList<>(Arrays.asList(normalized.split("\n", -1)));
+        int sectionStart = findSection(lines);
+        if (sectionStart < 0) throw new IllegalArgumentException("未找到 preset_color_schemes");
+
+        int sectionEnd = findSectionEnd(lines, sectionStart + 1);
+        int childIndent = findChildIndent(lines, sectionStart + 1, sectionEnd);
+        for (int i = sectionStart + 1; i < sectionEnd;) {
+            String id = schemeId(lines.get(i), childIndent);
+            if (id == null) {
+                i++;
+                continue;
+            }
+            int blockEnd = findSchemeEnd(lines, i + 1, sectionEnd, childIndent);
+            if (!id.equals(targetId)) {
+                i = blockEnd;
+                continue;
+            }
+            lines.subList(i, blockEnd).clear();
+            while (i > sectionStart + 1 && i < lines.size()
+                    && lines.get(i - 1).trim().isEmpty()
+                    && lines.get(i).trim().isEmpty()) {
+                lines.remove(i);
+            }
+            return String.join(newline, lines);
+        }
+        throw new IllegalArgumentException("找不到方案 ID：" + targetId);
+    }
+
+    private static String normalize(String source) {
+        if (source == null) return "";
+        return source.replace("\r\n", "\n").replace('\r', '\n');
+    }
+
+    private static String newlineOf(String source) {
+        return source != null && source.contains("\r\n") ? "\r\n" : "\n";
+    }
+
+    private static int findSchemeEnd(
+            List<String> lines, int from, int sectionEnd, int childIndent) {
+        int index = from;
+        while (index < sectionEnd && !startsSibling(lines.get(index), childIndent)) index++;
+        return index;
+    }
+
+    private static int findDirectChildIndent(
+            List<String> lines, int from, int to, int parentIndent) {
+        int smallest = Integer.MAX_VALUE;
+        for (int i = from; i < to; i++) {
+            String trimmed = lines.get(i).trim();
+            if (trimmed.isEmpty() || trimmed.startsWith("#")) continue;
+            int amount = indent(lines.get(i));
+            if (amount > parentIndent) smallest = Math.min(smallest, amount);
+        }
+        return smallest == Integer.MAX_VALUE ? parentIndent + 2 : smallest;
+    }
+
+    private static String findSchemeName(
+            List<String> lines, int from, int to, int propertyIndent) {
+        for (int i = from; i < to; i++) {
+            if (indent(lines.get(i)) != propertyIndent) continue;
+            String trimmed = lines.get(i).trim();
+            if ("name".equals(mappingKey(trimmed))) return scalarValue(mappingValue(trimmed));
+        }
+        return null;
+    }
+
+    private static String schemeId(String line, int childIndent) {
+        if (indent(line) != childIndent) return null;
+        String trimmed = line.trim();
+        if (trimmed.isEmpty() || trimmed.startsWith("#") || trimmed.startsWith("-")) return null;
+        return mappingKey(trimmed);
+    }
+
+    private static String mappingKey(String trimmed) {
+        int colon = mappingColon(trimmed);
+        if (colon <= 0) return null;
+        String key = trimmed.substring(0, colon).trim();
+        if (key.isEmpty()) return null;
+        return scalarValue(key);
+    }
+
+    private static String mappingValue(String trimmed) {
+        int colon = mappingColon(trimmed);
+        return colon < 0 ? "" : trimmed.substring(colon + 1).trim();
+    }
+
+    private static int mappingColon(String value) {
+        char quote = 0;
+        boolean escaped = false;
+        for (int i = 0; i < value.length(); i++) {
+            char current = value.charAt(i);
+            if (quote == '"' && escaped) {
+                escaped = false;
+                continue;
+            }
+            if (quote == '"' && current == '\\') {
+                escaped = true;
+                continue;
+            }
+            if (quote != 0) {
+                if (current == quote) {
+                    if (quote == '\'' && i + 1 < value.length() && value.charAt(i + 1) == '\'') {
+                        i++;
+                    } else {
+                        quote = 0;
+                    }
+                }
+                continue;
+            }
+            if (current == '"' || current == '\'') quote = current;
+            else if (current == ':') return i;
+        }
+        return -1;
+    }
+
+    private static String scalarValue(String raw) {
+        String value = raw == null ? "" : raw.trim();
+        if (value.length() >= 2 && value.charAt(0) == '"') {
+            int end = quotedEnd(value, '"');
+            if (end > 0) {
+                return value.substring(1, end)
+                        .replace("\\\"", "\"")
+                        .replace("\\\\", "\\");
+            }
+        }
+        if (value.length() >= 2 && value.charAt(0) == '\'') {
+            int end = quotedEnd(value, '\'');
+            if (end > 0) return value.substring(1, end).replace("''", "'");
+        }
+        int comment = value.indexOf(" #");
+        return (comment >= 0 ? value.substring(0, comment) : value).trim();
+    }
+
+    private static int quotedEnd(String value, char quote) {
+        boolean escaped = false;
+        for (int i = 1; i < value.length(); i++) {
+            char current = value.charAt(i);
+            if (quote == '"' && escaped) {
+                escaped = false;
+                continue;
+            }
+            if (quote == '"' && current == '\\') {
+                escaped = true;
+                continue;
+            }
+            if (current == quote) {
+                if (quote == '\'' && i + 1 < value.length() && value.charAt(i + 1) == '\'') {
+                    i++;
+                    continue;
+                }
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static String yamlQuote(String value) {
+        return "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    }
+
     private static int findSection(List<String> lines) {
         return findSection(lines, SECTION);
     }
@@ -279,6 +516,16 @@ final class TrimeThemePatcher {
         StringBuilder value = new StringBuilder(count);
         for (int i = 0; i < count; i++) value.append(' ');
         return value.toString();
+    }
+
+    static final class SchemeInfo {
+        final String id;
+        final String name;
+
+        SchemeInfo(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
     }
 
     static final class Result {
