@@ -1,5 +1,5 @@
 # Trime 主题工坊
-
+**使用codex开发**
 面向同文输入法（Trime）的主题工具集，包含一个浏览器主题编辑器和一个 Android 动态配色 App。
 
 [在线使用主题工坊](https://lanlanderui.github.io/trime-theme-studio/) · [下载 Android APK 与示例主题](https://github.com/lanlanderui/trime-theme-studio/releases) · [查看同文输入法](https://github.com/osfans/trime)
