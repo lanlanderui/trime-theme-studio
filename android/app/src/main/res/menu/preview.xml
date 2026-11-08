@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  预览页的 ⋯ 菜单只放「页面没有的动作」。
+
+  八个编辑入口已经在页面上铺成卡片（四张统计卡 + 「快捷编辑」分组），
+  再在菜单里列一份就是两套入口、两处要同步条件显示。剩下的「目录」由
+  OutlineMenu 动态加，这里只留「回到输入法」（未启用输入法时自动隐藏）。
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_back_to_ime"
+        android:title="@string/action_back_to_ime"
+        app:showAsAction="never" />
+</menu>

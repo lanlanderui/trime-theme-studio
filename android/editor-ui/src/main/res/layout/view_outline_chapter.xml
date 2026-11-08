@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  目录栏的一章：一道朱红竖条（只在当前章出现）+ 一个汉字钮 + 章名。
+  汉字不是图标：九个不重复的字，扫一眼就知道在第几章，也不必再配一套图标。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ui_rail_row"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/outlineMark"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="?attr/ui_accent"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/outlineGlyph"
+        style="@style/Ui.Glyph"
+        android:layout_width="@dimen/ui_rail_glyph"
+        android:layout_height="@dimen/ui_rail_glyph"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/outlineTitle"
+        style="@style/Ui.Index"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true" />
+</LinearLayout>

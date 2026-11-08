@@ -1,9 +1,16 @@
 name: Android Release
 
+# 暂时只保留手动触发，原因同 android-debug.yml。
+# 恢复「推 v* 标签自动发版」之前需要先确认两件事：
+#   1. CI 能用 JDK 21 + SDK 37 构建通一次（手动跑本工作流即可验证）
+#   2. ANDROID_SIGNING_KEY / ANDROID_KEYSTORE_PASSWORD / ANDROID_KEY_ALIAS /
+#      ANDROID_KEY_PASSWORD 这四个 secrets 已经是**编辑器**的签名（原来是「同文动态配色」的）
+# 两项都确认后，把下面的 push 段取消注释。
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+  # push:
+  #   tags:
+  #     - "v*"
 
 permissions:
   contents: write
@@ -20,35 +27,41 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
 
-      - name: Install Android platform
+      - name: Install Android SDK packages
         run: |
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKMANAGER" --licenses > /dev/null || true
-          "$SDKMANAGER" "platforms;android-28"
+          "$SDKMANAGER" "platforms;android-37" "build-tools;36.0.0"
 
+      # 工程读 android/keystore.properties（storeFile / storePassword / keyAlias / keyPassword），
+      # 所以把 secrets 落成这个文件，而不是走环境变量。
       - name: Restore signing key
         env:
           ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
-        run: |
-          echo "$ANDROID_SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/trime-release.keystore"
-
-      - name: Build signed release APK
-        working-directory: android
-        env:
-          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/trime-release.keystore
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
+          echo "$ANDROID_SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/trime-editor.jks"
+          {
+            echo "storeFile=$RUNNER_TEMP/trime-editor.jks"
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+          } > android/keystore.properties
+
+      - name: Build signed release APK
+        working-directory: android
+        run: |
           chmod +x gradlew
-          ./gradlew --no-daemon assembleRelease lintRelease
-          cp app/build/outputs/apk/release/app-release.apk "../trime-dynamic-colors-${GITHUB_REF_NAME}.apk"
-          cp "../release-assets/单手特化.trime.yaml" "../trime-one-hand-personal.trime.yaml"
+          ./gradlew --no-daemon assembleRelease lintVitalRelease
+          cp app/build/outputs/apk/release/app-release.apk "../trime-editor-${GITHUB_REF_NAME}.apk"
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" "trime-dynamic-colors-${GITHUB_REF_NAME}.apk" "trime-one-hand-personal.trime.yaml#单手特化个人方案" --verify-tag --generate-notes --title "同文动态配色 $GITHUB_REF_NAME"
+          gh release create "$GITHUB_REF_NAME" "trime-editor-${GITHUB_REF_NAME}.apk" \
+            --verify-tag --generate-notes --title "同文编辑器 $GITHUB_REF_NAME"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- N-2：主题目录在外部存储；root-path 兜住用户选到别处的情况。 -->
+<paths>
+    <external-path name="external" path="." />
+    <root-path name="root" path="." />
+</paths>

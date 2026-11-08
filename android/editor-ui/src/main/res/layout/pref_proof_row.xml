@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  一条设置一张小卡：中文名 / 键名＋引用锚点 / 色块 / 十六进制。
+
+  四样缺一样，改主题的人就得去开文件：中文名用来认、键名用来抄、色块用来
+  看、hex 用来对。
+
+  卡片化之后不再画分隔线：行与行之间靠 6dp 间距分开，这跟配色页的
+  「卡片 + 间距」是同一套语言。外边距 16/6 写在根上，RecyclerView 的
+  item 会照它排版。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="3dp"
+    android:background="@drawable/bg_card_ripple"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="13dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="13dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/proofName"
+                style="@style/Ui.Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/proofKey"
+                    style="@style/Ui.Meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/proofAnchor"
+                    style="@style/Ui.Meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="?attr/ui_mark"
+                    android:visibility="gone" />
+
+                <!--
+                  锚点要贴着键名（`back_color *color2` 是一句话），中间不能有
+                  可伸缩的空隙；把剩余宽度交给这根弹簧，长键名才会自己截断。
+                -->
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/proofSwatch"
+            android:layout_width="@dimen/ui_swatch"
+            android:layout_height="@dimen/ui_swatch"
+            android:layout_marginStart="@dimen/ui_row_gap" />
+
+        <TextView
+            android:id="@+id/proofHex"
+            style="@style/Ui.Value"
+            android:layout_width="@dimen/ui_hex_w"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="end"
+            android:singleLine="true" />
+    </LinearLayout>
+</LinearLayout>

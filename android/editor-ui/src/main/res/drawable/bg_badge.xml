@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!-- 「当前」徽标：主色底 + 胶囊圆角。颜色与圆角都走 token，三套皮肤各自成立。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/ui_primary" />
+    <corners android:radius="?attr/ui_radius_button" />
+</shape>

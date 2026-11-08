@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2015 - 2026 Rime community
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[versions]
+androidGradlePlugin = "9.4.1"
+iconics = "5.4.0"
+kotlin = "2.3.21"
+navigation = "2.9.8"
+splitties = "3.0.0"
+kotest = "6.0.7"
+
+[libraries]
+# 工具条按钮的 `ic@` 样式就是这套图标：输入法用同一个库、同一套 cmd_ 前缀，
+# 预览照着画才不会出现「编辑器和真机各画一个样」。
+iconics-core = { module = "com.mikepenz:iconics-core", version.ref = "iconics" }
+community-material-typeface = { module = "com.mikepenz:community-material-typeface", version = "7.0.96.1-kotlin" }
+androidx-activity = { module = "androidx.activity:activity-ktx", version = "1.10.1" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-preference = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
+flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
+kodein-di = { module = "org.kodein.di:kodein-di", version = "7.33.0" }
+kaml = { module = "com.charleskorn.kaml:kaml", version = "0.104.0" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.10.2" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.10.0" }
+splitties-bitflags = { module = "com.louiscad.splitties:splitties-bitflags", version.ref = "splitties" }
+splitties-dimensions = { module = "com.louiscad.splitties:splitties-dimensions", version.ref = "splitties" }
+splitties-systemservices = { module = "com.louiscad.splitties:splitties-systemservices", version.ref = "splitties" }
+splitties-views-dsl = { module = "com.louiscad.splitties:splitties-views-dsl", version.ref = "splitties" }
+splitties-views-dsl-constraintlayout = { module = "com.louiscad.splitties:splitties-views-dsl-constraintlayout", version.ref = "splitties" }
+splitties-views-dsl-recyclerview = { module = "com.louiscad.splitties:splitties-views-dsl-recyclerview", version.ref = "splitties" }
+splitties-views-recyclerview = { module = "com.louiscad.splitties:splitties-views-recyclerview", version.ref = "splitties" }
+
+# Testing
+junit = { module = "junit:junit", version = "4.13.2" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version = "8.10.2" }

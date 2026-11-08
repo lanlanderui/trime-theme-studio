@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  单值行：左中文名＋键名，右一个等宽值。用于 style / window / preedit 这类标量。
+
+  值不换行、靠右对齐：一列值对得齐，才看得出「这几个数是一组」。
+  「未设置」用 muted 而不是 mark：mark 是给裁切标记、引用锚点这类装饰用的，
+  放到正文里对比度只有 1.9:1，当文字读不了。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="3dp"
+    android:background="@drawable/bg_card_ripple"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="13dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="13dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/proofName"
+                style="@style/Ui.Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/proofKey"
+                style="@style/Ui.Meta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/proofValue"
+            style="@style/Ui.Value.Strong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ui_row_gap"
+            android:gravity="end"
+            android:singleLine="true" />
+    </LinearLayout>
+
+</LinearLayout>

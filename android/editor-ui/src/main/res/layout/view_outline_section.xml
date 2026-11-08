@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  目录栏的一节：缩进在章名下面，右边是这一节的项数。
+  项数不是装饰——它把「这一页有多少东西」提前告诉人，滚动之前就知道要不要点。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="42dp"
+    android:paddingEnd="@dimen/ui_rail_pad">
+
+    <TextView
+        android:id="@+id/outlineSectionTitle"
+        style="@style/Ui.Section"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/outlineSectionCount"
+        style="@style/Ui.Index.Sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:singleLine="true" />
+</LinearLayout>

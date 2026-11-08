@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  皮肤 token 的属性表。
+
+  为什么颜色必须是 attr、不能是 color 资源：颜色资源在编译期就定死了，运行时
+  换皮肤唯一能改的是「主题里这个 attr 指哪个颜色」。所以布局与样式里一律写
+  `?attr/ui_ink`，由 `Theme.TrimeEditor.Skin.*` 三张 overlay 决定它到底是谁。
+
+  为什么形状与字阶也是 attr：它们在不同皮肤之间真的不一样（纸感方案圆角 0，
+  层叠方案 16，舞台方案 28；标题 23sp / 21sp / 30sp）。尺寸（gutter、色块边长）
+  不进 attr，仍是 `ui_*` 的 dimen 资源——三套皮肤在度量上一致，平板靠
+  values-sw600dp 覆盖，多一层 attr 只会多一处「忘了填就崩」的机会。
+
+  命名规则：`ui_` 前缀 + 语义名，不带皮肤名。叫 `proof_ink` 的 token 一旦给
+  第二套皮肤用，就会有人以为它只属于校样。
+-->
+<resources>
+
+    <!-- ===== 颜色：页面与文字 ===== -->
+    <!-- 页面底色。纸感=米纸，层叠=M3 surface，舞台=暖白。 -->
+    <attr name="ui_paper" format="color" />
+    <!-- 浮在页面之上的一层：顶栏、底栏、条带。 -->
+    <attr name="ui_sheet" format="color" />
+    <!-- 卡片：层叠方案里一切「一组设置」的容器；纸感方案里等于透明（靠分隔线）。 -->
+    <attr name="ui_card" format="color" />
+    <!-- 卡片的强调层：选中行、表头、色块底座。 -->
+    <attr name="ui_card_high" format="color" />
+
+    <attr name="ui_ink" format="color" />
+    <attr name="ui_ink_2" format="color" />
+    <attr name="ui_muted" format="color" />
+
+    <attr name="ui_rule" format="color" />
+    <attr name="ui_rule_strong" format="color" />
+    <attr name="ui_outline" format="color" />
+    <attr name="ui_divider" format="color" />
+    <!-- 卡片内的行分隔线：纸感方案要靠它分行，卡片方案里必须是透明的，否则卡片里又多一道线。 -->
+    <attr name="ui_rule_in_card" format="color" />
+
+    <!-- ===== 颜色：强调与状态 ===== -->
+    <!-- 强调色。只表示「当前 / 需要你注意」，一屏超过三处就是滥用。 -->
+    <attr name="ui_accent" format="color" />
+    <!-- 稿子的青 #9CF1F5，只作点缀，不铺面（N-6）。 -->
+    <attr name="ui_highlight" format="color" />
+    <attr name="ui_primary" format="color" />
+    <attr name="ui_primary_dark" format="color" />
+    <attr name="ui_on_primary" format="color" />
+    <!-- 主色容器：dock、圆钮这类「主色的浅色用法」。稿子里它是比卡片更饱和的一档。 -->
+    <attr name="ui_primary_container" format="color" />
+    <attr name="ui_on_primary_container" format="color" />
+
+    <attr name="ui_mark" format="color" />
+    <attr name="ui_swatch_stroke" format="color" />
+    <attr name="ui_knob" format="color" />
+    <attr name="ui_pill_stroke" format="color" />
+    <attr name="ui_scrim" format="color" />
+
+    <attr name="ui_warn" format="color" />
+    <attr name="ui_note_fill" format="color" />
+    <attr name="ui_stale_fill" format="color" />
+    <attr name="ui_stale_text" format="color" />
+    <attr name="ui_chip_text" format="color" />
+    <attr name="ui_chip_text_selected" format="color" />
+
+    <!-- ===== 形状 ===== -->
+    <attr name="ui_radius_card" format="dimension" />
+    <attr name="ui_radius_field" format="dimension" />
+    <attr name="ui_radius_button" format="dimension" />
+    <attr name="ui_radius_key" format="dimension" />
+    <attr name="ui_radius_sheet" format="dimension" />
+    <attr name="ui_radius_swatch" format="dimension" />
+    <!-- 半宽卡（B3 的单击/长按）：比大卡小一档，比字段大一档。 -->
+    <attr name="ui_radius_half" format="dimension" />
+
+    <!-- ===== 字阶 ===== -->
+    <attr name="ui_text_title" format="dimension" />
+    <attr name="ui_text_section" format="dimension" />
+    <attr name="ui_text_name" format="dimension" />
+    <attr name="ui_text_meta" format="dimension" />
+    <attr name="ui_text_value" format="dimension" />
+    <attr name="ui_text_button" format="dimension" />
+
+    <!-- 字体族：`serif` / `sans-serif` / `monospace`。 -->
+    <attr name="ui_font_title" format="string" />
+    <attr name="ui_font_body" format="string" />
+    <attr name="ui_font_meta" format="string" />
+
+    <!-- ===== 间距（卡片化之后才有的那几个） ===== -->
+    <attr name="ui_gap_card" format="dimension" />
+    <attr name="ui_card_pad" format="dimension" />
+
+</resources>

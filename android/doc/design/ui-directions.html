@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同文编辑器 · UI 风格探索（Material You）</title>
+<style>
+  :root{
+    --font:"Roboto","Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    --mono:"Roboto Mono","JetBrains Mono","Cascadia Mono",Consolas,monospace;
+    --page:#F6F5F9; --page-fg:#1A1A1F; --page-2:#5E5A67; --page-3:#8B8695;
+    --panel:#FFFFFF; --hair:#E3E1E9;
+  }
+  body.dark{
+    --page:#0F0E12; --page-fg:#ECE9F1; --page-2:#ADA8B8; --page-3:#7C7787;
+    --panel:#1A191F; --hair:#2C2A34;
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{margin:0}
+  body{
+    background:var(--page);color:var(--page-fg);font-family:var(--font);
+    padding:0 0 80px;transition:background .25s,color .25s;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- 页头 ---------- */
+  header.top{padding:56px 0 28px;border-bottom:1px solid var(--hair)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--page-3)}
+  h1{font-size:40px;line-height:1.14;letter-spacing:-.02em;margin:14px 0 0;font-weight:650}
+  .lede{max-width:660px;font-size:15px;line-height:1.75;color:var(--page-2);margin:16px 0 0}
+  .headrow{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+  .toggle{display:flex;gap:6px;background:var(--panel);border:1px solid var(--hair);border-radius:999px;padding:5px}
+  .toggle button{
+    font:inherit;font-size:12.5px;padding:8px 16px;border-radius:999px;border:0;cursor:pointer;
+    background:transparent;color:var(--page-2)
+  }
+  .toggle button[aria-pressed="true"]{background:var(--page-fg);color:var(--page)}
+
+  /* ---------- 方向区块 ---------- */
+  section.dir{padding:52px 0 8px;border-bottom:1px solid var(--hair)}
+  .dirhead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .no{font-family:var(--mono);font-size:12px;color:var(--page-3);letter-spacing:.1em}
+  .dirhead h2{font-size:26px;margin:0;letter-spacing:-.01em;font-weight:620}
+  .tag{font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:999px;border:1px solid var(--hair);color:var(--page-2)}
+  .claim{font-size:14.5px;color:var(--page-2);margin:2px 0 30px;max-width:720px;line-height:1.7}
+
+  .frames{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .frame{flex:0 0 auto}
+  .cap{margin:12px 2px 0;font-size:12px;color:var(--page-3)}
+  .cap b{display:block;font-size:13px;color:var(--page-fg);font-weight:550;margin-bottom:2px}
+
+  /* ---------- 手机壳 ---------- */
+  .phone{
+    width:340px;height:716px;border-radius:34px;overflow:hidden;position:relative;
+    border:1px solid var(--hair);background:var(--s-surface);color:var(--s-onSurface);
+    box-shadow:0 18px 44px rgba(28,25,40,.12), 0 2px 6px rgba(28,25,40,.06);
+    display:flex;flex-direction:column;
+  }
+  .stat{height:26px;flex:0 0 26px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;font-size:10px;font-weight:600;letter-spacing:.02em;color:var(--s-onSurface);opacity:.85}
+  .stat .r{font-size:9px;letter-spacing:.06em;opacity:.8}
+  .screen{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  .scroll{flex:1;overflow:hidden;min-height:0}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* 通用小键盘 */
+  .kb{padding:5px;display:flex;flex-direction:column;gap:3px;background:var(--s-surface2)}
+  .kb-row{display:flex;gap:3px}
+  .k{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    height:32px;border-radius:var(--r-key);background:var(--s-surface3);color:var(--s-onSurface);
+    font-size:10.5px;line-height:1;position:relative}
+  .k s{text-decoration:none;font-size:6.5px;opacity:.5;margin-bottom:2px;letter-spacing:.02em}
+  .k.fn{background:var(--s-scontainer);color:var(--s-onScontainer);font-size:8.5px;letter-spacing:.02em}
+  .k.acc{background:var(--s-primary);color:var(--s-onPrimary);font-size:9px}
+  .k.sel{outline:2px solid var(--s-primary);outline-offset:-2px}
+
+  .sw{display:flex;gap:3px}
+  .sw i{flex:1;height:9px;border-radius:var(--r-swatch,3px);display:block;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+
+  /* ================= A · 层叠 Tonal ================= */
+  .d-a{
+    --s-primary:#6750A4;--s-onPrimary:#FFFFFF;--s-pcontainer:#EADDFF;--s-onPcontainer:#21005D;
+    --s-scontainer:#E8DEF8;--s-onScontainer:#1D192B;
+    --s-surface:#FEF7FF;--s-surface1:#F8F2FA;--s-surface2:#F2ECF6;--s-surface3:#EAE4EF;
+    --s-onSurface:#1D1B20;--s-onSurfaceVariant:#49454F;--s-outline:#79747E;--s-outlineVariant:#CAC4D0;
+    --s-error:#B3261E;
+    --r-card:16px;--r-btn:20px;--r-key:8px;--r-swatch:6px;
+  }
+  body.dark .d-a{
+    --s-primary:#D0BCFF;--s-onPrimary:#381E72;--s-pcontainer:#4F378B;--s-onPcontainer:#EADDFF;
+    --s-scontainer:#4A4458;--s-onScontainer:#E8DEF8;
+    --s-surface:#141218;--s-surface1:#1C1B21;--s-surface2:#211F26;--s-surface3:#2B2930;
+    --s-onSurface:#E6E0E9;--s-onSurfaceVariant:#CAC4D0;--s-outline:#938F99;--s-outlineVariant:#49454F;
+    --s-error:#F2B8B5;
+  }
+  .a-bar{padding:6px 18px 10px}
+  .a-bar .t{font-size:21px;letter-spacing:-.01em;font-weight:560}
+  .a-bar .sub{font-size:11px;color:var(--s-onSurfaceVariant);margin-top:3px}
+  .a-barrow{display:flex;align-items:center;gap:10px}
+  .a-ic{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;color:var(--s-onSurfaceVariant);font-size:14px}
+  .a-sec{margin:16px 18px 6px;display:flex;align-items:baseline;justify-content:space-between}
+  .a-sec b{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--s-primary)}
+  .a-sec span{font-size:10px;color:var(--s-onSurfaceVariant)}
+  .a-path{margin:0 12px 4px;padding:10px 12px;border-radius:12px;background:var(--s-surface2);
+    display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .a-path .p{font-family:var(--mono);font-size:9.5px;color:var(--s-onSurfaceVariant);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .a-path .act{font-size:11px;font-weight:600;color:var(--s-primary);white-space:nowrap}
+  .a-card{margin:0 12px 8px;padding:14px;border-radius:var(--r-card);background:var(--s-surface2)}
+  .a-card.flat{background:transparent;padding:0;overflow:hidden;background:var(--s-surface2)}
+  .a-theme{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .a-theme .n{font-size:14px;font-weight:550}
+  .a-theme .f{font-family:var(--mono);font-size:9px;color:var(--s-onSurfaceVariant);margin-top:3px}
+  .a-badge{font-size:9.5px;font-weight:600;padding:3px 8px;border-radius:999px;
+    background:var(--s-pcontainer);color:var(--s-onPcontainer);white-space:nowrap}
+  .a-row{display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:46px}
+  .a-row+.a-row{border-top:1px solid color-mix(in srgb,var(--s-outlineVariant) 55%,transparent)}
+  .a-row .tt{font-size:12.5px;font-weight:500}
+  .a-row .ds{font-size:10px;color:var(--s-onSurfaceVariant);margin-top:2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .a-chip{width:22px;height:22px;border-radius:7px;flex:0 0 22px;border:1px solid color-mix(in srgb,var(--s-outline) 45%,transparent)}
+  .a-row.err .tt{color:var(--s-error)}
+  .a-hint{margin:auto 18px 18px;padding:12px 14px;border-radius:12px;font-size:10px;line-height:1.7;
+    color:var(--s-onSurfaceVariant);background:color-mix(in srgb,var(--s-surface3) 55%,transparent)}
+  .a-action{display:flex;border-top:1px solid color-mix(in srgb,var(--s-outlineVariant) 60%,transparent);
+    background:var(--s-surface1);padding:6px 4px 8px}
+  .a-action div{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--s-onSurfaceVariant)}
+  .a-action div.on{color:var(--s-primary);font-weight:600}
+  .a-action .g{font-size:13px;line-height:1}
+  .a-field{margin:0 12px 8px;padding:10px 14px 12px;border-radius:12px;
+    border:1px solid var(--s-outlineVariant);background:transparent}
+  .a-field .lb{font-size:9px;color:var(--s-onSurfaceVariant);margin-bottom:4px}
+  .a-field .vl{font-size:14px;min-height:18px}
+  .a-slider{position:relative;height:16px;display:flex;align-items:center}
+  .a-slider .track{position:absolute;left:0;right:0;height:4px;border-radius:2px;background:var(--s-surface3)}
+  .a-slider .fill{position:absolute;left:0;width:26%;height:4px;border-radius:2px;background:var(--s-primary)}
+  .a-slider .thumb{position:absolute;left:26%;width:14px;height:14px;margin-left:-7px;border-radius:999px;background:var(--s-primary)}
+
+  /* ================= B · 舞台 Expressive ================= */
+  .d-b{
+    --s-primary:#9C4423;--s-onPrimary:#FFFFFF;--s-pcontainer:#FFDBCC;--s-onPcontainer:#3A0B00;
+    --s-scontainer:#FFDCC6;--s-onScontainer:#2E150C;
+    --s-tcontainer:#9CF1F5;--s-onTcontainer:#002023;
+    --s-surface:#FFF8F5;--s-surface1:#FCF0EA;--s-surface2:#F6E6DF;--s-surface3:#EEDCD4;
+    --s-onSurface:#231917;--s-onSurfaceVariant:#55433B;--s-outline:#87736A;--s-outlineVariant:#D8C2B9;
+    --s-error:#B3261E;
+    --r-card:28px;--r-btn:999px;--r-key:12px;--r-swatch:8px;
+  }
+  body.dark .d-b{
+    --s-primary:#FFB59B;--s-onPrimary:#5B1B00;--s-pcontainer:#7C2E10;--s-onPcontainer:#FFDBCC;
+    --s-scontainer:#5C4033;--s-onScontainer:#FFDCC6;
+    --s-tcontainer:#004F53;--s-onTcontainer:#9CF1F5;
+    --s-surface:#1A1110;--s-surface1:#221715;--s-surface2:#281D19;--s-surface3:#332723;
+    --s-onSurface:#F1DFD9;--s-onSurfaceVariant:#D8C2B9;--s-outline:#A08B82;--s-outlineVariant:#55433B;
+    --s-error:#FFB4AB;
+  }
+  .b-hero{padding:2px 20px 18px;border-radius:0 0 36px 36px;
+    background:linear-gradient(180deg,var(--s-pcontainer),color-mix(in srgb,var(--s-pcontainer) 35%,var(--s-surface)))}
+  .b-hero .eb{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--s-onPcontainer);opacity:.75}
+  .b-hero .h1{font-size:34px;line-height:1.05;letter-spacing:-.03em;font-weight:680;margin-top:8px;color:var(--s-onPcontainer)}
+  .b-hero .fm{font-family:var(--mono);font-size:10px;color:var(--s-onPcontainer);opacity:.8;margin-top:6px}
+  .b-bigsw{display:flex;gap:5px;margin-top:14px}
+  .b-bigsw i{flex:1;height:34px;border-radius:10px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .b-pills{display:flex;gap:8px;padding:14px 20px 0;flex-wrap:nowrap;overflow:hidden}
+  .b-chip{height:30px;padding:0 14px;border-radius:999px;display:flex;align-items:center;
+    font-size:10.5px;background:var(--s-surface2);color:var(--s-onSurfaceVariant);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
+  .b-chip.t{background:var(--s-scontainer);color:var(--s-onScontainer);font-weight:600}
+  .b-card{margin:10px 16px 0;padding:16px;border-radius:var(--r-card);background:var(--s-surface1);
+    display:flex;align-items:center;gap:14px}
+  .b-card .blk{width:44px;height:44px;border-radius:16px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700}
+  .b-card .n{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .b-card .f{font-family:var(--mono);font-size:9px;color:var(--s-onSurfaceVariant);margin-top:3px}
+  .b-seg{display:flex;gap:6px;padding:6px 16px 0}
+  .b-seg div{flex:1;height:34px;border-radius:999px;display:grid;place-items:center;font-size:10.5px;
+    background:var(--s-surface2);color:var(--s-onSurfaceVariant)}
+  .b-seg div.on{background:var(--s-primary);color:var(--s-onPrimary);font-weight:600}
+  .b-swatchbox{margin:14px 16px 0;border-radius:var(--r-card);overflow:hidden;background:var(--s-surface1)}
+  .b-swatchbox .big{height:112px;display:flex;align-items:flex-end;justify-content:space-between;padding:14px}
+  .b-swatchbox .big b{font-size:13px;font-weight:600}
+  .b-swatchbox .big span{font-family:var(--mono);font-size:10px;opacity:.85}
+  .b-swrow{display:flex;align-items:center;gap:12px;padding:12px 16px}
+  .b-swrow+.b-swrow{border-top:1px solid color-mix(in srgb,var(--s-outlineVariant) 60%,transparent)}
+  .b-swrow .c{width:26px;height:26px;border-radius:9px;flex:0 0 26px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .b-swrow .n{font-size:12px;font-weight:500}
+  .b-swrow .k{font-family:var(--mono);font-size:8.5px;color:var(--s-onSurfaceVariant);margin-top:3px;
+    background:none;border-radius:0;height:auto;display:block;line-height:1.2;text-align:left}
+  .b-swrow .h{font-family:var(--mono);font-size:9.5px;color:var(--s-onSurfaceVariant)}
+  .b-dock{position:absolute;left:14px;right:14px;bottom:16px;height:62px;border-radius:999px;
+    background:var(--s-pcontainer);display:flex;align-items:center;padding:0 8px;gap:2px;
+    box-shadow:0 10px 28px rgba(58,20,0,.22)}
+  .b-dock div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    font-size:8px;line-height:1.1;white-space:nowrap;color:var(--s-onPcontainer);overflow:hidden}
+  .b-dock .g{font-size:13px;line-height:1}
+  .b-stage{margin:0;padding:0 0 10px;border-radius:0 0 40px 40px;
+    background:linear-gradient(160deg,var(--s-pcontainer),var(--s-surface2) 78%)}
+  .b-stage .row{display:flex;justify-content:space-between;align-items:center;padding:2px 14px 8px}
+  .b-fchip{height:26px;padding:0 12px;border-radius:999px;background:color-mix(in srgb,var(--s-surface) 72%,transparent);
+    display:flex;align-items:center;gap:5px;font-size:10px;color:var(--s-onSurface);backdrop-filter:blur(4px)}
+  .b-bigin{display:flex;align-items:center;justify-content:space-between;
+    margin:0 16px;padding:16px 20px;border-radius:26px;background:var(--s-surface1)}
+  .b-bigin .lb{font-size:10px;letter-spacing:.08em;color:var(--s-onSurfaceVariant)}
+  .b-bigin .v{font-size:30px;line-height:1.1;font-weight:640;letter-spacing:-.02em;margin-top:4px}
+  .b-step{display:flex;align-items:center;gap:10px;margin:10px 16px 0;padding:10px 14px;border-radius:999px;background:var(--s-surface1)}
+  .b-step.col{display:block;border-radius:26px;padding:12px 16px 12px}
+  .b-step .r,.b-card .r{width:30px;height:30px;border-radius:999px;background:var(--s-scontainer);color:var(--s-onScontainer);
+    display:grid;place-items:center;font-size:15px;flex:0 0 30px}
+  .b-step .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+  .b-step .num{font-size:17px;font-weight:650;line-height:1}
+
+  /* ================= C · 画布 Canvas-first ================= */
+  .d-c{
+    --s-primary:#1B4C7E;--s-onPrimary:#FFFFFF;--s-pcontainer:#D3E4FF;--s-onPcontainer:#001D34;
+    --s-scontainer:#E0E2EC;--s-onScontainer:#191C20;
+    --s-tcontainer:#A6F0F4;--s-onTcontainer:#002021;
+    --s-surface:#F8F9FF;--s-surface1:#F2F5FB;--s-surface2:#EBEFF6;--s-surface3:#E3E8F0;
+    --s-onSurface:#181C20;--s-onSurfaceVariant:#43474E;--s-outline:#74777F;--s-outlineVariant:#C4C6CF;
+    --s-error:#BA1A1A;
+    --r-card:10px;--r-btn:8px;--r-key:6px;--r-swatch:3px;
+  }
+  body.dark .d-c{
+    --s-primary:#A3C9F9;--s-onPrimary:#00325A;--s-pcontainer:#254A75;--s-onPcontainer:#D3E4FF;
+    --s-scontainer:#3B4858;--s-onScontainer:#DFE2EA;
+    --s-tcontainer:#004F53;--s-onTcontainer:#A6F0F4;
+    --s-surface:#0E1217;--s-surface1:#151A21;--s-surface2:#191F27;--s-surface3:#212932;
+    --s-onSurface:#E1E2E8;--s-onSurfaceVariant:#C3C6CF;--s-outline:#8D9199;--s-outlineVariant:#3C424B;
+    --s-error:#FFB4AB;
+  }
+  .c-bar{height:44px;display:flex;align-items:center;gap:10px;padding:0 14px;
+    border-bottom:1px solid var(--s-outlineVariant);background:var(--s-surface1)}
+  .c-bar .t{font-size:13px;font-weight:600;letter-spacing:-.01em}
+  .c-bar .m{font-family:var(--mono);font-size:9px;color:var(--s-onSurfaceVariant);margin-left:auto}
+  .c-path{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--s-outlineVariant)}
+  .c-path .p{font-family:var(--mono);font-size:9px;color:var(--s-onSurfaceVariant);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  .c-path .b{font-size:10px;padding:3px 9px;border-radius:6px;border:1px solid var(--s-outlineVariant)}
+  .c-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid
+    color-mix(in srgb,var(--s-outlineVariant) 70%,transparent);position:relative;background:var(--s-surface)}
+  .c-item.on{background:var(--s-surface2)}
+  .c-item.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--s-primary)}
+  .c-item .n{font-size:12.5px;font-weight:550}
+  .c-item .f{font-family:var(--mono);font-size:8.5px;color:var(--s-onSurfaceVariant);margin-top:2px}
+  .c-strip{height:6px;border-radius:2px;overflow:hidden;display:flex;gap:1px;margin-top:7px;width:150px;
+    box-shadow:inset 0 0 0 1px rgba(128,128,128,.22)}
+  .c-strip i{flex:1;display:block}
+  .c-row{display:grid;grid-template-columns:18px 1fr 92px;align-items:center;gap:10px;
+    padding:9px 14px;border-bottom:1px solid color-mix(in srgb,var(--s-outlineVariant) 55%,transparent)}
+  .c-row .c{width:16px;height:16px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
+  .c-row .n{font-size:11.5px}
+  .c-row .n em{display:block;font-family:var(--mono);font-size:8px;font-style:normal;color:var(--s-onSurfaceVariant);margin-top:1px}
+  .c-row .h{font-family:var(--mono);font-size:9px;color:var(--s-onSurfaceVariant);text-align:right}
+  .c-group{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
+    padding:7px 14px;background:var(--s-surface2);font-size:9.5px;font-weight:600;letter-spacing:.06em;
+    color:var(--s-primary);border-bottom:1px solid var(--s-outlineVariant)}
+  .c-foot{padding:6px 14px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--s-outlineVariant);background:var(--s-surface1);
+    font-family:var(--mono);font-size:8.5px;color:var(--s-onSurfaceVariant)}
+  .c-canvas{position:relative;background:var(--s-surface1);
+    background-image:linear-gradient(color-mix(in srgb,var(--s-onSurfaceVariant) 7%,transparent) 1px,transparent 1px),
+      linear-gradient(90deg,color-mix(in srgb,var(--s-onSurfaceVariant) 7%,transparent) 1px,transparent 1px);
+    background-size:20px 20px;background-position:center;
+    border-bottom:1px solid var(--s-outlineVariant);padding:6px 0 14px}
+  .c-float{position:absolute;top:6px;left:10px;right:10px;display:flex;justify-content:space-between;pointer-events:none}
+  .c-float div{height:22px;padding:0 8px;border-radius:6px;font-size:9px;display:flex;align-items:center;gap:4px;
+    background:color-mix(in srgb,var(--s-surface) 86%,transparent);color:var(--s-onSurface);
+    border:1px solid var(--s-outlineVariant)}
+  .c-handle{position:absolute;width:7px;height:7px;border-radius:2px;background:var(--s-surface);border:1.5px solid var(--s-primary)}
+  .c-sheet{flex:1;min-height:0;background:var(--s-surface);border-radius:14px 14px 0 0;
+    border-top:1px solid var(--s-outlineVariant);display:flex;flex-direction:column}
+  .c-grab{height:14px;display:grid;place-items:center;flex:0 0 14px}
+  .c-grab i{width:32px;height:3.5px;border-radius:2px;background:var(--s-outlineVariant);display:block}
+  .c-kv{display:grid;grid-template-columns:56px 1fr;align-items:center;gap:8px;
+    padding:7px 12px;border-bottom:1px solid color-mix(in srgb,var(--s-outlineVariant) 50%,transparent)}
+  .c-kv .k{font-family:var(--mono);font-size:8.5px;color:var(--s-onSurfaceVariant);letter-spacing:-.02em}
+  .c-kv .v{font-size:11.5px;padding:4px 8px;border-radius:5px;background:var(--s-surface2);min-height:22px;display:flex;align-items:center}
+  .c-kv .v.mono{font-family:var(--mono);font-size:10px}
+  .c-kv .v.ph{color:var(--s-onSurfaceVariant);opacity:.7}
+  .c-tools{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--s-outlineVariant);background:var(--s-surface1);margin-top:auto}
+  .c-tools div{flex:1;height:28px;border-radius:7px;display:grid;place-items:center;font-size:10px;
+    border:1px solid var(--s-outlineVariant);color:var(--s-onSurface)}
+  .c-tools div.p{background:var(--s-primary);color:var(--s-onPrimary);border-color:transparent;font-weight:600}
+
+  /* ---------- 规格条 ---------- */
+  .spec{margin:26px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+    background:var(--hair);border:1px solid var(--hair);border-radius:14px;overflow:hidden}
+  .spec>div{background:var(--panel);padding:14px 16px}
+  .spec dt{font-size:10px;letter-spacing:.1em;font-family:var(--mono);color:var(--page-3);margin-bottom:8px}
+  .spec dd{margin:0;font-size:12.5px;line-height:1.65;color:var(--page-2)}
+  .spec dd b{color:var(--page-fg);font-weight:600}
+  .pal{display:flex;gap:4px;margin-top:2px}
+  .pal i{width:22px;height:22px;border-radius:6px;display:block;
+    box-shadow:0 0 0 1px rgba(0,0,0,.14), inset 0 0 0 1px rgba(255,255,255,.35)}
+
+  /* ---------- 结尾对比 ---------- */
+  .end{padding:56px 0 0}
+  table.cmp{width:100%;border-collapse:collapse;font-size:13px;margin-top:18px}
+  table.cmp th,table.cmp td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--hair);vertical-align:top;line-height:1.6}
+  table.cmp th{font-size:10.5px;letter-spacing:.1em;font-family:var(--mono);color:var(--page-3);font-weight:500}
+  table.cmp td:first-child{color:var(--page-3);font-size:12px;width:120px}
+  table.cmp b{font-weight:600}
+  .pick{margin-top:26px;padding:22px 24px;border-radius:16px;background:var(--panel);border:1px solid var(--hair)}
+  .pick h3{margin:0 0 10px;font-size:15px}
+  .pick p{margin:0;font-size:13px;line-height:1.8;color:var(--page-2)}
+  .pick code{font-family:var(--mono);font-size:11.5px;background:color-mix(in srgb,var(--page-fg) 7%,transparent);padding:1px 5px;border-radius:4px}
+  @media (max-width:1120px){.spec{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="headrow">
+    <div>
+      <div class="eyebrow">同文编辑器 · 0.2.0 · UI 风格探索</div>
+      <h1>Material You 的三种走法</h1>
+      <p class="lede">三个方向都建立在 Material 3 的取色与色调体系上，差别不在配色，而在<b>信息怎么组织、屏幕怎么分层、工具放在哪</b>。每套都画了同样三屏：主题列表、配色页、键盘编辑——同一批真实内容，方便你按手感挑，而不是按颜色挑。</p>
+    </div>
+    <div class="toggle" role="group" aria-label="明暗">
+      <button id="b-light" aria-pressed="true">亮色</button>
+      <button id="b-dark" aria-pressed="false">暗色</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ A ============ -->
+<section class="dir" id="a">
+  <div class="dirhead">
+    <span class="no">方向 A</span>
+    <h2>层叠 Tonal</h2>
+    <span class="tag">最标准 · 最低风险</span>
+  </div>
+  <p class="claim">
+    标准 Material 3：顶栏收成一行，每一组设置是一张 tonal 卡片，卡片之间靠色阶而不是分割线分家。
+    配色页 54 个色值按 8 组折进卡片里，滚动距离最短。它不抢戏——编辑器的活是改文件，界面只需要清楚。
+  </p>
+
+  <div class="frames">
+    <!-- A1 -->
+    <div class="frame">
+      <div class="phone d-a">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="a-bar">
+            <div class="a-barrow"><div class="t" style="flex:1">同文编辑器</div><div class="a-ic">⋯</div></div>
+            <div class="sub">4 个主题 · 上次修改 2 小时前</div>
+          </div>
+          <div class="a-path">
+            <div class="p">/storage/emulated/0/rime</div>
+            <div class="act">更换</div>
+          </div>
+          <div class="scroll" style="padding-top:8px">
+            <div class="a-card">
+              <div class="a-theme">
+                <div><div class="n">标准</div><div class="f">tongwenfeng.trime</div></div>
+                <div class="a-badge">当前</div>
+              </div>
+              <div class="sw"><i style="background:#f7f5f2"></i><i style="background:#e8e3db"></i><i style="background:#171614"></i><i style="background:#8a7f70"></i><i style="background:#2f4a3f"></i></div>
+            </div>
+            <div class="a-card">
+              <div class="a-theme">
+                <div><div class="n">模版主题</div><div class="f">template.trime</div></div>
+                <div class="a-ic">⋯</div>
+              </div>
+              <div class="sw"><i style="background:#ffffff"></i><i style="background:#f0f0f0"></i><i style="background:#000000"></i><i style="background:#5292cc"></i><i style="background:#1e1e1e"></i></div>
+            </div>
+            <div class="a-card">
+              <div class="a-theme">
+                <div><div class="n">預設</div><div class="f">trime</div></div>
+                <div class="a-ic">⋯</div>
+              </div>
+              <div class="sw"><i style="background:#ffffff"></i><i style="background:#e6e6e6"></i><i style="background:#3d5a66"></i><i style="background:#d9d9d9"></i><i style="background:#000000"></i></div>
+            </div>
+            <div class="a-card">
+              <div class="a-theme">
+                <div><div class="n">单手特化</div><div class="f">单手特化.trime</div></div>
+                <div class="a-ic">⋯</div>
+              </div>
+              <div class="sw"><i style="background:#ffffff"></i><i style="background:#f2f2f2"></i><i style="background:#3d5a66"></i><i style="background:#dcdcdc"></i><i style="background:#111111"></i></div>
+            </div>
+          </div>
+          <div class="a-hint">点击主题进入编辑；长按可重命名、复制、在文件管理器中打开。改动画的是磁盘上那份文件，写回后除目标行外逐字节不变。</div>
+        </div>
+      </div>
+      <div class="cap"><b>主题列表</b>卡片 + 色带缩略 + 当前标记</div>
+    </div>
+
+    <!-- A2 -->
+    <div class="frame">
+      <div class="phone d-a">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="a-bar" style="padding:4px 12px 8px">
+            <div class="a-barrow">
+              <div class="a-ic">←</div>
+              <div style="flex:1"><div class="t" style="font-size:16px">标准</div>
+                <div class="sub">键盘配色 · steam</div></div>
+              <div class="act" style="font-size:11px;font-weight:600;color:var(--s-primary)">切换</div>
+            </div>
+          </div>
+          <div class="kb" style="padding:4px 6px">
+            <div class="kb-row"><div class="k"><s>1</s>q</div><div class="k"><s>2</s>w</div><div class="k"><s>3</s>e</div><div class="k"><s>4</s>r</div><div class="k"><s>5</s>t</div><div class="k"><s>6</s>y</div><div class="k"><s>7</s>u</div><div class="k"><s>8</s>i</div><div class="k"><s>9</s>o</div><div class="k"><s>0</s>p</div></div>
+            <div class="kb-row"><div class="k"><s>全选</s>a</div><div class="k"><s>@</s>s</div><div class="k"><s>#</s>d</div><div class="k"><s>$</s>f</div><div class="k"><s>%</s>g</div><div class="k"><s>&amp;</s>h</div><div class="k"><s>-</s>j</div><div class="k"><s>+</s>k</div><div class="k"><s>(</s>l</div></div>
+            <div class="kb-row"><div class="k fn">Shift</div><div class="k">z</div><div class="k">x</div><div class="k">c</div><div class="k">v</div><div class="k">b</div><div class="k">n</div><div class="k">m</div><div class="k fn">退格</div></div>
+            <div class="kb-row"><div class="k fn">123</div><div class="k fn">%</div><div class="k">,</div><div class="k" style="flex:3">中文</div><div class="k">。</div><div class="k">/</div><div class="k acc">Enter</div></div>
+          </div>
+          <div class="scroll">
+            <div class="a-sec"><b>方案</b><span>steam</span></div>
+            <div class="a-card" style="padding:0;overflow:hidden">
+              <div class="a-row"><div class="a-chip" style="display:grid;place-items:center;background:var(--s-pcontainer);border:0;color:var(--s-onPcontainer);font-size:14px">＋</div>
+                <div><div class="tt">新建方案</div><div class="ds">以「Steam」为底复制一份</div></div></div>
+              <div class="a-row"><div class="a-chip" style="display:grid;place-items:center;background:var(--s-surface3);border:0;font-size:11px">✎</div>
+                <div><div class="tt">重命名</div><div class="ds">当前显示名：Steam</div></div></div>
+              <div class="a-row err"><div class="a-chip" style="display:grid;place-items:center;background:color-mix(in srgb,var(--s-error) 14%,transparent);border:0;font-size:11px;color:var(--s-error)">✕</div>
+                <div><div class="tt">删除</div><div class="ds">改动直接写入主题文件，无法撤销</div></div></div>
+            </div>
+            <div class="a-sec"><b>候选栏与编码区</b><span>11 项</span></div>
+            <div class="a-card" style="padding:0;overflow:hidden">
+              <div class="a-row"><div class="a-chip" style="background:#171614"></div><div><div class="tt">候选区背景</div><div class="ds mono">back_color · 0xff171614</div></div></div>
+              <div class="a-row"><div class="a-chip" style="background:#2b2b2b"></div><div><div class="tt">候选分割线</div><div class="ds mono">candidate_separator_color · 跟随 border_color</div></div></div>
+              <div class="a-row"><div class="a-chip" style="background:#ffffff"></div><div><div class="tt">候选文字</div><div class="ds mono">candidate_text_color · 0xffffffff</div></div></div>
+              <div class="a-row"><div class="a-chip" style="background:#9a9a9a"></div><div><div class="tt">编码提示文字</div><div class="ds mono">comment_text_color · 0xffa9a7a7</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>配色页</b>8 组折进卡片，组名即分区</div>
+    </div>
+
+    <!-- A3 -->
+    <div class="frame">
+      <div class="phone d-a">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="a-bar" style="padding:4px 12px 6px">
+            <div class="a-barrow">
+              <div class="a-ic">←</div>
+              <div style="flex:1"><div class="t" style="font-size:16px">标准</div><div class="sub">键盘布局 · letter</div></div>
+              <div style="font-size:11px;font-weight:600;color:var(--s-primary)">保存</div>
+            </div>
+          </div>
+          <div class="kb" style="padding:5px 8px 7px">
+            <div class="kb-row"><div class="k sel"><s>1</s>q</div><div class="k"><s>2</s>w</div><div class="k"><s>3</s>e</div><div class="k"><s>4</s>r</div><div class="k"><s>5</s>t</div><div class="k"><s>6</s>y</div><div class="k"><s>7</s>u</div><div class="k"><s>8</s>i</div><div class="k"><s>9</s>o</div><div class="k"><s>0</s>p</div></div>
+            <div class="kb-row"><div class="k"><s>全选</s>a</div><div class="k"><s>@</s>s</div><div class="k"><s>#</s>d</div><div class="k"><s>$</s>f</div><div class="k"><s>%</s>g</div><div class="k"><s>&amp;</s>h</div><div class="k"><s>-</s>j</div><div class="k"><s>+</s>k</div><div class="k"><s>(</s>l</div></div>
+            <div class="kb-row"><div class="k fn">Shift</div><div class="k">z</div><div class="k">x</div><div class="k">c</div><div class="k">v</div><div class="k">b</div><div class="k">n</div><div class="k">m</div><div class="k fn">退格</div></div>
+          </div>
+          <div style="padding:8px 16px;font-size:10px;color:var(--s-onSurfaceVariant)">
+            37 个键（其中 2 个占位键）· 当前第 1 个
+          </div>
+          <div class="scroll">
+            <div class="a-field"><div class="lb">文字 label</div><div class="vl">q</div></div>
+            <div class="a-field"><div class="lb">宽度 width</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="a-ic" style="background:var(--s-surface3);font-size:14px">−</div>
+                <div class="a-slider" style="flex:1"><div class="track"></div><div class="fill"></div><div class="thumb"></div></div>
+                <div class="a-ic" style="background:var(--s-surface3);font-size:14px">＋</div>
+              </div>
+            </div>
+            <div class="a-field"><div class="lb">单击 click</div><div class="vl mono" style="font-size:13px">q</div></div>
+            <div class="a-field" style="margin-bottom:4px"><div class="lb">长按 long_click</div><div class="vl mono" style="font-size:13px">1</div></div>
+          </div>
+          <div class="a-action">
+            <div class="on"><span class="g">＋</span>加键</div><div><span class="g">−</span>删键</div>
+            <div><span class="g">←</span>左移</div><div><span class="g">→</span>右移</div>
+            <div><span class="g">↶</span>撤销</div><div><span class="g">↷</span>重做</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>键盘编辑</b>画布 + outlined 字段 + 底部动作条</div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div><dt>取色</dt><dd><div class="pal"><i style="background:#6750A4"></i><i style="background:#EADDFF"></i><i style="background:#E8DEF8"></i><i style="background:#FEF7FF"></i><i style="background:#1D1B20"></i></div>
+      <b>种子 #6750A4</b>（M3 基线紫）。跟壁纸取色后自动换族。</dd></div>
+    <div><dt>形状</dt><dd>卡片 <b>16</b>，字段 <b>12</b>，按键 <b>8</b>，FAB <b>16</b>。规矩、可预期。</dd></div>
+    <div><dt>导航</dt><dd>顶栏 ← 返回；页面内动作走文字按钮；跨页入口收在 ⋯。</dd></div>
+    <div><dt>代价</dt><dd>最省事：现有每页只换容器与间距，逻辑不动。<b>个性偏弱</b>，容易被认成「又一个 Material 设置页」。</dd></div>
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="dir" id="b">
+  <div class="dirhead">
+    <span class="no">方向 B</span>
+    <h2>舞台 Expressive</h2>
+    <span class="tag">最有性格 · 改动最大</span>
+  </div>
+  <p class="claim">
+    Material 3 Expressive：大字号、超圆角、色块当背景墙。键盘预览不再是一条缩略图，而是页面的「舞台」——
+    上沿压着胶囊按钮，下沿用 36–40 圆角收边，内容像抽屉一样从舞台底下推上来。工具条改成悬浮胶囊，
+    拇指够得到，也不再占一整行。
+  </p>
+
+  <div class="frames">
+    <!-- B1 -->
+    <div class="frame">
+      <div class="phone d-b">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="b-hero">
+            <div class="eb">当前主题</div>
+            <div class="h1">标准</div>
+            <div class="fm">tongwenfeng.trime</div>
+            <div class="b-bigsw">
+              <i style="background:#f7f5f2"></i><i style="background:#e8e3db"></i><i style="background:#171614"></i><i style="background:#8a7f70"></i><i style="background:#2f4a3f"></i>
+            </div>
+          </div>
+          <div class="b-pills">
+            <div class="b-chip" style="flex:1">/storage/…/rime</div>
+            <div class="b-chip t">更换</div>
+          </div>
+          <div class="scroll" style="padding-top:4px">
+            <div style="padding:12px 20px 0;font-size:10px;letter-spacing:.1em;color:var(--s-onSurfaceVariant)">其余 3 个</div>
+            <div class="b-card">
+              <div class="blk" style="background:#000;color:#fff">模</div>
+              <div style="flex:1"><div class="n">模版主题</div><div class="f">template.trime</div></div>
+              <div class="b-chip" style="height:26px;font-size:9px">打开</div>
+            </div>
+            <div class="b-card">
+              <div class="blk" style="background:#3d5a66;color:#fff">预</div>
+              <div style="flex:1"><div class="n">預設</div><div class="f">trime</div></div>
+              <div class="b-chip" style="height:26px;font-size:9px">打开</div>
+            </div>
+            <div class="b-card">
+              <div class="blk" style="background:#8a7f70;color:#fff">单</div>
+              <div style="flex:1"><div class="n">单手特化</div><div class="f">单手特化.trime</div></div>
+              <div class="b-chip" style="height:26px;font-size:9px">打开</div>
+            </div>
+            <div style="padding:14px 20px 0;font-size:10px;line-height:1.8;color:var(--s-onSurfaceVariant)">
+              点击主题进入编辑；长按可重命名、复制、在文件管理器中打开。
+            </div>
+            <div style="height:84px"></div>
+          </div>
+          <div class="b-dock">
+            <div><span class="g">＋</span>新建</div><div><span class="g">⇄</span>切换</div><div><span class="g">⤓</span>导入</div><div><span class="g">⌨</span>输入法</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>主题列表</b>当前主题独占色块头，其余降级成行</div>
+    </div>
+
+    <!-- B2 -->
+    <div class="frame">
+      <div class="phone d-b">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div style="padding:2px 20px 4px;display:flex;align-items:flex-end;gap:10px">
+            <div style="font-size:30px;font-weight:680;letter-spacing:-.03em;line-height:1.05">配色</div>
+            <div class="b-chip t" style="margin-bottom:4px">steam ▾</div>
+          </div>
+          <div style="padding:0 20px;font-size:11px;color:var(--s-onSurfaceVariant)">8 组 · 54 个色值，改一项写一行</div>
+          <div class="b-seg"><div class="on">候选栏</div><div>键盘</div><div>状态</div><div>方案</div></div>
+          <div class="b-swatchbox">
+            <div class="big" style="background:#171614;color:#fff">
+              <b>候选区背景</b><span>back_color<br>0xff171614</span>
+            </div>
+            <div class="b-swrow"><div class="c" style="background:#2b2b2b"></div>
+              <div style="flex:1"><div class="n">候选分割线</div><div class="k">candidate_separator_color</div></div>
+              <div class="h">跟随 border_color</div></div>
+            <div class="b-swrow"><div class="c" style="background:#ffffff"></div>
+              <div style="flex:1"><div class="n">候选文字</div><div class="k">candidate_text_color</div></div>
+              <div class="h">0xffffffff</div></div>
+            <div class="b-swrow"><div class="c" style="background:#9a9a9a"></div>
+              <div style="flex:1"><div class="n">编码提示文字</div><div class="k">comment_text_color</div></div>
+              <div class="h">0xffa9a7a7</div></div>
+          </div>
+          <div class="scroll" style="padding-top:10px">
+            <div style="padding:0 20px;font-size:10px;letter-spacing:.1em;color:var(--s-onSurfaceVariant)">下一个组</div>
+            <div class="b-card" style="margin-top:8px">
+              <div class="blk" style="background:var(--s-scontainer);color:var(--s-onScontainer)">⌨</div>
+              <div style="flex:1"><div class="n">键盘 · 12 项</div><div class="f">key_back_color 起</div></div>
+              <div style="font-size:16px;color:var(--s-onSurfaceVariant)">›</div>
+            </div>
+            <div style="height:82px"></div>
+          </div>
+          <div class="b-dock" style="background:var(--s-primary);color:var(--s-onPrimary)">
+            <div style="color:var(--s-onPrimary)"><span class="g">＋</span>新建方案</div>
+            <div style="color:var(--s-onPrimary)"><span class="g">✎</span>重命名</div>
+            <div style="color:var(--s-onPrimary)"><span class="g">✕</span>删除</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>配色页</b>一组一屏：一个巨大色块 + 三项同组</div>
+    </div>
+
+    <!-- B3 -->
+    <div class="frame">
+      <div class="phone d-b">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="b-stage">
+            <div class="row">
+              <div class="b-fchip">← 返回</div>
+              <div class="b-fchip" style="background:var(--s-primary);color:var(--s-onPrimary)">保存</div>
+            </div>
+            <div class="kb" style="background:transparent;padding:0 10px">
+              <div class="kb-row"><div class="k sel"><s>1</s>q</div><div class="k"><s>2</s>w</div><div class="k"><s>3</s>e</div><div class="k"><s>4</s>r</div><div class="k"><s>5</s>t</div><div class="k"><s>6</s>y</div><div class="k"><s>7</s>u</div><div class="k"><s>8</s>i</div><div class="k"><s>9</s>o</div><div class="k"><s>0</s>p</div></div>
+              <div class="kb-row"><div class="k"><s>全选</s>a</div><div class="k"><s>@</s>s</div><div class="k"><s>#</s>d</div><div class="k"><s>$</s>f</div><div class="k"><s>%</s>g</div><div class="k"><s>&amp;</s>h</div><div class="k"><s>-</s>j</div><div class="k"><s>+</s>k</div><div class="k"><s>(</s>l</div></div>
+              <div class="kb-row"><div class="k fn">Shift</div><div class="k">z</div><div class="k">x</div><div class="k">c</div><div class="k">v</div><div class="k">b</div><div class="k">n</div><div class="k">m</div><div class="k fn">退格</div></div>
+              <div class="kb-row"><div class="k fn">123</div><div class="k fn">%</div><div class="k">,</div><div class="k" style="flex:3">中文</div><div class="k">。</div><div class="k">/</div><div class="k acc">Enter</div></div>
+            </div>
+            <div style="text-align:center;font-size:9.5px;color:var(--s-onSurfaceVariant);padding-top:8px">
+              37 个键（2 个占位）· 第 1 个
+            </div>
+          </div>
+          <div class="scroll" style="padding-top:12px">
+            <div class="b-bigin">
+              <div><div class="lb">文字 LABEL</div><div class="v">q</div></div>
+              <div style="width:44px;height:44px;border-radius:16px;background:var(--s-pcontainer);display:grid;place-items:center;color:var(--s-onPcontainer);font-size:16px">✎</div>
+            </div>
+            <div class="b-step col">
+              <div style="font-size:9px;letter-spacing:.1em;color:var(--s-onSurfaceVariant);margin-bottom:8px">宽度 WIDTH</div>
+              <div style="display:flex;align-items:center;gap:12px">
+                <div class="r">−</div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+                  <div class="num" style="font-size:19px;font-weight:660;line-height:1">10</div>
+                  <div style="width:100%;height:4px;border-radius:2px;background:var(--s-surface3);margin-top:8px;position:relative">
+                    <div style="position:absolute;left:0;width:26%;height:4px;border-radius:2px;background:var(--s-primary)"></div>
+                  </div>
+                </div>
+                <div class="r">＋</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin:10px 16px 0">
+              <div style="flex:1;padding:12px 14px;border-radius:22px;background:var(--s-surface1)">
+                <div style="font-size:9px;letter-spacing:.08em;color:var(--s-onSurfaceVariant)">单击 CLICK</div>
+                <div style="font-size:15px;font-weight:600;margin-top:4px" class="mono">q</div>
+              </div>
+              <div style="flex:1;padding:12px 14px;border-radius:22px;background:var(--s-surface1)">
+                <div style="font-size:9px;letter-spacing:.08em;color:var(--s-onSurfaceVariant)">长按 LONG</div>
+                <div style="font-size:15px;font-weight:600;margin-top:4px" class="mono">1</div>
+              </div>
+            </div>
+            <div style="height:96px"></div>
+          </div>
+          <div class="b-dock" style="height:56px">
+            <div><span class="g">＋</span>加键</div><div><span class="g">−</span>删键</div><div><span class="g">←</span>左移</div><div><span class="g">→</span>右移</div><div><span class="g">↶</span>撤销</div><div><span class="g">↷</span>重做</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>键盘编辑</b>键盘当场变成彩色舞台，工具条悬浮</div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div><dt>取色</dt><dd><div class="pal"><i style="background:#9C4423"></i><i style="background:#FFDBCC"></i><i style="background:#FFDCC6"></i><i style="background:#9CF1F5"></i><i style="background:#231917"></i></div>
+      <b>种子 #9C4423</b>（暖陶土），青作补色点缀。整屏偏暖。</dd></div>
+    <div><dt>形状</dt><dd>卡片 <b>28</b>，胶囊 <b>999</b>，按键 <b>12</b>，舞台圆角 <b>36/40</b>。形状本身在说话。</dd></div>
+    <div><dt>导航</dt><dd>舞台上的胶囊返回/保存；一级动作进悬浮 dock；选中态靠色块而非描边。</dd></div>
+    <div><dt>代价</dt><dd>改得多：顶栏、列表、字段、工具条四处换结构，得先测 21–24dp 小字在平板上会不会太散；<b>暖色在深色主题下最容易脏</b>，暗色要单独调一轮。</dd></div>
+  </div>
+</section>
+
+<!-- ============ C ============ -->
+<section class="dir" id="c">
+  <div class="dirhead">
+    <span class="no">方向 C</span>
+    <h2>画布 Canvas-first</h2>
+    <span class="tag">最工具化 · 平板最优</span>
+  </div>
+  <p class="claim">
+    把键盘预览当主角：手机上是「上半屏画布 + 下半屏检查器抽屉」，平板上直接左右双栏。信息密度按工具软件来，
+    YAML 键名用等宽字，色值右对齐、点一下就地改。Material You 在这里只提供取色与形状，不再提供「卡片感」。
+  </p>
+
+  <div class="frames">
+    <!-- C1 -->
+    <div class="frame">
+      <div class="phone d-c">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="c-bar"><div class="t" style="flex:1">同文编辑器</div><div style="font-size:13px;color:var(--s-onSurfaceVariant)">⋯</div></div>
+          <div class="c-path"><div class="p">/storage/emulated/0/rime</div><div class="b">更换</div></div>
+          <div style="padding:6px 14px;font-family:var(--mono);font-size:8.5px;color:var(--s-onSurfaceVariant);border-bottom:1px solid var(--s-outlineVariant)">THEME / 4 个文件</div>
+          <div class="scroll">
+            <div class="c-item on">
+              <div style="flex:1">
+                <div class="n">标准 <span style="font-size:8px;font-weight:600;color:var(--s-primary);border:1px solid var(--s-primary);padding:1px 5px;border-radius:3px;margin-left:6px">当前</span></div>
+                <div class="f">tongwenfeng.trime</div>
+                <div class="c-strip"><i style="background:#f7f5f2"></i><i style="background:#e8e3db"></i><i style="background:#171614"></i><i style="background:#8a7f70"></i><i style="background:#2f4a3f"></i></div>
+              </div>
+              <div style="font-size:14px;color:var(--s-onSurfaceVariant)">›</div>
+            </div>
+            <div class="c-item">
+              <div style="flex:1"><div class="n">模版主题</div><div class="f">template.trime</div>
+                <div class="c-strip"><i style="background:#fff"></i><i style="background:#f0f0f0"></i><i style="background:#000"></i><i style="background:#5292cc"></i><i style="background:#1e1e1e"></i></div></div>
+              <div style="font-size:14px;color:var(--s-onSurfaceVariant)">›</div>
+            </div>
+            <div class="c-item">
+              <div style="flex:1"><div class="n">預設</div><div class="f">trime</div>
+                <div class="c-strip"><i style="background:#fff"></i><i style="background:#e6e6e6"></i><i style="background:#3d5a66"></i><i style="background:#d9d9d9"></i><i style="background:#000"></i></div></div>
+              <div style="font-size:14px;color:var(--s-onSurfaceVariant)">›</div>
+            </div>
+            <div class="c-item">
+              <div style="flex:1"><div class="n">单手特化</div><div class="f">单手特化.trime</div>
+                <div class="c-strip"><i style="background:#fff"></i><i style="background:#f2f2f2"></i><i style="background:#3d5a66"></i><i style="background:#dcdcdc"></i><i style="background:#111"></i></div></div>
+              <div style="font-size:14px;color:var(--s-onSurfaceVariant)">›</div>
+            </div>
+            <div style="padding:12px 14px;font-size:10px;color:var(--s-onSurfaceVariant);line-height:1.7">
+              点击进入编辑；长按可改名、复制、在文件管理器中打开。改动画的是你磁盘上的那份文件。
+            </div>
+          </div>
+          <div class="c-foot"><span>4 个主题 · 已读取</span><span>UTF-8 / LF</span></div>
+        </div>
+      </div>
+      <div class="cap"><b>主题列表</b>表格化，行高 44，等宽文件名对齐</div>
+    </div>
+
+    <!-- C2 -->
+    <div class="frame">
+      <div class="phone d-c">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="c-bar"><div style="font-size:13px;color:var(--s-onSurfaceVariant)">←</div>
+            <div class="t">标准</div><div class="m">steam · 54 项</div></div>
+          <div class="kb" style="padding:4px 5px">
+            <div class="kb-row"><div class="k"><s>1</s>q</div><div class="k"><s>2</s>w</div><div class="k"><s>3</s>e</div><div class="k"><s>4</s>r</div><div class="k"><s>5</s>t</div><div class="k"><s>6</s>y</div><div class="k"><s>7</s>u</div><div class="k"><s>8</s>i</div><div class="k"><s>9</s>o</div><div class="k"><s>0</s>p</div></div>
+            <div class="kb-row"><div class="k"><s>全选</s>a</div><div class="k"><s>@</s>s</div><div class="k"><s>#</s>d</div><div class="k"><s>$</s>f</div><div class="k"><s>%</s>g</div><div class="k"><s>&amp;</s>h</div><div class="k"><s>-</s>j</div><div class="k"><s>+</s>k</div><div class="k"><s>(</s>l</div></div>
+            <div class="kb-row"><div class="k fn">Shift</div><div class="k">z</div><div class="k">x</div><div class="k">c</div><div class="k">v</div><div class="k">b</div><div class="k">n</div><div class="k">m</div><div class="k fn">退格</div></div>
+          </div>
+          <div class="scroll">
+            <div class="c-group"><span>候选栏与编码区</span><span>11 / 11</span></div>
+            <div class="c-row"><div class="c" style="background:#171614"></div>
+              <div class="n">候选区背景<em>back_color</em></div><div class="h">0xff171614</div></div>
+            <div class="c-row"><div class="c" style="background:#2b2b2b"></div>
+              <div class="n">候选分割线<em>candidate_separator_color</em></div><div class="h">跟随</div></div>
+            <div class="c-row"><div class="c" style="background:#fff"></div>
+              <div class="n">候选文字<em>candidate_text_color</em></div><div class="h">0xffffffff</div></div>
+            <div class="c-row"><div class="c" style="background:#9a9a9a"></div>
+              <div class="n">编码提示文字<em>comment_text_color</em></div><div class="h">0xffa9a7a7</div></div>
+            <div class="c-row"><div class="c" style="background:#171614"></div>
+              <div class="n">高亮编码区背景<em>hilited_back_color</em></div><div class="h">0xff171614</div></div>
+            <div class="c-row"><div class="c" style="background:#314259"></div>
+              <div class="n">高亮候选背景<em>hilited_candidate_back_color</em></div><div class="h">0xff314259</div></div>
+            <div class="c-row"><div class="c" style="background:#fff"></div>
+              <div class="n">高亮候选文字<em>hilited_candidate_text_color</em></div><div class="h">0xffffffff</div></div>
+            <div class="c-group"><span>键盘</span><span>12 / 12</span></div>
+            <div class="c-row"><div class="c" style="background:#e8e3db"></div>
+              <div class="n">按键背景<em>key_back_color</em></div><div class="h">0xffe8e3db</div></div>
+            <div class="c-row"><div class="c" style="background:#171614"></div>
+              <div class="n">按键文字<em>key_text_color</em></div><div class="h">0xff171614</div></div>
+          </div>
+          <div class="c-foot"><span>6 组 · 54 项</span><span>点色值就地改</span></div>
+        </div>
+      </div>
+      <div class="cap"><b>配色页</b>54 项一张表，组头吸顶、可折叠</div>
+    </div>
+
+    <!-- C3 -->
+    <div class="frame">
+      <div class="phone d-c">
+        <div class="stat"><span>9:41</span><span class="r">▲ ● 100</span></div>
+        <div class="screen">
+          <div class="c-canvas">
+            <div class="c-float"><div>← letter</div><div style="gap:8px"><span>↶</span><span>↷</span><span style="font-weight:600;color:var(--s-primary)">保存</span></div></div>
+            <div class="kb" style="background:transparent;padding:32px 6px 8px">
+              <div class="kb-row"><div class="k sel" style="position:relative"><s>1</s>q
+                <span class="c-handle" style="left:-3px;top:-3px"></span><span class="c-handle" style="right:-3px;bottom:-3px"></span></div>
+                <div class="k"><s>2</s>w</div><div class="k"><s>3</s>e</div><div class="k"><s>4</s>r</div><div class="k"><s>5</s>t</div><div class="k"><s>6</s>y</div><div class="k"><s>7</s>u</div><div class="k"><s>8</s>i</div><div class="k"><s>9</s>o</div><div class="k"><s>0</s>p</div></div>
+              <div class="kb-row"><div class="k"><s>全选</s>a</div><div class="k"><s>@</s>s</div><div class="k"><s>#</s>d</div><div class="k"><s>$</s>f</div><div class="k"><s>%</s>g</div><div class="k"><s>&amp;</s>h</div><div class="k"><s>-</s>j</div><div class="k"><s>+</s>k</div><div class="k"><s>(</s>l</div></div>
+              <div class="kb-row"><div class="k fn">Shift</div><div class="k">z</div><div class="k">x</div><div class="k">c</div><div class="k">v</div><div class="k">b</div><div class="k">n</div><div class="k">m</div><div class="k fn">退格</div></div>
+              <div class="kb-row"><div class="k fn">123</div><div class="k fn">%</div><div class="k">,</div><div class="k" style="flex:3">中文</div><div class="k">。</div><div class="k">/</div><div class="k acc">Enter</div></div>
+            </div>
+          </div>
+          <div class="c-sheet">
+            <div class="c-grab"><i></i></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 12px 6px">
+              <div style="font-size:11px;font-weight:600">第 1 个键</div>
+              <div class="mono" style="font-size:8.5px;color:var(--s-onSurfaceVariant)">w 10 · h 1</div>
+            </div>
+            <div class="c-kv"><div class="k">label</div><div class="v mono">q</div></div>
+            <div class="c-kv"><div class="k">width</div><div class="v">
+              <div style="display:flex;align-items:center;gap:8px;width:100%;font-size:10.5px">
+                <span style="color:var(--s-onSurfaceVariant)">−</span>
+                <span style="flex:1;height:3px;background:var(--s-surface3);border-radius:2px;position:relative">
+                  <span style="position:absolute;left:0;top:0;width:26%;height:3px;background:var(--s-primary);border-radius:2px"></span>
+                </span>
+                <span class="mono" style="width:16px;text-align:right">10</span>
+                <span style="color:var(--s-onSurfaceVariant)">＋</span>
+              </div></div></div>
+            <div class="c-kv"><div class="k">click</div><div class="v mono">q</div></div>
+            <div class="c-kv"><div class="k">long_click</div><div class="v mono">1</div></div>
+            <div class="c-kv"><div class="k">swipe_up</div><div class="v ph">未设置</div></div>
+            <div class="c-kv"><div class="k">popup</div><div class="v ph mono">'q w'</div></div>
+            <div class="c-tools">
+              <div class="p">＋ 加键</div><div>− 删键</div><div>← 左移</div><div>→ 右移</div>
+            </div>
+            <div class="c-foot"><span>37 键 · 2 占位</span><span>已保存</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>键盘编辑</b>画布全宽，检查器抽屉占下半屏</div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div><dt>取色</dt><dd><div class="pal"><i style="background:#1B4C7E"></i><i style="background:#D3E4FF"></i><i style="background:#E0E2EC"></i><i style="background:#A6F0F4"></i><i style="background:#181C20"></i></div>
+      <b>种子 #1B4C7E</b>（石板蓝），几乎只用它的三个色阶，靠中性色撑结构。</dd></div>
+    <div><dt>形状</dt><dd>卡片 <b>10</b>，输入 <b>5</b>，按键 <b>6</b>，抽屉 <b>14</b>。小而一致，像尺子量出来的。</dd></div>
+    <div><dt>导航</dt><dd>无顶栏：画布上浮胶囊管返回/撤销/保存；字段全在抽屉里；平板上抽屉变右栏。</dd></div>
+    <div><dt>代价</dt><dd>要处理键盘弹起 / 抽屉高度 / 画布缩放三者的争夺，最费工；<b>手机上 22dp 触摸目标</b>有风险，得放大到 40+。</dd></div>
+  </div>
+</section>
+
+<!-- ============ 对比 ============ -->
+<div class="end">
+  <div class="eyebrow">怎么选</div>
+  <table class="cmp">
+    <tr><th></th><th>A · 层叠 Tonal</th><th>B · 舞台 Expressive</th><th>C · 画布 Canvas-first</th></tr>
+    <tr><td>读起来像</td><td>系统设置页</td><td>消费级 App</td><td>专业工具</td></tr>
+    <tr><td>视觉重心</td><td>卡片层级</td><td>键盘色块</td><td>画布 + 数值</td></tr>
+    <tr><td>改动量</td><td><b>小</b>：容器与间距</td><td><b>中</b>：四处换结构</td><td><b>大</b>：重排页面骨架</td></tr>
+    <tr><td>配色 54 项</td><td>8 张卡片，滚动 2–3 屏</td><td>一组一屏，翻 6 次</td><td>一屏 12 项，一屏看完一半</td></tr>
+    <tr><td>平板适配</td><td>卡片自动变宽，够用</td><td>色块会显得空</td><td><b>天生双栏</b>，最合适</td></tr>
+    <tr><td>风险</td><td>太像模板</td><td>暖色在深色下易脏</td><td>手势冲突、小目标</td></tr>
+  </table>
+
+  <div class="pick">
+    <h3>我的建议：A 打底，B 当选装皮肤</h3>
+    <p>
+      编辑器的主要任务是「改一个值并确认没写坏别的行」，<b>稳定性 > 表演性</b>，所以默认皮肤我选 A：它把 54 个色值折成 8 张卡，
+      一屏能看两组，滚动最短；实现上现有每页只换容器和间距，回归面最小。<br>
+      B 就做成 <code>外观 → 界面风格</code> 里的第二套皮肤（同一套 token，换 shape / density / 一组色阶即可），
+      给喜欢大色块的人用；C 更适合留在平板上做「进阶模式」，等布局编辑那块再多两个面板时再上。<br>
+      三套共用一层 <code>UiStyle</code> token（color / shape / type / density），切皮肤 = 换 token 表，页面代码只认 token——
+      这是让「不同 UI 风格」这件事以后还能加第四套的唯一办法。
+    </p>
+  </div>
+</div>
+
+</div>
+<script>
+  const L = document.getElementById('b-light'), D = document.getElementById('b-dark');
+  function set(dark){
+    document.body.classList.toggle('dark', dark);
+    L.setAttribute('aria-pressed', String(!dark));
+    D.setAttribute('aria-pressed', String(dark));
+  }
+  L.onclick = () => set(false);
+  D.onclick = () => set(true);
+</script>
+</body>
+</html>

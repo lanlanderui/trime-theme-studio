@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_primary">#2C5F55</color>
+    <color name="brand_primary_dark">#1F443D</color>
+    <color name="brand_accent">#C77B4E</color>
+    <color name="note_fill">#F0F2F1</color>
+    <color name="warn">#B3261E</color>
+    <color name="stale_fill">#FDF3E3</color>
+    <color name="stale_text">#7A4A12</color>
+    <color name="divider">#1F000000</color>
+    <color name="chip_text">#4A4A4A</color>
+    <color name="chip_text_selected">#FFFFFF</color>
+</resources>

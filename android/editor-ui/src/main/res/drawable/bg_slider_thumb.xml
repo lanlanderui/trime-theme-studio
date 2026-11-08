@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!-- 滑杆的拇指：主色实心圆。 SeekBar 的拇指是单独一张 drawable，不吃轨道的 4dp。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?attr/ui_primary" />
+    <size
+        android:width="16dp"
+        android:height="16dp" />
+</shape>

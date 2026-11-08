@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  配色页（方向 B · 舞台，设计稿 B2）。
+
+  结构照稿子：大标题 + 方案胶囊一行、副标题一行、四项段控、然后「一组一屏」的
+  内容区（巨型色块 + 同组行 + 「下一个组」入口），一级动作（新建/重命名/删除）
+  常驻底部 dock。54 个色值按 8 组折进 3 个颜色段 + 1 个方案段，一次只看一组。
+
+  和 Preference 版的两点不同：
+  - 段控换组是「整块内容重建」，不是 RecyclerView 滚动；目录栏点节 = 换段
+    （见 ColorSchemeFragment.scrollTo）。
+  - dock 是主色底（稿子 inline style 覆盖了 .b-dock 的 pcontainer），与 B1 的
+    主色容器底不是同一张 drawable。
+
+  dock 不挂 `ui_dock` 标签：挂了会被 EditorActivity.applyChrome 用统一 10dp
+  边距覆盖，稿子是 14/16。
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/ui_paper">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="82dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 标题行：「配色」30sp + 方案胶囊 + ⋯（稿子 B2-01） -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingMultiplier="1.05"
+                    android:singleLine="true"
+                    android:text="@string/color_b2_title"
+                    android:textColor="?attr/ui_ink"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/schemeChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/bg_chip_t"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:maxWidth="160dp"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:singleLine="true"
+                    android:textColor="?attr/ui_on_primary_container"
+                    android:textSize="10.5sp" />
+
+                <TextView
+                    android:id="@+id/menuButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="⋯"
+                    android:textColor="?attr/ui_ink_2"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- 副标题：几组 · 几个色值（稿子 B2-01） -->
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="?attr/ui_muted"
+                android:textSize="11sp" />
+
+            <!-- 段控：候选栏 / 键盘 / 状态 / 方案（稿子 B2-02） -->
+            <LinearLayout
+                android:id="@+id/segBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="16dp">
+
+                <TextView
+                    android:id="@+id/seg0"
+                    style="@style/Ui.SegItem"
+                    android:text="@string/color_b2_tab_candidate" />
+
+                <TextView
+                    android:id="@+id/seg1"
+                    style="@style/Ui.SegItem"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/color_b2_tab_keyboard" />
+
+                <TextView
+                    android:id="@+id/seg2"
+                    style="@style/Ui.SegItem"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/color_b2_tab_status" />
+
+                <TextView
+                    android:id="@+id/seg3"
+                    style="@style/Ui.SegItem"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/color_scheme_group" />
+            </LinearLayout>
+
+            <!-- 一组一屏的内容：巨型色块卡 + 同组行，或方案卡。代码重建。 -->
+            <LinearLayout
+                android:id="@+id/contentHost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- 「下一个组」入口（稿子 B2-05） -->
+            <LinearLayout
+                android:id="@+id/nextGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/color_b2_next_group"
+                    android:textColor="?attr/ui_muted"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:id="@+id/nextCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/nextBlock"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_block_t"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="⌨"
+                        android:textColor="?attr/ui_on_primary_container"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nextName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:singleLine="true"
+                            android:textColor="?attr/ui_ink"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/nextFirst"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:fontFamily="monospace"
+                            android:singleLine="true"
+                            android:textColor="?attr/ui_muted"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="›"
+                        android:textColor="?attr/ui_muted"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!--
+      dock：主色底 + onPrimary 字（稿子 inline style 覆盖了 .b-dock 的 pcontainer，
+      用的就是主色那一档）。三项 = 方案的增 / 改 / 删。
+    -->
+    <LinearLayout
+        android:id="@+id/dock"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_dock_primary"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <LinearLayout
+            android:id="@+id/dockNew"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="＋"
+                android:textColor="?attr/ui_on_primary" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/dock_new_scheme"
+                android:textColor="?attr/ui_on_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dockRename"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="✎"
+                android:textColor="?attr/ui_on_primary" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/dock_rename"
+                android:textColor="?attr/ui_on_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dockDelete"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="✕"
+                android:textColor="?attr/ui_on_primary" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/dock_delete"
+                android:textColor="?attr/ui_on_primary" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

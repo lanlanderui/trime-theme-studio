@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!-- 章节下面的一句说明（「只影响编码区」「这段本主题没写」）。 -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Ui.Section"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/ui_gutter"
+    android:paddingTop="6dp"
+    android:paddingEnd="@dimen/ui_gutter"
+    android:paddingBottom="4dp" />

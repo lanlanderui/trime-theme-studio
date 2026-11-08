@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      主题分两层：基础主题（AppCompat + 默认 token）与皮肤 overlay。
+
+      为什么要两层：`Theme.TrimeEditor.QuickAction` 这类清单主题必须有个完整的
+      基础主题可继承；而换皮肤是「在既有主题上叠一层」，用
+      `theme.applyStyle(overlay, true)` 而不是 `setTheme()`——`setTheme` 会把
+      清单里挂的主题整个换掉，三个快捷入口（半透明、不画界面）会闪一下白屏。
+
+      基础主题里的 ui_* 全部取「校样」的值：这样任何没有应用 overlay 的入口
+      （快捷入口、系统弹出的对话框）都不会出现「attr 没定义 → 透明 / 崩溃」。
+    -->
+    <style name="Theme.TrimeEditor" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryDark">@color/brand_primary_dark</item>
+        <item name="colorAccent">@color/brand_accent</item>
+        <!-- 溢出菜单的 ⋯ 与「返回」箭头都取它；不设会是 AppCompat 的默认黑，暗色下发沉。 -->
+        <item name="colorControlNormal">@color/proof_ink_2</item>
+        <item name="android:windowBackground">@color/proof_paper</item>
+        <!--
+          PreferenceFragmentCompat 要求主题里声明 preferenceTheme，否则一
+          attach 就抛 "Must specify preferenceTheme in theme"；AppCompat 的
+          基础主题不自带这一项。
+        -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+
+        <!-- ===== token 默认值（= 校样皮肤） ===== -->
+        <item name="ui_paper">@color/proof_paper</item>
+        <item name="ui_sheet">@color/proof_sheet</item>
+        <item name="ui_card">@color/proof_paper</item>
+        <item name="ui_card_high">@color/proof_sheet</item>
+        <item name="ui_ink">@color/proof_ink</item>
+        <item name="ui_ink_2">@color/proof_ink_2</item>
+        <item name="ui_muted">@color/proof_muted</item>
+        <item name="ui_rule">@color/proof_rule</item>
+        <item name="ui_rule_strong">@color/proof_rule_strong</item>
+        <item name="ui_outline">@color/proof_rule_strong</item>
+        <item name="ui_divider">@color/divider</item>
+        <item name="ui_rule_in_card">@color/proof_rule</item>
+        <item name="ui_accent">@color/proof_accent</item>
+        <item name="ui_highlight">@color/proof_accent</item>
+        <item name="ui_primary">@color/brand_primary</item>
+        <item name="ui_primary_dark">@color/brand_primary_dark</item>
+        <item name="ui_primary_container">@color/proof_primary_container</item>
+        <item name="ui_on_primary_container">@color/proof_on_primary_container</item>
+        <item name="ui_on_primary">#FFFFFFFF</item>
+        <item name="ui_mark">@color/proof_mark</item>
+        <item name="ui_swatch_stroke">@color/proof_swatch_stroke</item>
+        <item name="ui_knob">@color/proof_knob</item>
+        <item name="ui_pill_stroke">@color/proof_pill_stroke</item>
+        <item name="ui_scrim">#66000000</item>
+        <item name="ui_warn">@color/warn</item>
+        <item name="ui_note_fill">@color/note_fill</item>
+        <item name="ui_stale_fill">@color/stale_fill</item>
+        <item name="ui_stale_text">@color/stale_text</item>
+        <item name="ui_chip_text">@color/chip_text</item>
+        <item name="ui_chip_text_selected">@color/chip_text_selected</item>
+
+        <item name="ui_radius_card">0dp</item>
+        <item name="ui_radius_field">2dp</item>
+        <item name="ui_radius_button">2dp</item>
+        <item name="ui_radius_key">2dp</item>
+        <item name="ui_radius_sheet">0dp</item>
+        <item name="ui_radius_half">2dp</item>
+        <item name="ui_radius_swatch">@dimen/ui_swatch_radius</item>
+
+        <item name="ui_text_title">23sp</item>
+        <item name="ui_text_section">17sp</item>
+        <item name="ui_text_name">13sp</item>
+        <item name="ui_text_meta">10sp</item>
+        <item name="ui_text_value">12sp</item>
+        <item name="ui_text_button">13sp</item>
+        <item name="ui_font_title">serif</item>
+        <item name="ui_font_body">sans-serif</item>
+        <item name="ui_font_meta">monospace</item>
+
+        <item name="ui_gap_card">0dp</item>
+        <item name="ui_card_pad">0dp</item>
+    </style>
+
+    <!-- 快捷入口：不画界面、不闪一下白屏，做完一句 toast 就走。 -->
+    <style name="Theme.TrimeEditor.QuickAction" parent="Theme.TrimeEditor">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

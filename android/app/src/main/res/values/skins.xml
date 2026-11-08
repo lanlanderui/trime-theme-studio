@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  两张皮肤 overlay（校样已于 0.4.0 下架；基础主题仍沿用旧纸感底色作底层默认）。
+
+  它们只有 `<item>`，没有 parent 之外的继承关系（`Skin.Tonal` 的隐式父级是
+  空壳 `Skin`），因为 overlay 的语义是「往当前主题上盖几项」，不是「换一套
+  主题」。谁把它们盖上去：`com.trime.editor.ui.skin.EditorActivity`，
+  在 `super.onCreate` 之前用 `theme.applyStyle(...)`。
+
+  颜色一律指向色板资源而不是写字面值：色板的暗色在 values-night 里是另一份，
+  写死在这里等于把暗色模式做废。
+-->
+<resources>
+
+    <style name="Skin" />
+
+    <!-- 校样（proof）已于 0.4.0 下架；旧 id 由 Skin.of 回退到层叠。 -->
+
+    <!-- ===== 层叠（m3-tonal，默认） ===== -->
+    <style name="Skin.Tonal">
+        <item name="android:windowBackground">@color/tonal_paper</item>
+        <item name="colorPrimary">@color/tonal_primary</item>
+        <item name="colorPrimaryDark">@color/tonal_primary_dark</item>
+        <item name="colorAccent">@color/tonal_accent</item>
+        <item name="colorControlNormal">@color/tonal_ink_2</item>
+
+        <item name="ui_paper">@color/tonal_paper</item>
+        <item name="ui_sheet">@color/tonal_sheet</item>
+        <item name="ui_card">@color/tonal_card</item>
+        <item name="ui_card_high">@color/tonal_card_high</item>
+        <item name="ui_ink">@color/tonal_ink</item>
+        <item name="ui_ink_2">@color/tonal_ink_2</item>
+        <item name="ui_muted">@color/tonal_muted</item>
+        <item name="ui_rule">@color/tonal_rule</item>
+        <item name="ui_rule_strong">@color/tonal_rule_strong</item>
+        <item name="ui_outline">@color/tonal_outline</item>
+        <item name="ui_divider">@color/tonal_divider</item>
+        <item name="ui_rule_in_card">#00000000</item>
+        <item name="ui_accent">@color/tonal_accent</item>
+        <item name="ui_highlight">@color/tonal_accent</item>
+        <item name="ui_primary">@color/tonal_primary</item>
+        <item name="ui_primary_dark">@color/tonal_primary_dark</item>
+        <item name="ui_primary_container">@color/tonal_primary_container</item>
+        <item name="ui_on_primary_container">@color/tonal_on_primary_container</item>
+        <item name="ui_on_primary">@color/tonal_on_primary</item>
+        <item name="ui_mark">@color/tonal_mark</item>
+        <item name="ui_swatch_stroke">@color/tonal_swatch_stroke</item>
+        <item name="ui_knob">@color/tonal_knob</item>
+        <item name="ui_pill_stroke">@color/tonal_pill_stroke</item>
+        <item name="ui_scrim">@color/tonal_scrim</item>
+        <item name="ui_warn">@color/tonal_warn</item>
+        <item name="ui_note_fill">@color/tonal_note_fill</item>
+        <item name="ui_stale_fill">@color/tonal_stale_fill</item>
+        <item name="ui_stale_text">@color/tonal_stale_text</item>
+        <item name="ui_chip_text">@color/tonal_chip_text</item>
+        <item name="ui_chip_text_selected">@color/tonal_chip_text_selected</item>
+
+        <!-- 16 / 12 / 20 / 8 / 28：M3 的 regular / small / full / small / large。 -->
+        <item name="ui_radius_card">16dp</item>
+        <item name="ui_radius_field">12dp</item>
+        <item name="ui_radius_button">20dp</item>
+        <item name="ui_radius_key">8dp</item>
+        <item name="ui_radius_sheet">28dp</item>
+        <item name="ui_radius_half">12dp</item>
+        <item name="ui_radius_swatch">6dp</item>
+
+        <item name="ui_text_title">21sp</item>
+        <item name="ui_text_section">13sp</item>
+        <item name="ui_text_name">13sp</item>
+        <item name="ui_text_meta">10sp</item>
+        <item name="ui_text_value">12sp</item>
+        <item name="ui_text_button">13sp</item>
+        <item name="ui_font_title">sans-serif</item>
+        <item name="ui_font_body">sans-serif</item>
+        <item name="ui_font_meta">monospace</item>
+
+        <item name="ui_gap_card">8dp</item>
+        <item name="ui_card_pad">14dp</item>
+    </style>
+
+    <!-- ===== 舞台（m3-expressive） ===== -->
+    <style name="Skin.Expressive">
+        <item name="android:windowBackground">@color/expressive_paper</item>
+        <item name="colorPrimary">@color/expressive_primary</item>
+        <item name="colorPrimaryDark">@color/expressive_primary_dark</item>
+        <item name="colorAccent">@color/expressive_accent</item>
+        <item name="colorControlNormal">@color/expressive_ink_2</item>
+
+        <item name="ui_paper">@color/expressive_paper</item>
+        <item name="ui_sheet">@color/expressive_sheet</item>
+        <item name="ui_card">@color/expressive_card</item>
+        <item name="ui_card_high">@color/expressive_card_high</item>
+        <item name="ui_ink">@color/expressive_ink</item>
+        <item name="ui_ink_2">@color/expressive_ink_2</item>
+        <item name="ui_muted">@color/expressive_muted</item>
+        <item name="ui_rule">@color/expressive_rule</item>
+        <item name="ui_rule_strong">@color/expressive_rule_strong</item>
+        <item name="ui_outline">@color/expressive_outline</item>
+        <item name="ui_divider">@color/expressive_divider</item>
+        <item name="ui_rule_in_card">#00000000</item>
+        <item name="ui_accent">@color/expressive_accent</item>
+        <item name="ui_highlight">#9CF1F5</item>
+        <item name="ui_primary">@color/expressive_primary</item>
+        <item name="ui_primary_dark">@color/expressive_primary_dark</item>
+        <item name="ui_primary_container">@color/expressive_primary_container</item>
+        <item name="ui_on_primary_container">@color/expressive_on_primary_container</item>
+        <item name="ui_on_primary">@color/expressive_on_primary</item>
+        <item name="ui_mark">@color/expressive_mark</item>
+        <item name="ui_swatch_stroke">@color/expressive_swatch_stroke</item>
+        <item name="ui_knob">@color/expressive_knob</item>
+        <item name="ui_pill_stroke">@color/expressive_pill_stroke</item>
+        <item name="ui_scrim">@color/expressive_scrim</item>
+        <item name="ui_warn">@color/expressive_warn</item>
+        <item name="ui_note_fill">@color/expressive_note_fill</item>
+        <item name="ui_stale_fill">@color/expressive_stale_fill</item>
+        <item name="ui_stale_text">@color/expressive_stale_text</item>
+        <item name="ui_chip_text">@color/expressive_chip_text</item>
+        <item name="ui_chip_text_selected">@color/expressive_chip_text_selected</item>
+
+        <!-- 28 / 26 / 100（胶囊）/ 12 / 36 / 8：大圆角是这套皮肤的语言。 -->
+        <item name="ui_radius_card">28dp</item>
+        <item name="ui_radius_field">26dp</item>
+        <item name="ui_radius_button">100dp</item>
+        <item name="ui_radius_key">12dp</item>
+        <item name="ui_radius_sheet">36dp</item>
+        <item name="ui_radius_half">22dp</item>
+        <item name="ui_radius_swatch">8dp</item>
+
+        <item name="ui_text_title">34sp</item>
+        <item name="ui_text_section">15sp</item>
+        <item name="ui_text_name">15sp</item>
+        <item name="ui_text_meta">11sp</item>
+        <item name="ui_text_value">12.5sp</item>
+        <item name="ui_text_button">13.5sp</item>
+        <item name="ui_font_title">sans-serif</item>
+        <item name="ui_font_body">sans-serif</item>
+        <item name="ui_font_meta">monospace</item>
+
+        <item name="ui_gap_card">12dp</item>
+        <item name="ui_card_pad">16dp</item>
+    </style>
+</resources>

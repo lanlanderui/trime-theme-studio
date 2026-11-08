@@ -1,0 +1,19 @@
+* text=auto eol=lf
+
+*.kt text eol=lf
+*.kts text eol=lf
+*.xml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.pro text eol=lf
+
+# 真机主题的测试夹具：必须逐字节原样保存。它是 CRLF，而
+# ThemeKeyboardRoundTripTest 正是靠这一点证明写盘不会换掉行尾；
+# 一旦被归一成 LF，那条断言会变成「同义反复」而不是「已验证」。
+theme-core/src/test/resources/tongwenfeng.trime.yaml -text
+gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+*.png binary
+*.webp binary

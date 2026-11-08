@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  标准卡片：ui_card 底 + 卡片圆角 + 1dp 描边。
+
+  与 UiTokens.card() 等价的那一张（代码造内容时用它，XML 静态骨架用这一张）。
+  描边不是装饰：校样皮肤的卡片底色与纸几乎同色，没有描边就只剩一个看不见的块。
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/ui_card" />
+    <corners android:radius="?attr/ui_radius_card" />
+    <stroke
+        android:width="@dimen/ui_swatch_stroke_w"
+        android:color="?attr/ui_rule" />
+</shape>

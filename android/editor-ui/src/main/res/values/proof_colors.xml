@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  A 方案「校样」的纸感色板（亮色，paper）。
+
+  这一套只画编辑器自己的界面；键盘样张里的颜色属于主题，不从这里取——
+  暗色模式下键盘照原样画，编辑器变炭纸，两者不是一回事。
+
+  规则（见 doc/ui-proof-tokens.md）：
+  - accent 只表示「当前 / 需要注意」，一屏超过三处就是滥用；
+  - 白色色块必须带 proof_swatch_stroke 描边，否则在白纸上会消失。
+-->
+<resources>
+    <color name="proof_paper">#FFF7F4ED</color>
+    <color name="proof_sheet">#FFFFFDF8</color>
+    <color name="proof_ink">#FF23211C</color>
+    <color name="proof_ink_2">#FF5C564A</color>
+    <color name="proof_muted">#FF8A8271</color>
+    <color name="proof_rule">#FFE4DECF</color>
+    <color name="proof_rule_strong">#FFD9D1C0</color>
+    <!-- 主色容器：校样的品牌绿 #2C5F55 的浅色用法（dock、圆钮）。 -->
+    <color name="proof_primary_container">#FFDCE7E1</color>
+    <color name="proof_on_primary_container">#FF142E28</color>
+    <color name="proof_accent">#FFB23A1A</color>
+    <color name="proof_mark">#FFBDB4A2</color>
+    <color name="proof_swatch_stroke">#33000000</color>
+    <!-- 开关滑块：两套模式都是近白，压在朱红轨道上才看得出「拨过去」。 -->
+    <color name="proof_knob">#FFFFFDF8</color>
+    <!-- 色带描边：压在浅纸上时是深边，暗色下翻成浅边（见 values-night）。 -->
+    <color name="proof_pill_stroke">#26000000</color>
+
+</resources>

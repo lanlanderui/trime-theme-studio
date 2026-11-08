@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  皮肤 m3-tonal（层叠）的亮色色板。
+
+  取值来自 Material 3 用种子 #6750A4 生成的基线配色，没有自己调色：一旦手工
+  微调，明暗两套就不再是同一个 tonal palette 的两个「色调」，而会各走一路。
+  暗色不是这里的反相，见 values-night/ui_palette_tonal.xml。
+-->
+<resources>
+    <color name="tonal_paper">#FFFEF7FF</color>
+    <color name="tonal_sheet">#FFFFFFFF</color>
+    <color name="tonal_card">#FFF3EDF7</color>
+    <color name="tonal_card_high">#FFECE6F0</color>
+
+    <color name="tonal_ink">#FF1D1B20</color>
+    <color name="tonal_ink_2">#FF322F35</color>
+    <color name="tonal_muted">#FF49454F</color>
+
+    <color name="tonal_rule">#FFE7E0EC</color>
+    <color name="tonal_rule_strong">#FFCAC4D0</color>
+    <color name="tonal_outline">#FF79747E</color>
+    <color name="tonal_divider">#1F000000</color>
+
+    <color name="tonal_accent">#FF6750A4</color>
+    <color name="tonal_primary">#FF6750A4</color>
+    <color name="tonal_primary_dark">#FF4F378B</color>
+    <!-- M3 基线：#6750A4 的 primary container 与 on-primary container。 -->
+    <color name="tonal_primary_container">#FFEADDF8</color>
+    <color name="tonal_on_primary_container">#FF21005D</color>
+    <color name="tonal_on_primary">#FFFFFFFF</color>
+
+    <color name="tonal_mark">#FF79747E</color>
+    <color name="tonal_swatch_stroke">#33000000</color>
+    <color name="tonal_knob">#FFFFFFFF</color>
+    <color name="tonal_pill_stroke">#26000000</color>
+    <color name="tonal_scrim">#66000000</color>
+
+    <color name="tonal_warn">#FFB3261E</color>
+    <color name="tonal_note_fill">#FFF3EDF7</color>
+    <color name="tonal_stale_fill">#FFFFF4E5</color>
+    <color name="tonal_stale_text">#FF7A4A12</color>
+    <color name="tonal_chip_text">#FF49454F</color>
+    <color name="tonal_chip_text_selected">#FFFFFFFF</color>
+</resources>

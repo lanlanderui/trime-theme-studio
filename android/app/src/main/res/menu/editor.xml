@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  每个编辑页都有的动作：回到输入法看真机效果。
+
+  两项都收进 ⋯ 溢出菜单：舞台头的标题是 34sp，右上再挂两段文字会跟
+  稿子的「大字 + 一个点」打架（B1/B2/B3 都是 ⋯）。溢出按钮由 Toolbar
+  自己画，图标色取 `colorControlNormal`。
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- 单栏（手机）时才有：平板上的目录栏是常驻的 -->
+    <item
+        android:id="@+id/action_outline"
+        android:title="@string/outline_open"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_back_to_ime"
+        android:title="@string/action_back_to_ime"
+        app:showAsAction="never" />
+</menu>

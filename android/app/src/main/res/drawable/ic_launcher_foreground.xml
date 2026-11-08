@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  自适应图标前景层：键帽轮廓 + 斜 45 度铅笔。
+
+  尺寸说明（踩过的坑）：前景内容画在 108dp 画布上，但系统遮罩只留中间 72dp
+  可见。键帽一开始按 60x60 画（占可见区 83%），装到真机上四个角直接贴住
+  遮罩边缘，比旁边所有图标都满。现在按 48x48 画（占可见区 67%），和桌面
+  邻居的观感一致。改尺寸时记得三处一起改：这里、monochrome、mipmap-anydpi 回落。
+
+  铅笔那一段整体绕 (54,54) 旋转 -45 度：笔身竖着写（34..64）、笔尖朝下（64..74），
+  转完就从左上斜到右下。这样笔的几何是「一根竖直的矩形 + 一个三角」，比直接
+  写斜线好算，也不用担心笔尖变形。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 键帽：30..78 圆角方形，圆角 13，5dp 米白描边 -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M43,30 L65,30 A13,13 0 0 1 78,43 L78,65 A13,13 0 0 1 65,78 L43,78 A13,13 0 0 1 30,65 L30,43 A13,13 0 0 1 43,30 Z"
+        android:strokeColor="#F7F5F0"
+        android:strokeWidth="5" />
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="-45">
+
+        <!-- 铅笔：笔身与笔尖合成一条 path，顶部两角 2dp 圆角 -->
+        <path
+            android:fillColor="#C77B4E"
+            android:pathData="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" />
+
+        <!-- 笔帽分割线：没有它整支笔会读成一根斜棒 -->
+        <path
+            android:fillColor="#F7F5F0"
+            android:pathData="M51,41.5 L57,41.5 L57,43.3 L51,43.3 Z" />
+    </group>
+</vector>

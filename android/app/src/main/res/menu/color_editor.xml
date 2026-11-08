@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_switch_scheme"
+        android:title="@string/action_switch_scheme"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_material_you"
+        android:title="@string/action_material_you"
+        app:showAsAction="ifRoom" />
+</menu>

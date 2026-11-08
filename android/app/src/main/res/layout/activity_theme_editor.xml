@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  样式 / 配色编辑页：上面一块真实的预览板，下面是表单，左边是目录栏。
+  两者必须同屏——改一个数值要看得到键盘跟着变，否则「写盘成功」只是文件里的字符串变了。
+
+  两栏只在 `sw600dp` 出现（`@bool/ui_two_pane` 决定可见性）。目录栏不参与
+  表单，它只负责「换页」与「滚到某一节」——所以它放在表单容器外面，而不是每个
+  Fragment 各画一份。
+
+  预览板宽度必须与输入法一致：预览板按传入宽度算键宽，任何内边距都会让它变成
+  另一个键盘。两栏化不能改这一点，所以预览板仍然贴着内容列的左边。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        style="@style/Ui.Toolbar"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:theme="@style/ThemeOverlay.AppCompat.DayNight" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.trime.editor.ui.proof.OutlineRail
+            android:id="@+id/outline"
+            android:layout_width="@dimen/ui_rail_w"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/outlineDivider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/ui_rule_strong"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 宽度必须与输入法一致：预览板按传入宽度算键宽，任何内边距都会让它变成另一个键盘 -->
+            <FrameLayout
+                android:id="@+id/boardHost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--
+              样张下面这一行是这一页的「读数」：还有多少项没写、这次改了几项。
+              它是等宽的、贴着左边，和行里的键名同一档字，不抢画面。
+            -->
+            <TextView
+                android:id="@+id/caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:paddingStart="@dimen/ui_gutter"
+                android:paddingTop="8dp"
+                android:paddingEnd="@dimen/ui_gutter"
+                android:paddingBottom="8dp"
+                android:textColor="?attr/ui_muted"
+                android:textSize="10sp"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/ui_divider" />
+
+            <!--
+              主题文件被输入法改过时出现。放在预览板和表单之间，是因为它同时否定了这两块：
+              上面的键盘是旧文件画的，下面的行也是旧文件的。整条可点，不做小按钮。
+            -->
+            <LinearLayout
+                android:id="@+id/staleBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/ui_stale_fill"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/staleText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/editor_stale_title"
+                    android:textColor="?attr/ui_stale_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/staleAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/editor_stale_action"
+                    android:textColor="?attr/ui_stale_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

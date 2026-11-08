@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  皮肤 m3-tonal 的暗色色板。
+
+  M3 的暗色不是亮色反相，而是同一色调板上的另一档：primary 从 #6750A4 升到
+  #D0BCFF，落在深底上才够亮；onPrimary 相应降到 #381E72，否则白字压在浅紫上
+  读不出来。card 与 paper 只差两档，靠色阶分家，不靠阴影。
+-->
+<resources>
+    <color name="tonal_paper">#FF141218</color>
+    <color name="tonal_sheet">#FF1D1B20</color>
+    <color name="tonal_card">#FF211F26</color>
+    <color name="tonal_card_high">#FF2B2930</color>
+
+    <color name="tonal_ink">#FFE6E0E9</color>
+    <color name="tonal_ink_2">#FFCAC4D0</color>
+    <color name="tonal_muted">#FFCAC4D0</color>
+
+    <color name="tonal_rule">#FF2B2930</color>
+    <color name="tonal_rule_strong">#FF49454F</color>
+    <color name="tonal_outline">#FF938F99</color>
+    <color name="tonal_divider">#33FFFFFF</color>
+
+    <color name="tonal_accent">#FFD0BCFF</color>
+    <color name="tonal_primary">#FFD0BCFF</color>
+    <color name="tonal_primary_dark">#FFB69DF8</color>
+    <color name="tonal_primary_container">#FF4F378B</color>
+    <color name="tonal_on_primary_container">#FFEADDF8</color>
+    <color name="tonal_on_primary">#FF381E72</color>
+
+    <color name="tonal_mark">#FF938F99</color>
+    <color name="tonal_swatch_stroke">#33FFFFFF</color>
+    <color name="tonal_knob">#FF141218</color>
+    <color name="tonal_pill_stroke">#26FFFFFF</color>
+    <color name="tonal_scrim">#99000000</color>
+
+    <color name="tonal_warn">#FFF2B8B5</color>
+    <color name="tonal_note_fill">#FF211F26</color>
+    <color name="tonal_stale_fill">#FF33291C</color>
+    <color name="tonal_stale_text">#FFF0C48A</color>
+    <color name="tonal_chip_text">#FFE6E0E9</color>
+    <color name="tonal_chip_text_selected">#FF381E72</color>
+</resources>

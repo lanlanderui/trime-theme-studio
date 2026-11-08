@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 13+ 主题图标（单色层）。系统只取这里的 alpha 通道再上色，
+  所以全部画成纯白实心：键帽是轮廓、笔是实块，缩成剪影后仍然认得出。
+  形状必须和 ic_launcher_foreground 完全一致，否则切换主题图标时图会跳。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M43,30 L65,30 A13,13 0 0 1 78,43 L78,65 A13,13 0 0 1 65,78 L43,78 A13,13 0 0 1 30,65 L30,43 A13,13 0 0 1 43,30 Z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5" />
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="-45">
+
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" />
+    </group>
+</vector>

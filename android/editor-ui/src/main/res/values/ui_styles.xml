@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  字阶：只有这几级，页面代码里不许再出现字面量字号或颜色。
+
+  这里用 style 而不是 TextAppearance：这些行是代码拼出来的，TextAppearance
+  只在外层已经套了主题时才生效，直接用 style 最不容易出现「字号对了、颜色还是
+  默认黑」。
+
+  字号与字体族都写成 `?attr/ui_text_*` / `?attr/ui_font_*`：三套皮肤的字阶不同
+  （纸感 23sp 衬线、层叠 21sp 无衬线、舞台 30sp 无衬线），但布局不该知道这件事。
+  小字号（9.5–11.5sp）不放进 attr：它们在三套皮肤之间只差半档，值不值得多三处
+  「忘了填」的风险，不值得。
+-->
+<resources>
+
+    <!--
+      空壳父级。Android 里 `Ui.Title` 这种带点的名字会被当成隐式继承 `Ui`，
+      没有这一行，AAPT 会在链接期报「style/Ui not found」——报的是父级，不是
+      你写错的那个 style，很容易找错方向。
+    -->
+    <style name="Ui" />
+
+    <style name="Ui.Title">
+        <item name="android:fontFamily">?attr/ui_font_title</item>
+        <item name="android:textSize">?attr/ui_text_title</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Ui.Chapter">
+        <item name="android:fontFamily">?attr/ui_font_title</item>
+        <item name="android:textSize">?attr/ui_text_section</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+    </style>
+
+    <style name="Ui.Name">
+        <item name="android:fontFamily">?attr/ui_font_body</item>
+        <item name="android:textSize">?attr/ui_text_name</item>
+        <item name="android:lineSpacingMultiplier">1.35</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+    </style>
+
+    <style name="Ui.Meta">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">?attr/ui_text_meta</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:lineSpacingMultiplier">1.35</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+    </style>
+
+    <style name="Ui.Value">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">?attr/ui_text_value</item>
+        <item name="android:textColor">?attr/ui_ink_2</item>
+    </style>
+
+    <style name="Ui.Value.Strong">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">?attr/ui_text_value</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+    </style>
+
+    <style name="Ui.Index">
+        <item name="android:fontFamily">?attr/ui_font_body</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:textColor">?attr/ui_ink_2</item>
+    </style>
+
+    <style name="Ui.Index.Sub">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">9.5sp</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+    </style>
+
+    <!-- 目录栏左侧那一个汉字：未选中时是墨的第二档。 -->
+    <style name="Ui.Glyph">
+        <item name="android:fontFamily">?attr/ui_font_title</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:textColor">?attr/ui_ink_2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- 目录栏的节名：比主行小一档，缩进在章名下面。 -->
+    <style name="Ui.Section">
+        <item name="android:fontFamily">?attr/ui_font_body</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+    </style>
+
+    <!--
+      工具栏：页面底色 + 标题 + 等宽副标题。
+
+      用 style 而不是给每个布局重复五个属性：九个页面共用一条栏，改一次全变；
+      副标题只是「你在哪一页」，所以降到 muted。
+    -->
+    <style name="Ui.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/ui_paper</item>
+        <item name="android:elevation">0dp</item>
+        <item name="titleTextColor">?attr/ui_ink</item>
+        <item name="subtitleTextColor">?attr/ui_muted</item>
+        <item name="titleTextAppearance">@style/Ui.Toolbar.Title</item>
+        <item name="subtitleTextAppearance">@style/Ui.Toolbar.Subtitle</item>
+    </style>
+
+    <style name="Ui.Toolbar.Title">
+        <item name="android:fontFamily">?attr/ui_font_title</item>
+        <item name="android:textSize">?attr/ui_text_title</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+    </style>
+
+    <style name="Ui.Toolbar.Subtitle">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">?attr/ui_text_meta</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+    </style>
+
+    <!-- 卡片标题：M3 的 titleMedium 是 16sp / medium，不是 21sp 常规。 -->
+    <style name="Ui.CardTitle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- 卡片副行：文件名、计数。等宽、小一号、muted。 -->
+    <style name="Ui.CardMeta">
+        <item name="android:fontFamily">?attr/ui_font_meta</item>
+        <item name="android:textSize">9.5sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+    </style>
+
+    <!-- 分组标题：主色小字，M3 的 labelLarge，而不是衬线大标题。 -->
+    <style name="Ui.SectionLabel">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">?attr/ui_primary</item>
+    </style>
+
+    <!-- 「当前」徽标：主色底、圆角胶囊。 -->
+    <style name="Ui.Badge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?attr/ui_on_primary</item>
+        <item name="android:background">@drawable/bg_badge</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <!-- dock 的一项：竖排「字形 + 标签」，四/六等分。 -->
+    <style name="Ui.DockItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Ui.DockGlyph">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/ui_ink</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Ui.DockLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!--
+      B2 段控的一项：34dp 高、全圆角、未选卡片强调层底。
+
+      选中态在代码里换（bg_badge 主色底 + onPrimary 字）：一个 style 描述不了
+      「被点中之后长什么样」，而两张 drawable 换背景是最稳的做法。
+    -->
+    <style name="Ui.SegItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_seg</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/ui_muted</item>
+        <item name="android:textSize">10.5sp</item>
+    </style>
+</resources>

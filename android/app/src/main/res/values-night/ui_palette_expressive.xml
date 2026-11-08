@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  皮肤 m3-expressive 的暗色色板。
+
+  暖色在深底上最容易「发脏」：直接拿亮色的橙当强调色，会变成一块糊掉的铁锈。
+  这里把 primary 升到 #FFB59B（明度上去了、饱和度下来了），底色则压到近黑的
+  暖褐 #1A1110，让整屏仍然偏暖但不浑。
+-->
+<resources>
+    <color name="expressive_paper">#FF1A1110</color>
+    <color name="expressive_sheet">#FF221715</color>
+    <color name="expressive_card">#FF281D19</color>
+    <color name="expressive_card_high">#FF332723</color>
+
+    <color name="expressive_ink">#FFF1DFD9</color>
+    <color name="expressive_ink_2">#FFD8C2B9</color>
+    <color name="expressive_muted">#FFD8C2B9</color>
+
+    <color name="expressive_rule">#FF332723</color>
+    <color name="expressive_rule_strong">#FF55433B</color>
+    <color name="expressive_outline">#FFA08B82</color>
+    <color name="expressive_divider">#33FFFFFF</color>
+
+    <color name="expressive_accent">#FFFFB59B</color>
+    <color name="expressive_primary">#FFFFB59B</color>
+    <color name="expressive_primary_dark">#FFE09B82</color>
+    <color name="expressive_primary_container">#FF7C2E10</color>
+    <color name="expressive_on_primary_container">#FFFFDBCC</color>
+    <color name="expressive_on_primary">#FF5B1B00</color>
+
+    <color name="expressive_mark">#FFA08B82</color>
+    <color name="expressive_swatch_stroke">#33FFFFFF</color>
+    <color name="expressive_knob">#FF1A1110</color>
+    <color name="expressive_pill_stroke">#26FFFFFF</color>
+    <color name="expressive_scrim">#99000000</color>
+
+    <color name="expressive_warn">#FFFFB4AB</color>
+    <color name="expressive_note_fill">#FF281D19</color>
+    <color name="expressive_stale_fill">#FF3A2A12</color>
+    <color name="expressive_stale_text">#FFF0C48A</color>
+    <color name="expressive_chip_text">#FFF1DFD9</color>
+    <color name="expressive_chip_text_selected">#FF5B1B00</color>
+</resources>

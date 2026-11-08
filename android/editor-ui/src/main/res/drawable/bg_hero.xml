@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  「当前主题」英雄区：容器色 → 页面色的竖向渐变，下沿 36 圆角、上沿直角。
+
+  渐变不是装饰：稿子里这块是「一块压在上面的背景墙」，纯色会在下沿出现一条硬边，
+  和圆角打架。上沿必须直角——它要贴着窗口顶边。
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:endColor="?attr/ui_paper"
+        android:startColor="?attr/ui_card_high" />
+    <corners
+        android:bottomLeftRadius="36dp"
+        android:bottomRightRadius="36dp" />
+</shape>

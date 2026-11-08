@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  手机竖屏：单栏，目录栏收起。
+  平板：两栏。判定只此一处——代码里不再出现 `if (width > 600)`。
+
+  与皮肤无关：三套皮肤在手机上都是单栏，所以它不叫 proof_two_pane 了。
+-->
+<resources>
+    <bool name="ui_two_pane">false</bool>
+</resources>

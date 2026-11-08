@@ -1,3 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">同文动态配色</string>
+    <string name="app_name">同文编辑器</string>
+
+    <string name="action_change_dir">更换</string>
+    <string name="action_refresh">刷新</string>
+    <string name="action_pick_dir">选择目录</string>
+    <string name="action_grant">去授权</string>
+
+    <string name="dir_unset">尚未选择主题目录</string>
+
+    <string name="state_no_dir_title">还没有指定主题目录</string>
+    <string name="state_no_dir_body">编辑器读写的是磁盘上的 trime.yaml，需要先告诉它这些文件放在哪个目录。</string>
+
+    <string name="state_no_access_title">需要访问文件的权限</string>
+    <string name="state_no_access_body">编辑器按路径读写主题文件，因此需要「所有文件访问」权限；只给单个文件的授权不够用。</string>
+
+    <string name="state_empty_title">这个目录里没有主题</string>
+    <string name="state_empty_body">主题文件名以 trime.yaml 结尾。选错了目录就换一个；目录确实是空的，可以等到 D4 从模板新建。</string>
+
+    <string name="pick_dir_title">选择主题目录</string>
+    <string name="pick_dir_up">上一级</string>
+    <string name="pick_dir_use">用这个目录</string>
+
+    <string name="preview_load_failed">这个主题读不出来</string>
+    <string name="preview_scheme_follow_system">跟随系统</string>
+    <string name="preview_findings">静态检查：%1$d 处需要注意</string>
+    <string name="preview_findings_clean">静态检查通过</string>
+    <string name="preview_findings_unknown">静态检查未运行</string>
+
+    <string name="style_editor_title">键盘样式</string>
+    <string name="color_editor_title">键盘配色</string>
+    <string name="action_edit_style">编辑样式</string>
+    <string name="action_edit_colors">编辑配色</string>
+    <string name="action_switch_scheme">切换配色</string>
+    <string name="action_material_you">Material You</string>
+
+    <string name="material_you_light_name">Material You（浅色）</string>
+    <string name="material_you_dark_name">Material You（深色）</string>
+    <string name="material_you_written">已生成 Material You 明暗两套</string>
+    <string name="material_you_stored">配色已记入 dynamic_colors.json</string>
+    <string name="material_you_store_failed">配色已写入主题，但没能记入 dynamic_colors.json</string>
+    <string name="material_you_no_file">找不到要写入的主题文件</string>
+    <string name="write_failed">写不进主题文件</string>
+
+    <!-- 跨进程协作：文件被输入法改过、以及回到输入法去看效果 -->
+    <string name="action_back_to_ime">回到输入法</string>
+    <string name="action_help">使用帮助</string>
+    <string name="back_to_ime_missing">没找到同文输入法：请先安装并启用输入法，再回来试</string>
+    <string name="editor_stale_title">主题文件已被输入法改过，这里显示的是旧内容</string>
+    <string name="editor_stale_action">重新加载</string>
+
+    <string name="guide_title">三步看到效果</string>
+    <string name="guide_body">1. 选主题 —— 在工作台里点一张卡片，打开它的预览。\n\n2. 改样式或配色 —— 上面的预览板用的是输入法的排版引擎，改一项它就跟着变；写入的是同一份 trime.yaml。\n\n3. 回到输入法 —— 用右上角「回到输入法」切过去，键盘就是改后的样子。输入法不会缓存主题，切回来若看到「主题文件已被输入法改过」，点一下重新加载即可。</string>
+    <string name="guide_ok">知道了</string>
+
+    <!-- 布局编辑（D6） -->
+    <string name="action_edit_layout">编辑布局</string>
+    <string name="kbd_list_title">键盘布局</string>
+    <string name="kbd_search_hint">搜索布局名或 id</string>
+    <string name="kbd_card_meta">%1$d 行 · %2$d 键</string>
+    <string name="kbd_badge_alias">别名 → %1$s</string>
+    <string name="kbd_badge_spacer">有占位键</string>
+    <string name="kbd_badge_patched">被 .custom.yaml 覆盖，改了可能不生效</string>
+    <string name="kbd_badge_unsupported">不可编辑：%1$s</string>
+    <string name="kbd_empty">这个主题没有 preset_keyboards 段，没有布局可编辑</string>
+    <string name="kbd_no_match">没有匹配「%1$s」的布局</string>
+    <string name="kbd_cannot_edit_title">这个布局不能在这里编辑</string>
+    <string name="kbd_cannot_edit_body">换一个布局试试。</string>
+    <string name="kbd_load_failed">读不出这个主题的布局</string>
+    <string name="kbd_editor_subtitle">%1$s · %2$s</string>
+    <string name="kbd_editor_status">%1$d 个键（其中 %2$d 个占位键）· 当前第 %3$d 个</string>
+    <string name="kbd_field_label">文字 label</string>
+    <string name="kbd_field_width">宽度 width</string>
+    <string name="kbd_field_popup">长按弹出 popup</string>
+    <string name="kbd_popup_hint">长按这个键时列在上方的选项，从左到右；一项都不填表示不弹。</string>
+    <string name="kbd_popup_add">添加一项</string>
+    <string name="kbd_popup_remove">删除这一项</string>
+    <string name="kbd_popup_empty">（未设置）</string>
+    <string name="kbd_width_decrease">减小宽度</string>
+    <string name="kbd_width_increase">增大宽度</string>
+    <string name="kbd_action_click">单击 click</string>
+    <string name="kbd_action_long_click">长按 long_click</string>
+    <string name="kbd_action_swipe_up">上滑 swipe_up</string>
+    <string name="kbd_action_swipe_down">下滑 swipe_down</string>
+    <string name="kbd_action_swipe_left">左滑 swipe_left</string>
+    <string name="kbd_action_swipe_right">右滑 swipe_right</string>
+    <string name="kbd_action_advanced">其它动作</string>
+    <string name="kbd_action_add">加键</string>
+    <string name="kbd_action_delete">删键</string>
+    <string name="kbd_action_left">左移</string>
+    <string name="kbd_action_right">右移</string>
+    <string name="kbd_action_undo">撤销</string>
+    <string name="kbd_action_redo">重做</string>
+    <string name="kbd_action_save">保存</string>
+    <string name="kbd_last_key">至少保留一个键：空布局写不进主题</string>
+    <string name="kbd_empty_keys">这个布局里没有键，不能保存。先加一个键。</string>
+    <string name="kbd_saved">已写入主题文件</string>
+    <string name="kbd_save_failed">写不进主题文件</string>
+
+    <!-- 动作（preset_keys，D7） -->
+    <string name="action_edit_keys">编辑动作</string>
+    <string name="key_list_title">按键动作</string>
+    <string name="key_search_hint">搜索动作名或 id</string>
+    <string name="key_empty">这个主题没有 preset_keys 段，没有动作可编辑</string>
+    <string name="key_no_match">没有匹配「%1$s」的动作</string>
+    <string name="key_load_failed">读不出这个主题的动作</string>
+    <string name="key_saved">已写入主题文件</string>
+    <string name="key_save_failed">写不进主题文件</string>
+    <string name="key_save">保存</string>
+    <string name="key_field_label">显示名 label</string>
+    <string name="key_field_send">发送按键 send</string>
+    <string name="key_field_select">切换布局 select</string>
+    <string name="key_field_command">命令 command</string>
+    <string name="key_field_option">命令参数 option</string>
+    <string name="key_field_text">输出文本 text</string>
+    <string name="key_field_toggle">开关 toggle</string>
+    <string name="key_field_states">状态 states（如 [ 中文, 西文 ]）</string>
+    <string name="key_field_preview">预览符号 preview</string>
+    <string name="key_field_functional">functional（功能键配色）</string>
+    <string name="key_field_repeatable">repeatable（长按连发）</string>
+
+    <!-- 工具条（D7c） -->
+    <string name="action_edit_toolbar">编辑工具条</string>
+    <string name="tb_title">工具条</string>
+    <string name="tb_section_metrics">间距与字体</string>
+    <string name="tb_section_primary">主按钮（固定在左侧）</string>
+    <string name="tb_section_buttons">按钮（右起）</string>
+    <string name="tb_section_unreferenced">未被引用的按钮块</string>
+    <string name="tb_unreferenced_hint">这些块还在文件里，但 buttons 没有引用它们，键盘上不显示。</string>
+    <string name="tb_no_section">这个主题没有 tool_bar 段，工具条用输入法的默认样式。</string>
+    <string name="tb_no_buttons">buttons 列表是空的。</string>
+    <string name="tb_unsupported">这段工具条暂不支持编辑：%1$s</string>
+    <string name="tb_load_failed">读不出这个主题的工具条</string>
+    <string name="tb_saved">已写入主题文件</string>
+    <string name="tb_save_failed">写不进主题文件</string>
+    <string name="tb_save">保存</string>
+    <string name="tb_two_state">二态</string>
+    <string name="tb_button_subtitle">%1$s · %2$s</string>
+    <string name="tb_edit">编辑</string>
+    <string name="tb_move_left">左移</string>
+    <string name="tb_move_right">右移</string>
+    <string name="tb_remove_from_list">从列表移除</string>
+    <string name="tb_add_to_list">加入列表</string>
+    <string name="tb_delete_block">删除定义</string>
+    <string name="tb_delete_block_body">把「%1$s」的整块定义从主题里删掉？按钮引用要先清空。</string>
+    <string name="tb_field_button_spacing">按钮间距</string>
+    <string name="tb_field_button_font">按钮字体</string>
+    <string name="tb_field_back_style">返回按钮样式</string>
+    <string name="tb_field_style">图标 / 样式</string>
+    <string name="tb_field_option_styles">二态样式 option_styles（逗号分隔，两个才算二态）</string>
+    <string name="tb_field_action">动作</string>
+    <string name="tb_field_long_press">长按动作</string>
+
+    <!-- 候选窗 / 预编辑（D7d） -->
+    <string name="action_edit_window">候选窗与预编辑</string>
+    <string name="cw_title">候选窗与预编辑</string>
+    <string name="cw_section_window">候选窗</string>
+    <string name="cw_section_preedit">预编辑</string>
+    <string name="cw_section_style">候选栏外观</string>
+    <string name="cw_section_style_hint">这几项在「样式 → 候选栏」里也有，改的是同一行；主题里没写的显示默认值。</string>
+    <string name="cw_not_written">这个主题没有写这一段，输入法用自己的默认值。</string>
+    <string name="cw_create_section">新建这一段</string>
+    <string name="cw_section_created">已新建这一段</string>
+    <string name="cw_unlisted">文件里还有这些本页不提供的项：%1$s</string>
+    <string name="cw_default_hint">默认 %1$s</string>
+    <string name="cw_reset">恢复默认</string>
+    <string name="cw_saved">已写入主题文件</string>
+    <string name="cw_save_failed">写不进主题文件，可能是另一个窗口刚改过它，再试一次。</string>
+    <string name="cw_save_failed_title">保存失败</string>
+    <string name="cw_load_failed">读不出这个主题的候选窗设置</string>
+    <string name="cw_field_unknown">（未命名字段）</string>
+    <string name="cw_window_insets_vertical">内边距 · 上下</string>
+    <string name="cw_window_insets_horizontal">内边距 · 左右</string>
+    <string name="cw_window_item_padding_vertical">候选间距 · 上下</string>
+    <string name="cw_window_item_padding_horizontal">候选间距 · 左右</string>
+    <string name="cw_window_min_width">最小宽度</string>
+    <string name="cw_window_corner_radius">圆角</string>
+    <string name="cw_window_border">边框</string>
+    <string name="cw_window_shadow">阴影</string>
+    <string name="cw_window_alpha">不透明度</string>
+    <string name="cw_window_label_font">标签字号</string>
+    <string name="cw_window_text_font">候选字号</string>
+    <string name="cw_window_comment_font">编码字号</string>
+    <string name="cw_preedit_padding">左右内边距</string>
+    <string name="cw_preedit_top_start">左上圆角</string>
+    <string name="cw_preedit_top_end">右上圆角</string>
+    <string name="cw_preedit_alpha">不透明度</string>
+    <string name="cw_preedit_font">字号</string>
+
+    <!-- 静态检查（D8a） -->
+    <string name="action_diagnostics">静态检查</string>
+    <string name="dg_title">静态检查</string>
+    <string name="dg_clean">没有发现问题。</string>
+    <string name="dg_summary">共 %1$d 处：%2$d 个错误、%3$d 个警告、%4$d 个提示。点一条跳到对应的编辑页。</string>
+    <string name="dg_severity_error">错误</string>
+    <string name="dg_severity_warning">警告</string>
+    <string name="dg_severity_info">提示</string>
+    <string name="dg_no_jump">这一项没有对应的编辑页</string>
+    <string name="preview_findings_short">静态检查：%1$d 处需要注意（点菜单「静态检查」查看）</string>
+
+    <!-- 崩溃兜底（D8b） -->
+    <string name="crash_title">上次异常退出</string>
+    <string name="crash_body">编辑器上次没有正常结束，日志已经留在本机。可以查看，也可以删掉。</string>
+    <string name="crash_view">查看日志</string>
+    <string name="crash_clear">删除日志</string>
+    <string name="crash_later">稍后</string>
+    <string name="crash_log_title">崩溃日志</string>
+    <string name="tb_unreferenced_key">未在 buttons 中引用</string>
+    <string name="preview_findings_open">逐条查看 →</string>
+    <string name="preview_findings_count_label">处需要注意</string>
+    <string name="preview_findings_clean_label">静态检查通过</string>
+    <string name="preview_info_title">这份主题</string>
+    <string name="preview_edit_title">快捷编辑</string>
+    <string name="preview_edit_go">编辑</string>
+    <string name="preview_info_schemes">配色方案</string>
+    <string name="preview_info_keyboards">键盘布局</string>
+    <string name="preview_info_keys">自定义动作</string>
+    <string name="preview_info_pairs">明暗配对</string>
+    <string name="preview_info_count">%1$d</string>
+    <string name="dg_filter_all">全部</string>
+    <string name="dg_filter_error">错误</string>
+    <string name="dg_filter_warning">警告</string>
+    <string name="dg_filter_info">提示</string>
+    <string name="preview_source_missing">目录里没有 %1$s。看看主题目录里是不是真有这个文件，或者回工作台换一个。</string>
+    <string name="outline_need_theme">先在工作台选一个主题</string>
+    <string name="quick_apply_label">更新动态配色</string>
+    <string name="quick_save_label">收藏动态配色</string>
+    <string name="quick_no_access">请先打开一次同文编辑器，授予「所有文件访问」权限</string>
+    <string name="quick_no_theme">先在编辑器里打开一个主题，再从按键调用</string>
+    <string name="quick_apply_done">已按系统壁纸更新 material_you 明暗两套，切到该方案后生效</string>
+    <string name="quick_apply_no_system">这台系统没有提供壁纸配色（需要 Android 12 及以上）</string>
+    <string name="quick_apply_failed">写主题失败</string>
+    <string name="quick_save_done">已收藏当前动态配色</string>
+    <string name="quick_save_already">这套配色已经收藏过了</string>
+    <string name="quick_save_no_palette">主题里还没有动态配色，先点一次「更新配色」</string>
+    <string name="quick_save_no_dir">还没有设置主题目录</string>
+    <string name="quick_save_failed">收藏失败</string>
+
+    <!-- ===== 外观：皮肤 ===== -->
+    <string name="action_appearance">外观</string>
+    <string name="appearance_title">外观</string>
+    <string name="appearance_subtitle">界面风格</string>
+    <string name="appearance_hint">换皮肤只改界面，不改主题文件里的任何一行。已经打开的页面会重新加载一次。</string>
+    <string name="skin_tonal">层叠</string>
+    <string name="skin_tonal_tagline">Material You · 卡片分组 · 默认</string>
+    <string name="skin_expressive">舞台</string>
+    <string name="skin_expressive_tagline">大圆角 · 色块舞台 · 悬浮工具条</string>
+    <string name="skin_selected">当前使用</string>
+    <string name="theme_current">当前</string>
+    <string name="workbench_subtitle">%1$d 个主题 · 点一份开始编辑</string>
+
+    <!-- ===== 方向 B：工作台 ===== -->
+    <string name="hero_current_theme">当前主题</string>
+    <string name="hero_other_themes">其余 %1$d 个</string>
+    <string name="hero_no_other_theme">只有这一份主题</string>
+    <string name="workbench_hint">点击主题进入编辑；长按可重命名、复制、在文件管理器中打开。点上方可切换外观；长按底部工具栏可更换目录、刷新或查看帮助。</string>
+    <string name="dock_dir">目录</string>
+    <string name="dock_refresh">刷新</string>
+    <string name="dock_appearance">外观</string>
+    <string name="dock_ime">输入法</string>
+    <string name="theme_open">打开</string>
+    <string name="stage_back">← 返回</string>
+    <string name="stage_save">保存</string>
+
+    <!-- N-1：B1 dock 按设计稿换成主题管理动作 -->
+    <string name="dock_new">新建</string>
+    <string name="dock_switch">切换</string>
+    <string name="dock_import">导入</string>
+    <string name="theme_new_title">新建主题</string>
+    <string name="theme_name_hint">主题名称</string>
+    <string name="theme_new_default">新建主题</string>
+    <string name="theme_created">已新建「%1$s」</string>
+    <string name="theme_failed">操作失败：%1$s</string>
+    <string name="theme_copied">已复制为「%1$s」</string>
+    <string name="theme_renamed">已重命名为「%1$s」</string>
+    <string name="theme_exists">「%1$s」已存在，换一个名字</string>
+    <string name="theme_rename_unchanged">名字没有变化</string>
+    <string name="theme_imported">已导入「%1$s」</string>
+    <string name="theme_import_failed">读不到选中的文件</string>
+    <string name="theme_not_theme">这看起来不是主题文件</string>
+    <string name="theme_import_pick">选择 .trime.yaml 文件</string>
+    <string name="theme_switch_title">切换到主题</string>
+    <string name="theme_only_one">只有这一份主题</string>
+    <!-- N-2：主题长按菜单 -->
+    <string name="theme_menu_rename">重命名</string>
+    <string name="theme_menu_duplicate">复制</string>
+    <string name="theme_menu_open">在文件管理器中打开</string>
+    <string name="theme_open_in_files">用文件管理器打开</string>
+    <string name="theme_path_copied">没有可用的文件管理器，路径已复制</string>
+    <!-- N-3：更多菜单 -->
+    <string name="theme_more_title">更多</string>
+
+    <!-- N-5：舞台显示内容 -->
+    <string name="stage_bands_full">▤ 完整</string>
+    <string name="stage_bands_keys">⌨ 仅键盘</string>
+    <!-- N-7：英雄区显式的皮肤切换入口 -->
+    <string name="hero_appearance">◑ 外观</string>
+    <!-- 内置方案（随包全量参数模版） -->
+    <string name="builtin_glyph">内</string>
+    <string name="builtin_title">内置方案</string>
+    <string name="builtin_meta_loading">全量参数模版 · 随包内置</string>
+    <string name="builtin_meta">全量参数模版 · %1$d 行 · 随包内置</string>
+    <string name="builtin_save">保存到本地</string>
+    <string name="builtin_default_name">模版主题</string>
+    <string name="builtin_save_hint">把内置模版复制一份到当前主题目录，只改主题名称，其余参数原样保留。</string>
 </resources>

@@ -1,32 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      编辑器按路径读写主题文件（:theme-core 的每个 writer 都吃 File），
+      所以需要「所有文件访问」；Android 11 以前退化成读权限。
+    -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!--
+      「回到输入法」要拿到键盘 app 的启动 Intent。Android 11 起默认看不到别的包，
+      getLaunchIntentForPackage 会对没声明过的包静默返回 null——菜单项于是永远
+      不出现，而且不报错。这两个包是输入法的 release / debug 应用 id。
+    -->
+    <queries>
+        <package android:name="com.osfans.trime" />
+        <package android:name="com.osfans.trime.debug" />
+        <package android:name="com.osfans.trime03" />
+        <package android:name="com.osfans.trime03.debug" />
+    </queries>
+
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:name=".EditorApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.TrimeEditor">
+
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.AppearanceActivity"
+            android:exported="false"
+            android:label="@string/appearance_title" />
+
+        <!--
+          给输入法按键调用：`command: run` 的 option 写
+          `com.trime.editor/.QuickApplyActivity`（或 .QuickSaveActivity）。
+          必须 exported：输入法用显式 ComponentName 跨应用启动。
+          无界面、不进最近任务，做完一句 toast 就 finish。
+        -->
         <activity
             android:name=".QuickApplyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:label="@string/quick_apply_label"
             android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/QuickApplyTheme" />
+            android:theme="@style/Theme.TrimeEditor.QuickAction" />
+
         <activity
             android:name=".QuickSaveActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:label="@string/quick_save_label"
             android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/QuickApplyTheme" />
+            android:theme="@style/Theme.TrimeEditor.QuickAction" />
+
+        <activity
+            android:name=".ThemePreviewActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".StyleEditorActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ColorEditorActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".DiagnosticsActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity" />
+
+        <activity
+            android:name=".CandidateWindowActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ToolBarActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".PresetKeyListActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity" />
+
+        <activity
+            android:name=".KeyboardListActivity"
+            android:exported="false"
+            android:parentActivityName=".ThemePreviewActivity" />
+
+        <activity
+            android:name=".KeyboardEditorActivity"
+            android:exported="false"
+            android:parentActivityName=".KeyboardListActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- N-2：把主题文件以 content:// 交给系统文件管理器，不能暴露 file:// -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
+
 </manifest>

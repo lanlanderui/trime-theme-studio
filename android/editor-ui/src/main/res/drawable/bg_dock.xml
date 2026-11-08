@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  悬浮 dock：主色容器 + 全圆角（稿子 .b-dock 的 background 就是 pcontainer，
+  不是卡片色——所以它是「主色的一条」，压在内容上）。
+
+  三个屏共用：B1 四项 / B2 三项 / B3 六项，只有高度不同（62 / 62 / 56）。
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/ui_primary_container" />
+    <corners android:radius="?attr/ui_radius_button" />
+</shape>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  手机竖屏的一套尺度。平板（sw600dp）覆盖在 values-sw600dp/ui_dimens.xml，
+  只有四处真的不一样：页面边距、色块边长、十六进制列宽、目录栏宽度。
+
+  这些是 dimen 资源而不是 attr：三套皮肤在度量上是一致的（只有圆角与字阶不同，
+  那两个在 attrs.xml 里）。多一层 attr 只会多一处「忘了填就崩」。
+
+  行高不单列一条：上下各 11dp 内边距 + 两行字（13sp + 10sp）大概 50dp，已经
+  高过 48dp 的触控下限，量出来是几就是几。
+-->
+<resources>
+    <dimen name="ui_gutter">20dp</dimen>
+    <dimen name="ui_row_pad_v">11dp</dimen>
+    <dimen name="ui_row_gap">12dp</dimen>
+    <dimen name="ui_swatch">24dp</dimen>
+    <dimen name="ui_hex_w">72dp</dimen>
+    <dimen name="ui_swatch_radius">2dp</dimen>
+    <dimen name="ui_swatch_stroke_w">1dp</dimen>
+    <dimen name="ui_chapter_pad_top">18dp</dimen>
+    <dimen name="ui_chapter_pad_bottom">9dp</dimen>
+    <dimen name="ui_topbar_h">64dp</dimen>
+    <dimen name="ui_foot_h">38dp</dimen>
+    <dimen name="ui_crop">11dp</dimen>
+    <dimen name="ui_rail_w">0dp</dimen>
+    <dimen name="ui_rail_row">34dp</dimen>
+    <dimen name="ui_rail_glyph">20dp</dimen>
+    <dimen name="ui_rail_pad">14dp</dimen>
+</resources>

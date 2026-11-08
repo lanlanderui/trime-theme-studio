@@ -1,0 +1,16 @@
+.gradle/
+.gradle-user-home/
+build/
+captures/
+local.properties
+.idea/
+*.iml
+.DS_Store
+.tmp/
+*.hprof
+
+# 发布签名与打包产物：本机的东西，不进仓库
+keystore.properties
+keystore/
+dist/
+.kotlin/

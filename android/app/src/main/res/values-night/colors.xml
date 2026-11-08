@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="note_fill">#1E211F</color>
+    <color name="warn">#F2B8B5</color>
+    <color name="stale_fill">#33291C</color>
+    <color name="stale_text">#F0C48A</color>
+    <color name="divider">#33FFFFFF</color>
+    <color name="chip_text">#C9C9C9</color>
+    <color name="chip_text_selected">#FFFFFF</color>
+</resources>

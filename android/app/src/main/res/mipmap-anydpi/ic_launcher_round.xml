@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  API 25（7.1）的圆形图标回落。7.1 起系统才认 android:roundIcon，
+  那时也还没有自适应图标，所以这里自己画圆形底板。再老的版本不会读这个文件。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="#2C5F55"
+        android:pathData="M54,4 A50,50 0 0 1 54,104 A50,50 0 0 1 54,4 Z" />
+
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M43,30 L65,30 A13,13 0 0 1 78,43 L78,65 A13,13 0 0 1 65,78 L43,78 A13,13 0 0 1 30,65 L30,43 A13,13 0 0 1 43,30 Z"
+        android:strokeColor="#F7F5F0"
+        android:strokeWidth="5" />
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="-45">
+
+        <path
+            android:fillColor="#C77B4E"
+            android:pathData="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" />
+
+        <path
+            android:fillColor="#F7F5F0"
+            android:pathData="M51,41.5 L57,41.5 L57,43.3 L51,43.3 Z" />
+    </group>
+</vector>

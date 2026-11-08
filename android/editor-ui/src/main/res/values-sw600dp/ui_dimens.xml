@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  平板（848dp 宽）的尺度：页面边距 30dp、色块 26dp、hex 列 56dp、目录栏 168dp。
+
+  目录栏宽度在这里而不是在代码里，是因为「两栏还是单栏」要靠它决定——
+  一处资源、一个判定，不在九个页面里各写一遍 `if (width > 600)`。
+-->
+<resources>
+    <dimen name="ui_gutter">30dp</dimen>
+    <dimen name="ui_swatch">26dp</dimen>
+    <dimen name="ui_hex_w">84dp</dimen>
+    <dimen name="ui_rail_w">168dp</dimen>
+</resources>

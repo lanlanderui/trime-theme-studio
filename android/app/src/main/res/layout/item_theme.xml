@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  一行「其余主题」（设计稿 B1-04）。
+
+  44dp 方块用的是**这份主题自己的第一个色**，不是皮肤色——一眼能看出是深色还是浅色主题；
+  方块里的字取对比色（黑/白），所以浅色主题上是黑字、深色主题上是白字。
+  右侧「打开」是小胶囊，不是整行可点的暗示：稿子里点行也能进，胶囊是显式的第二入口。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingTop="9dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="9dp">
+
+    <TextView
+        android:id="@+id/block"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_block"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="?attr/ui_ink"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:textColor="?attr/ui_ink"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/meta"
+            style="@style/Ui.CardMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/failure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:lineSpacingMultiplier="1.25"
+            android:textColor="?attr/ui_accent"
+            android:textSize="11sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_chip_m3"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/theme_open"
+        android:textColor="?attr/ui_ink_2"
+        android:textSize="9sp" />
+</LinearLayout>

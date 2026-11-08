@@ -1,14 +1,17 @@
 name: Android Debug APK
 
+# 暂时只保留手动触发。android/ 刚整体换成同文编辑器工程，
+# SDK 37 / build-tools 36 / JDK 21 这套组合还没在 CI 上跑通过一次。
+# 手动跑成功之后，把下面的 push 段取消注释，就恢复「改 android/ 自动出调试包」。
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "android/**"
-      - "README.md"
-      - ".github/workflows/android-debug.yml"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "android/**"
+  #     - "README.md"
+  #     - ".github/workflows/android-debug.yml"
 
 jobs:
   build:
@@ -22,13 +25,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
 
-      - name: Install Android platform
+      - name: Install Android SDK packages
         run: |
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKMANAGER" --licenses > /dev/null || true
-          "$SDKMANAGER" "platforms;android-28"
+          "$SDKMANAGER" "platforms;android-37" "build-tools;36.0.0"
 
       - name: Build and lint
         working-directory: android
@@ -39,5 +42,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: trime-dynamic-colors-v1.5.0-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: trime-editor-debug
+          path: android/app/build/outputs/apk/debug/*.apk

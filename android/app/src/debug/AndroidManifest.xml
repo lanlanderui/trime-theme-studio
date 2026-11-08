@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      只为脚本化的真机验收：把编辑页在**调试包**里导出，好让
+      `adb shell am start -n .../<Activity>` 直接拉起每一页，五十轮进出可以
+      无人值守地跑，也不必靠坐标点击（点击和页面加载有竞态，上一版就因此
+      「跑完 50 轮但页面根本没开」）。
+
+      发布包用不到这份清单：`app/src/main` 里它们仍是 exported="false"。
+    -->
+    <application>
+        <activity
+            android:name=".ThemePreviewActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".StyleEditorActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".ColorEditorActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".DiagnosticsActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".CandidateWindowActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".ToolBarActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".PresetKeyListActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".KeyboardListActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+        <activity
+            android:name=".KeyboardEditorActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+
+        <!-- 外观页：脚本化验收要能直接拉起它，否则只能靠坐标点菜单。 -->
+        <activity
+            android:name=".ui.AppearanceActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+
+        <!-- 打开就崩，用来验「崩溃日志落盘 + 下次启动提示」。只在调试包。 -->
+        <activity
+            android:name=".CrashProbeActivity"
+            android:exported="true" />
+
+        <!-- 设计地基的样张页：四种行 + 章节头，拿真机截图跟规格书逐项对。 -->
+        <activity
+            android:name=".ProofSampleActivity"
+            android:exported="true" />
+        <!--
+          调试包专用：applicationId 多了 .debug，`pkg/.QuickApplyActivity` 会展开到
+          com.trime.editor.debug 下找类。这两个别名让同一份主题的 option
+          在 release / debug 上都能启动（见 QuickEntryAliases.kt）。
+        -->
+        <activity
+            android:name=".debug.QuickApplyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.TrimeEditor.QuickAction" />
+
+        <activity
+            android:name=".debug.QuickSaveActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.TrimeEditor.QuickAction" />
+    </application>
+
+</manifest>

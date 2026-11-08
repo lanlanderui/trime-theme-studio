@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  键盘编辑页（方向 B · 舞台，设计稿 B3）。
+
+  自上而下：一块渐变「舞台」（下沿 40 圆角）——返回/保存胶囊在舞台左上右上，
+  键盘整块画在舞台上，键盘下面居中一行键数读数；舞台之下是滚动区，里面是三档
+  卡片（文字大卡 / 宽度卡 / 半卡）；最下面是六个动作的悬浮 dock，压在内容之上，
+  内容尾部为此留了 96dp（B3-09）。
+
+  画布仍然通栏、左右不加内边距：预览宽度必须与输入法一致，差 1dp 键位就会重排。
+  稿子里键盘缩进舞台 10dp，这里按计划 §4.1 取「背景铺满、键盘通栏」，保住
+  D2 像素闸门——视觉上是「键盘压在色块上」，与稿子的差别只在键两侧各 10dp。
+
+  dock 不挂 ui_dock 标签：它自己在布局里写全了圆角/外边距/高度（B1 的 dock 也是
+  这么做的）。挂上标签会被基类 makeDock 用统一的 10dp 边距覆盖掉稿子的 14/16。
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/ui_paper">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Ui.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+            app:theme="@style/ThemeOverlay.AppCompat.DayNight" />
+
+        <!-- 舞台：渐变 + 上直角下 40 圆角。键盘在它上面通栏画。 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_stage"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/stageChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/stageBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/bg_pill"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/stage_back"
+                    android:textColor="?attr/ui_ink"
+                    android:textSize="10sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/stageSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/bg_badge"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="@string/stage_save"
+                    android:textColor="?attr/ui_on_primary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/canvasHost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- B3-04：键盘下居中一行读数；右侧胶囊切「完整 / 仅键盘」（N-5），
+                 青色小点是舞台模式的补色点缀（N-6）。 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <View
+                    android:id="@+id/stageHighlight"
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/bg_highlight_dot" />
+
+                <TextView
+                    android:id="@+id/stageStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="?attr/ui_muted"
+                    android:textSize="9.5sp" />
+
+                <TextView
+                    android:id="@+id/stageBands"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/bg_field"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="?attr/ui_ink_2"
+                    android:textSize="9sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/ui_rule_strong" />
+
+        <FrameLayout
+            android:id="@+id/inspectorHost"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!--
+      B3-08：悬浮 dock，6 个动作。高 56、圆角 999（ui_radius_button）、左右 14、距底 16。
+      字形用稿子的那几个（＋ − ← → ↶ ↷），标签 9sp——六项并排，图标会挤。
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_dock"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp">
+
+        <LinearLayout
+            android:id="@+id/addButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="＋" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_add" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/deleteButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="−" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_delete" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leftButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="←" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_left" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rightButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="→" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/undoButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="↶" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_undo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/redoButton"
+            style="@style/Ui.DockItem">
+
+            <TextView
+                style="@style/Ui.DockGlyph"
+                android:text="↷" />
+
+            <TextView
+                style="@style/Ui.DockLabel"
+                android:text="@string/kbd_action_redo" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

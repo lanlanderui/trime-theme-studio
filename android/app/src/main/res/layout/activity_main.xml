@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  工作台（方向 B · 舞台）。
+
+  结构照设计稿 B1：一块「当前主题」的英雄区压在最上面（渐变 + 下沿 36 圆角），
+  下面是路径胶囊 / 更换胶囊、「其余 N 个」小节标签、其余主题的**行**，最后是一行说明；
+  四个一级动作放在悬浮 dock 里，压在内容之上。
+
+  为什么英雄区不是一个列表项：稿子把「你正在编辑哪一份」当成页面的主角，
+  其余主题降级成行。这也顺带解决了旧版「当前」徽标挤在卡片角落里的问题。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/ui_paper"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Ui.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:theme="@style/ThemeOverlay.AppCompat.DayNight" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="96dp">
+
+                <LinearLayout
+                    android:id="@+id/heroBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_hero"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:id="@+id/heroHighlight"
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_marginEnd="7dp"
+                            android:background="@drawable/bg_highlight_dot" />
+
+                        <TextView
+                            android:id="@+id/heroEyebrow"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:letterSpacing="0.1"
+                            android:text="@string/hero_current_theme"
+                            android:textColor="?attr/ui_ink_2"
+                            android:textSize="10sp" />
+
+                        <!-- N-7：皮肤切换必须是一眼能看见的一级入口。N-3 把 ⋯ 去掉后
+                             它只剩 dock 长按，用户会以为「不能切皮肤」。 -->
+                        <TextView
+                            android:id="@+id/heroAppearance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="26dp"
+                            android:background="@drawable/bg_badge"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingStart="11dp"
+                            android:paddingEnd="11dp"
+                            android:singleLine="true"
+                            android:text="@string/hero_appearance"
+                            android:textColor="?attr/ui_on_primary"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/heroMenu"
+                            android:visibility="gone"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center"
+                            android:text="⋯"
+                            android:textColor="?attr/ui_ink_2"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/heroName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="-0.03"
+                        android:lineSpacingMultiplier="1.05"
+                        android:singleLine="true"
+                        android:textColor="?attr/ui_ink"
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:id="@+id/heroMeta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:ellipsize="end"
+                        android:fontFamily="monospace"
+                        android:singleLine="true"
+                        android:textColor="?attr/ui_muted"
+                        android:textSize="10sp" />
+
+                    <com.trime.editor.workbench.SwatchStripView
+                        android:id="@+id/heroSwatches"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="20dp">
+
+                    <TextView
+                        android:id="@+id/path"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_pill"
+                        android:ellipsize="middle"
+                        android:fontFamily="monospace"
+                        android:gravity="center_vertical"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:singleLine="true"
+                        android:textColor="?attr/ui_muted"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/changeDir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_badge"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="@string/action_change_dir"
+                        android:textColor="?attr/ui_on_primary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- 内置方案：随包的全量参数模版，一键另存到用户主题目录 -->
+                <LinearLayout
+                    android:id="@+id/builtinCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_card_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingTop="13dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="13dp">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_badge"
+                        android:gravity="center"
+                        android:text="@string/builtin_glyph"
+                        android:textColor="?attr/ui_on_primary"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/builtinTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/builtin_title"
+                            android:textColor="?attr/ui_ink"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/builtinMeta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="monospace"
+                            android:text="@string/builtin_meta_loading"
+                            android:textColor="?attr/ui_muted"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/builtinSave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:background="@drawable/bg_field"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:singleLine="true"
+                        android:text="@string/builtin_save"
+                        android:textColor="?attr/ui_ink_2"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/restLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"
+                    android:paddingStart="20dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/hero_other_themes"
+                    android:textColor="?attr/ui_muted"
+                    android:textSize="10sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/themes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="none" />
+
+                <TextView
+                    android:id="@+id/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.8"
+                    android:paddingStart="20dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/workbench_hint"
+                    android:textColor="?attr/ui_muted"
+                    android:textSize="10sp" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/placeholderTitle"
+                style="@style/Ui.CardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/placeholderBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.35"
+                android:textColor="?attr/ui_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/placeholderAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_badge"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="?attr/ui_on_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dock"
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_dock"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp">
+
+            <LinearLayout
+                android:id="@+id/dockNew"
+                style="@style/Ui.DockItem">
+
+                <TextView
+                    style="@style/Ui.DockGlyph"
+                    android:text="＋" />
+
+                <TextView
+                    style="@style/Ui.DockLabel"
+                    android:text="@string/dock_new" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dockSwitch"
+                style="@style/Ui.DockItem">
+
+                <TextView
+                    style="@style/Ui.DockGlyph"
+                    android:text="⇄" />
+
+                <TextView
+                    style="@style/Ui.DockLabel"
+                    android:text="@string/dock_switch" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dockImport"
+                style="@style/Ui.DockItem">
+
+                <TextView
+                    style="@style/Ui.DockGlyph"
+                    android:text="⤓" />
+
+                <TextView
+                    style="@style/Ui.DockLabel"
+                    android:text="@string/dock_import" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dockIme"
+                style="@style/Ui.DockItem">
+
+                <TextView
+                    style="@style/Ui.DockGlyph"
+                    android:text="⌨" />
+
+                <TextView
+                    style="@style/Ui.DockLabel"
+                    android:text="@string/dock_ime" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

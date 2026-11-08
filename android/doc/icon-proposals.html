@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同文编辑器 · App 图标 5 方案</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    padding:40px 28px 120px;
+    background:#F5F4F0;
+    color:#1F2A28;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{max-width:1340px;margin:0 auto 30px}
+  .eyebrow{font-size:11px;letter-spacing:.18em;color:#8C9A96;font-weight:600;margin-bottom:11px}
+  h1{font-size:27px;line-height:1.3;margin:0 0 11px;font-weight:700;letter-spacing:-.01em}
+  .sub{margin:0;max-width:840px;font-size:13.5px;line-height:1.8;color:#5C6A66}
+  .sub code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:12px;background:#EAE7DE;color:#2C5F55;padding:2px 6px;border-radius:5px;
+  }
+
+  .grid{
+    max-width:1340px;margin:0 auto;
+    display:flex;flex-wrap:wrap;gap:18px;justify-content:center;
+  }
+
+  .card{
+    position:relative;
+    flex:1 1 0;min-width:226px;max-width:262px;
+    background:#fff;border:1px solid #E6E3DA;border-radius:16px;
+    padding:22px 17px 15px;cursor:pointer;
+    transition:border-color .18s,box-shadow .18s,transform .18s;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(31,42,40,.08)}
+  .card.selected{
+    border-color:#2C5F55;
+    box-shadow:0 0 0 3px rgba(44,95,85,.12),0 14px 30px rgba(31,42,40,.10);
+  }
+
+  .badge{
+    position:absolute;top:12px;right:12px;background:#2C5F55;color:#fff;
+    font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:3px 8px;border-radius:999px;
+    opacity:0;transform:translateY(-4px);transition:.18s;
+  }
+  .card.selected .badge{opacity:1;transform:none}
+
+  .hero{display:flex;justify-content:center;margin-bottom:17px}
+  .hero .mask{
+    width:98px;height:98px;
+    box-shadow:0 6px 16px rgba(31,42,40,.16);
+    position:relative;
+  }
+  .hero .mask::after{
+    content:'';position:absolute;inset:0;border-radius:inherit;
+    box-shadow:inset 0 0 0 1px rgba(31,42,40,.10);pointer-events:none;
+  }
+
+  .mask{overflow:hidden;display:block}
+  .mask svg{display:block;width:100%;height:100%}
+  .m-circle{border-radius:50%}
+  .m-squircle{border-radius:30%}
+  .m-rounded{border-radius:23%}
+
+  h2{
+    font-size:14.5px;margin:0 0 7px;font-weight:650;
+    display:flex;align-items:center;gap:7px;letter-spacing:-.01em;
+  }
+  .num{
+    font-size:10.5px;font-weight:700;color:#fff;background:#2C5F55;
+    width:18px;height:18px;border-radius:5px;
+    display:inline-flex;align-items:center;justify-content:center;flex:none;
+  }
+  h2 em{
+    font-style:normal;font-size:10px;font-weight:600;color:#8C9A96;letter-spacing:.06em;
+    border:1px solid #E6E3DA;border-radius:4px;padding:1px 4px;margin-left:auto;white-space:nowrap;
+  }
+  .desc{margin:0 0 13px;font-size:12.3px;line-height:1.7;color:#66746F;min-height:84px}
+
+  .row{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #F0EDE5}
+  .lb{font-size:10.5px;color:#9AA6A2;flex:0 0 26px;letter-spacing:.04em}
+
+  .shapes{display:flex;gap:7px;align-items:center}
+  .sm{width:29px;height:29px}
+
+  .sizes{display:flex;gap:11px;align-items:flex-end}
+  .szbox{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .szbox i{font-style:normal;font-size:9px;color:#B3BCB9}
+
+  .dots{display:flex;gap:5px;align-items:center}
+  .dot{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(31,42,40,.14)}
+
+  .barwrap{
+    position:fixed;left:0;right:0;bottom:0;padding:14px 24px 20px;
+    background:linear-gradient(to top,#F5F4F0 55%,rgba(245,244,240,0));
+    display:flex;justify-content:center;pointer-events:none;
+  }
+  .bar{
+    pointer-events:auto;display:flex;align-items:center;gap:11px;
+    background:#25302D;color:#F7F5F0;padding:10px 19px;border-radius:999px;
+    font-size:12.5px;box-shadow:0 10px 26px rgba(31,42,40,.24);
+  }
+  .bar b{font-weight:650;color:#fff}
+  .bar span{color:#A9B5B1;font-size:12px}
+
+  @media (max-width:900px){
+    body{padding:26px 16px 116px}
+    h1{font-size:22px}
+    .card{flex:1 1 44%;max-width:none}
+    .desc{min-height:0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">TRIME EDITOR · ICON STUDY</div>
+  <h1>同文编辑器 App 图标 · 5 个方向</h1>
+  <p class="sub">
+    沿用现有品牌色 <code>#2C5F55</code> 墨绿 与 <code>#C77B4E</code> 陶土橙。全部按 Android 自适应图标规格绘制：
+    108dp 画布、前景内容收在中心 72dp 安全区，圆形 / squircle / 圆角方形遮罩都不会切到内容。
+    每张卡下面都带三种遮罩和 48 / 32 / 24 px 的实际尺寸，可以顺便看缩到最小还认不认得出。看中就点它，或者直接告诉我编号。
+  </p>
+</header>
+
+<main id="grid" class="grid"></main>
+
+<div class="barwrap">
+  <div class="bar" id="bar"><b>未选</b><span>点一张卡片选定方向</span></div>
+</div>
+
+<script>
+const G   = '#35736A';   // 墨绿 亮
+const GD  = '#1C403A';   // 墨绿 暗
+const INK = '#2C5F55';   // 品牌主色
+const INK2= '#1F443D';   // 深墨绿
+const ORG = '#C77B4E';   // 陶土橙
+const PAP = '#F7F5F0';   // 米白
+const SAG = '#7FA396';   // 浅墨绿
+
+/* 108x108 画布，内容收在 18..90 的 72dp 安全区 */
+const ICONS = [
+  {
+    key:'A', name:'行与光标', tag:'编辑',
+    desc:'三条文本行，末行右端一枚橙色插入光标。最保守的一版，也最接近现在这版 —— 换上去不用重新认识。',
+    colors:[G, GD, PAP, ORG],
+    svg:`<svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="__ID__" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="${G}"/><stop offset="1" stop-color="${GD}"/>
+      </linearGradient></defs>
+      <rect width="108" height="108" fill="url(#__ID__)"/>
+      <rect x="28" y="34.5" width="52" height="6.5" rx="3.25" fill="${PAP}"/>
+      <rect x="28" y="50" width="42" height="6.5" rx="3.25" fill="${PAP}"/>
+      <rect x="28" y="65.5" width="28" height="6.5" rx="3.25" fill="${PAP}"/>
+      <rect x="60" y="63.5" width="7.5" height="10.5" rx="2.5" fill="${ORG}"/>
+    </svg>`
+  },
+  {
+    key:'B', name:'键帽与笔', tag:'已采用',
+    desc:'一枚米白键帽轮廓，里面斜着一支削尖的铅笔。五个里最贴产品定位的一版，跟别家输入法工具一眼能分开。',
+    colors:[INK, PAP, ORG],
+    svg:`<svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+      <rect width="108" height="108" fill="${INK}"/>
+      <rect x="30" y="30" width="48" height="48" rx="13" fill="none" stroke="${PAP}" stroke-width="5"/>
+      <g transform="rotate(-45 54 54)">
+        <path d="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" fill="${ORG}"/>
+        <rect x="51" y="41.5" width="6" height="1.8" fill="${PAP}"/>
+      </g>
+    </svg>`
+  },
+  {
+    key:'C', name:'配色表', tag:'外观',
+    desc:'色块配色条，就是编辑器里配色页的样子。深墨绿底把橙衬得最饱满，气质最"工具"，不像文本工具。',
+    colors:[INK2, PAP, ORG, SAG],
+    svg:`<svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+      <rect width="108" height="108" fill="${INK2}"/>
+      <rect x="26" y="30" width="13" height="13" rx="4" fill="${PAP}"/>
+      <rect x="46" y="33.5" width="36" height="6" rx="3" fill="${PAP}" opacity=".5"/>
+      <rect x="26" y="47" width="13" height="13" rx="4" fill="${ORG}"/>
+      <rect x="46" y="50.5" width="28" height="6" rx="3" fill="${ORG}" opacity=".5"/>
+      <rect x="26" y="64" width="13" height="13" rx="4" fill="${SAG}"/>
+      <rect x="46" y="67.5" width="34" height="6" rx="3" fill="${SAG}" opacity=".5"/>
+    </svg>`
+  },
+  {
+    key:'D', name:'布局网格', tag:'布局',
+    desc:'六格键位，其中一格被橙色点亮 —— 在布局里挑一个键来改。唯一的浅底方案，深色壁纸上反而更跳。',
+    colors:['#F2EFE6', INK, ORG],
+    svg:`<svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+      <rect width="108" height="108" fill="#F2EFE6"/>
+      <g fill="${INK}">
+        <rect x="34" y="24" width="17" height="17" rx="5.5"/>
+        <rect x="57" y="24" width="17" height="17" rx="5.5"/>
+        <rect x="34" y="45" width="17" height="17" rx="5.5"/>
+        <rect x="34" y="66" width="17" height="17" rx="5.5"/>
+        <rect x="57" y="66" width="17" height="17" rx="5.5"/>
+      </g>
+      <rect x="57" y="45" width="17" height="17" rx="5.5" fill="${ORG}"/>
+    </svg>`
+  },
+  {
+    key:'E', name:'「文」字标', tag:'品牌',
+    desc:'几何化的「文」，配一枚橙色的点。「同文」的文，可以当品牌符号长期用，缩到通知栏尺寸也认得出，代价是语义偏抽象。',
+    colors:[G, GD, PAP, ORG],
+    svg:`<svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="__ID__" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="${G}"/><stop offset="1" stop-color="${GD}"/>
+      </linearGradient></defs>
+      <rect width="108" height="108" fill="url(#__ID__)"/>
+      <g transform="translate(54 54) scale(1.08) translate(-54 -54)">
+        <ellipse cx="57" cy="29.5" rx="4.8" ry="5.4" fill="${ORG}"/>
+        <rect x="29" y="44" width="50" height="8" rx="4" fill="${PAP}"/>
+        <path d="M57,52 C52,61 45,71 35,80" stroke="${PAP}" stroke-width="8"
+              stroke-linecap="round" fill="none"/>
+        <path d="M52.5,57 C59,65 67,72 76,80" stroke="${PAP}" stroke-width="8"
+              stroke-linecap="round" fill="none"/>
+      </g>
+    </svg>`
+  }
+];
+
+let seq = 0;
+const uid  = () => 'g' + (++seq);
+const inst = tpl => tpl.replace(/__ID__/g, uid());
+
+function cardHTML(o){
+  const hero = `<div class="hero"><div class="mask m-circle">${inst(o.svg)}</div></div>`;
+
+  const shapes = ['m-circle','m-squircle','m-rounded']
+    .map(m => `<div class="mask ${m} sm">${inst(o.svg)}</div>`).join('');
+
+  const sizes = [48,32,24].map(s => `
+    <div class="szbox">
+      <div class="mask m-circle" style="width:${s}px;height:${s}px">${inst(o.svg)}</div>
+      <i>${s}</i>
+    </div>`).join('');
+
+  const dots = o.colors
+    .map(c => `<span class="dot" style="background:${c}" title="${c}"></span>`).join('');
+
+  return `<article class="card" data-key="${o.key}">
+    <div class="badge">已选</div>
+    ${hero}
+    <h2><span class="num">${o.key}</span>${o.name}<em>${o.tag}</em></h2>
+    <p class="desc">${o.desc}</p>
+    <div class="row"><span class="lb">遮罩</span><div class="shapes">${shapes}</div></div>
+    <div class="row"><span class="lb">尺寸</span><div class="sizes">${sizes}</div></div>
+    <div class="row"><span class="lb">色值</span><div class="dots">${dots}</div></div>
+  </article>`;
+}
+
+document.getElementById('grid').innerHTML = ICONS.map(cardHTML).join('');
+
+const bar  = document.getElementById('bar');
+const grid = document.getElementById('grid');
+
+grid.addEventListener('click', e => {
+  const card = e.target.closest('.card');
+  if(!card) return;
+  const wasSelected = card.classList.contains('selected');
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  if(wasSelected){
+    bar.innerHTML = `<b>未选</b><span>点一张卡片选定方向</span>`;
+    return;
+  }
+  card.classList.add('selected');
+  const o = ICONS.find(i => i.key === card.dataset.key);
+  bar.innerHTML = `<b>已选 ${o.key} · ${o.name}</b><span>告诉我编号，直接按 108dp 自适应规格出 drawable</span>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  可点卡片的底：卡片形状 + 一层涟漪。
+
+  `<ripple>` 的第一层是「静止时长什么样」，第二层（mask）只决定涟漪的形状——
+  两者都写成卡片圆角，按下去才不会从方角里冒出一块圆的水波。
+  涟漪色写死半透明黑：暗色下几乎看不见，但那只是反馈，不是信息。
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#1F000000">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/ui_card" />
+            <corners android:radius="?attr/ui_radius_card" />
+            <stroke
+                android:width="@dimen/ui_swatch_stroke_w"
+                android:color="?attr/ui_rule" />
+        </shape>
+    </item>
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFFFF" />
+            <corners android:radius="?attr/ui_radius_card" />
+        </shape>
+    </item>
+</ripple>

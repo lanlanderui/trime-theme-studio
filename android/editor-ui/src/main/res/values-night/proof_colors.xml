@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  暗色不是亮色反相，是另一张纸：炭纸（#1C1B18）配米色字（#EDE7DA）。
+
+  反相会把朱红变成刺眼的粉红；这里把 accent 降一档到 #D2705A，让它在
+  深底上仍然只有「这里要注意」的意思。键盘样张不受影响。
+-->
+<resources>
+    <color name="proof_paper">#FF1C1B18</color>
+    <color name="proof_sheet">#FF242220</color>
+    <color name="proof_ink">#FFEDE7DA</color>
+    <color name="proof_ink_2">#FFB9AE9C</color>
+    <color name="proof_muted">#FF8A8070</color>
+    <color name="proof_rule">#FF2E2A24</color>
+    <color name="proof_rule_strong">#FF3A352D</color>
+    <!-- 暗色下的主色容器：深绿灰，字用米色（不是亮色的反相）。 -->
+    <color name="proof_primary_container">#FF2C3B35</color>
+    <color name="proof_on_primary_container">#FFDCE7E1</color>
+    <color name="proof_accent">#FFD2705A</color>
+    <color name="proof_mark">#FF4A443A</color>
+    <color name="proof_swatch_stroke">#33FFFFFF</color>
+    <!-- 开关滑块：暗色下不能用 sheet（#242220），深底上会跟纸糊在一起。 -->
+    <color name="proof_knob">#FFEDE7DA</color>
+    <!-- 色带描边：暗色下必须用浅边，否则深色主题的黑键和炭纸糊在一起。 -->
+    <color name="proof_pill_stroke">#26FFFFFF</color>
+
+</resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  目录栏的骨架（被 OutlineRail 以 merge 方式挂进去）。
+
+  章是九个页面，节只展开当前这一章——168dp 宽放不下两章的节，而且用户在同一
+  时刻也只关心这一页有哪些组。节列表可滚动：静态检查那页五组、配色八组，
+  加上九章，高度会超出一屏。
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/ui_rail_pad"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/ui_rail_pad"
+        android:paddingBottom="18dp">
+
+        <TextView
+            android:id="@+id/railBrand"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/proof_brand_box"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="@string/outline_brand"
+            android:textColor="?attr/ui_ink_2"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/railTitle"
+            style="@style/Ui.Meta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:letterSpacing="0.1"
+            android:singleLine="true"
+            android:text="@string/outline_title" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/outlineChapters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+</merge>

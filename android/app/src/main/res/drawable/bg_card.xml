@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  卡片底：只有填充 + 圆角，没有描边。
+
+  不描边是有意的：校样皮肤的卡片色与纸同色，画上边框就会凭空多出一个方框，
+  而旧皮肤必须保持「改造前长什么样」。层叠与舞台的卡片色与页面底色本来就不同，
+  靠色阶分家已经够了。
+
+  圆角来自 `?attr/ui_radius_card`：校样 0（方角）、层叠 16、舞台 28。
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/ui_card" />
+    <corners android:radius="?attr/ui_radius_card" />
+</shape>

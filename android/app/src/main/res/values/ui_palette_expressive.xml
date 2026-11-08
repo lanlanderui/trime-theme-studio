@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  皮肤 m3-expressive（舞台）的亮色色板。
+
+  种子是暖陶土 #9C4423。整套偏暖，卡片与纸之间只差一点点——舞台方案的层次
+  靠形状和色块撑，不靠底色深浅，所以 card 没有压得太重。
+-->
+<resources>
+    <color name="expressive_paper">#FFFFF8F5</color>
+    <color name="expressive_sheet">#FFFFFCF9</color>
+    <color name="expressive_card">#FFF9EAE4</color>
+    <color name="expressive_card_high">#FFF2E1DA</color>
+
+    <color name="expressive_ink">#FF231917</color>
+    <color name="expressive_ink_2">#FF4A3730</color>
+    <color name="expressive_muted">#FF55433B</color>
+
+    <color name="expressive_rule">#FFEBDDD5</color>
+    <color name="expressive_rule_strong">#FFD8C2B9</color>
+    <color name="expressive_outline">#FF87736A</color>
+    <color name="expressive_divider">#1F000000</color>
+
+    <color name="expressive_accent">#FF9C4423</color>
+    <color name="expressive_primary">#FF9C4423</color>
+    <color name="expressive_primary_dark">#FF7C2E10</color>
+    <!-- 稿子里 pcontainer #FFDBCC / onPcontainer #3A0B00：dock 与圆钮都用这一档。 -->
+    <color name="expressive_primary_container">#FFFFDBCC</color>
+    <color name="expressive_on_primary_container">#FF3A0B00</color>
+    <color name="expressive_on_primary">#FFFFFFFF</color>
+
+    <color name="expressive_mark">#FF87736A</color>
+    <color name="expressive_swatch_stroke">#33000000</color>
+    <color name="expressive_knob">#FFFFFFFF</color>
+    <color name="expressive_pill_stroke">#26000000</color>
+    <color name="expressive_scrim">#66000000</color>
+
+    <color name="expressive_warn">#FFB3261E</color>
+    <color name="expressive_note_fill">#FFF9EAE4</color>
+    <color name="expressive_stale_fill">#FFFFF0D6</color>
+    <color name="expressive_stale_text">#FF6A3B00</color>
+    <color name="expressive_chip_text">#FF55433B</color>
+    <color name="expressive_chip_text_selected">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  键盘编辑页的「舞台」：容器色 → 页面色的竖向渐变，下沿 40 圆角、上沿直角。
+
+  键盘仍然通栏画在上面（左右不加内边距）：预览宽度必须与输入法一致，
+  差 1dp 键位就会重排。所以这里是「键盘压在色块上」，不是「键盘被色块框住」。
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:endColor="?attr/ui_paper"
+        android:startColor="?attr/ui_card_high" />
+    <corners
+        android:bottomLeftRadius="40dp"
+        android:bottomRightRadius="40dp" />
+</shape>

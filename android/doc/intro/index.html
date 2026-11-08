@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同文编辑器 · 在手机上改输入法主题</title>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0}
+  body{
+    background:#F5F4F0;color:#1F2A28;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.7;
+  }
+  a{color:inherit}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#35736A 0%,#2C5F55 45%,#1A3B35 100%);
+    color:#F7F5F0;
+    padding:76px 28px 84px;
+  }
+  .hero::after{
+    content:'';position:absolute;right:-160px;top:-160px;
+    width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle,rgba(199,123,78,.30),transparent 68%);
+    pointer-events:none;
+  }
+  .hero-in{max-width:960px;margin:0 auto;position:relative}
+  .brand{display:flex;align-items:center;gap:15px;margin-bottom:38px}
+  .brand svg{width:56px;height:56px;flex:none}
+  .brand-tx b{display:block;font-size:16px;font-weight:700;letter-spacing:.01em}
+  .brand-tx span{font-size:11.5px;color:#9DBAB3;letter-spacing:.14em}
+
+  .hero h1{
+    font-size:44px;line-height:1.24;margin:0 0 20px;font-weight:700;
+    letter-spacing:-.02em;max-width:760px;
+  }
+  .hero h1 em{font-style:normal;color:#E8A87C}
+  .hero p.lead{
+    margin:0;font-size:15.5px;line-height:1.85;color:#C3D6D1;max-width:660px;
+  }
+  .stats{display:flex;flex-wrap:wrap;gap:44px;margin-top:44px}
+  .stat b{display:block;font-size:26px;font-weight:700;letter-spacing:-.01em;color:#FFF}
+  .stat b i{font-style:normal;font-size:13px;color:#9DBAB3;margin-left:3px;font-weight:500}
+  .stat span{font-size:12px;color:#9DBAB3}
+
+  /* ---------- sections ---------- */
+  main{max-width:960px;margin:0 auto;padding:0 28px}
+  .sec{
+    display:grid;grid-template-columns:1fr 300px;gap:56px;
+    align-items:center;padding:76px 0;border-bottom:1px solid #E4E0D7;
+  }
+  .sec:last-of-type{border-bottom:none}
+  .sec:nth-of-type(even){grid-template-columns:300px 1fr}
+  .sec:nth-of-type(even) .txt{order:2}
+  .sec:nth-of-type(even) .shot{order:1}
+
+  .txt{min-width:0}
+  .idx{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;
+    color:#C77B4E;margin-bottom:12px;
+  }
+  .sec h2{
+    font-size:25px;line-height:1.4;margin:0 0 14px;font-weight:700;letter-spacing:-.015em;
+  }
+  .sec h2 small{
+    display:block;font-size:13px;font-weight:500;color:#8C9A96;
+    margin-top:7px;letter-spacing:0;
+  }
+  .sec p.desc{margin:0 0 20px;font-size:14px;line-height:1.85;color:#5C6A66}
+
+  ul.feat{margin:0;padding:0;list-style:none}
+  ul.feat li{
+    position:relative;padding-left:20px;margin-bottom:11px;
+    font-size:13.5px;line-height:1.75;color:#43504C;
+  }
+  ul.feat li::before{
+    content:'';position:absolute;left:0;top:9px;
+    width:6px;height:6px;border-radius:2px;background:#C77B4E;
+  }
+  ul.feat li b{font-weight:650;color:#1F2A28}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12px;background:#EBE7DD;color:#2C5F55;
+    padding:1.5px 5px;border-radius:4px;white-space:nowrap;
+  }
+
+  .shot{width:300px}
+  .frame{
+    border-radius:30px;overflow:hidden;background:#000;
+    box-shadow:0 22px 48px rgba(31,42,40,.20),0 0 0 1px rgba(31,42,40,.07);
+    transition:transform .25s ease;
+  }
+  .frame:hover{transform:translateY(-6px)}
+  .frame img{display:block;width:100%;height:auto}
+  .cap{
+    margin:13px 0 0;font-size:11.5px;color:#9AA6A2;text-align:center;letter-spacing:.02em;
+  }
+
+  /* ---------- principles ---------- */
+  .principles{
+    max-width:960px;margin:0 auto;padding:8px 28px 92px;
+  }
+  .principles h2{
+    font-size:22px;margin:0 0 8px;font-weight:700;letter-spacing:-.015em;
+  }
+  .principles > p{margin:0 0 30px;font-size:13.5px;color:#66746F;max-width:620px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{
+    background:#FFF;border:1px solid #E6E3DA;border-radius:14px;padding:20px 19px;
+  }
+  .card h3{margin:0 0 8px;font-size:14px;font-weight:650;display:flex;align-items:center;gap:8px}
+  .card h3 span{
+    width:20px;height:20px;border-radius:6px;background:#2C5F55;color:#fff;
+    font-size:10px;display:inline-flex;align-items:center;justify-content:center;flex:none;
+  }
+  .card p{margin:0;font-size:12.5px;line-height:1.75;color:#66746F}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:#25302D;color:#A9B5B1;padding:44px 28px;
+  }
+  .foot-in{
+    max-width:960px;margin:0 auto;
+    display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;
+    font-size:12.5px;
+  }
+  .foot-in b{color:#F7F5F0;font-weight:650}
+
+  @media (max-width:880px){
+    .hero{padding:54px 20px 60px}
+    .hero h1{font-size:31px}
+    .stats{gap:30px}
+    main,.principles{padding-left:20px;padding-right:20px}
+    .sec,.sec:nth-of-type(even){
+      grid-template-columns:1fr;gap:30px;padding:52px 0;
+    }
+    .sec:nth-of-type(even) .txt,.sec:nth-of-type(even) .shot{order:0}
+    .shot{width:100%;max-width:290px;margin:0 auto}
+    .sec h2{font-size:21px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="brand">
+      <!-- 与 App 图标同一套几何：键帽轮廓 + 45° 铅笔，这里换成反白配色 -->
+      <svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg" aria-label="同文编辑器图标">
+        <rect width="108" height="108" rx="26" fill="#F7F5F0"/>
+        <path d="M43,30 L65,30 A13,13 0 0 1 78,43 L78,65 A13,13 0 0 1 65,78 L43,78 A13,13 0 0 1 30,65 L30,43 A13,13 0 0 1 43,30 Z"
+              fill="none" stroke="#2C5F55" stroke-width="5"/>
+        <g transform="rotate(-45 54 54)">
+          <path d="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" fill="#C77B4E"/>
+          <path d="M51,41.5 L57,41.5 L57,43.3 L51,43.3 Z" fill="#F7F5F0"/>
+        </g>
+      </svg>
+      <div class="brand-tx">
+        <b>同文编辑器</b>
+        <span>TRIME EDITOR</span>
+      </div>
+    </div>
+
+    <h1>改输入法主题，<br>不用再对着 <em>YAML</em> 一行行数缩进。</h1>
+    <p class="lead">
+      同文输入法（Rime）的主题是一份 <code style="background:rgba(255,255,255,.12);color:#E8A87C">.trime.yaml</code>，
+      配色、键盘布局、按键动作全在里面。这个 App 把它拆成六块可视化界面：
+      你在屏幕上点的每一项，都会写回文件里对应的那一行。
+    </p>
+
+    <div class="stats">
+      <div class="stat"><b>6<i>类</i></b><span>可视化编辑对象</span></div>
+      <div class="stat"><b>90<i>个</i></b><span>可自定义按键动作</span></div>
+      <div class="stat"><b>1<i>行</i></b><span>改一项只产生一行 diff</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">01 / THEMES</div>
+      <h2>打开就看见所有主题
+        <small>一份主题 = 一个 .trime.yaml</small>
+      </h2>
+      <p class="desc">
+        主题目录里有什么，这里就列什么。每张卡片带五块色卡，是这个主题下几套配色方案的缩略——
+        不用点进去就能看出它是深是浅、偏冷还是偏暖。
+      </p>
+      <ul class="feat">
+        <li><b>色卡预览</b>：每份主题并排显示它的配色方案，深浅一眼分得出</li>
+        <li><b>底部四件事</b>：新建、切换、导入、回到输入法</li>
+        <li><b>长按</b>可重命名、复制，或直接在文件管理器里打开原文件</li>
+        <li>路径栏显示主题实际存放位置，<code>/storage/emulated/0/rime</code> 可随时更换</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/main.jpg" alt="同文编辑器主界面：主题列表与色卡预览"></div>
+      <p class="cap">主界面 · 主题列表</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">02 / OVERVIEW</div>
+      <h2>改一个字段，键盘立刻变
+        <small>上面是真键盘，不是示意图</small>
+      </h2>
+      <p class="desc">
+        进入一份主题，顶部直接渲染真实键盘——用的是你当前这份主题的配色、字号、间距，
+        点一下配色方案的名字就换一套，所见即所得。
+      </p>
+      <ul class="feat">
+        <li><b>配色方案切换</b>：跟随系统 / default / black_yellow / sea_salt_teal… 横向切换</li>
+        <li><b>静态检查通过</b>：这份 YAML 能不能被输入法读出来，进编辑之前就告诉你</li>
+        <li>下方按「这份主题」列出四类内容：<b>配色方案 11</b>、<b>键盘布局 3</b>、<b>自定义动作 90</b>、<b>明暗配对 1</b></li>
+        <li>每类后面带数字，点进去就是对应的编辑页</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/theme.jpg" alt="主题总览：键盘预览、配色方案切换、静态检查结果"></div>
+      <p class="cap">主题总览 · 配色方案切换</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">03 / STYLE</div>
+      <h2>候选栏、字号、边框，逐项调
+        <small>中文名 + YAML 字段名 + 当前值</small>
+      </h2>
+      <p class="desc">
+        每一行左边是中文说明，下面一行小字是它在 YAML 里的真实字段名，右边是当前值。
+        改的时候你始终知道自己在动文件的哪一行，不用去猜 <code>candidate_border_round</code> 到底控制什么。
+      </p>
+      <ul class="feat">
+        <li><b>候选栏高度</b> <code>candidate_view_height</code> 28</li>
+        <li><b>候选文字大小</b> <code>candidate_text_size</code> 22</li>
+        <li><b>候选左右内边距</b> <code>candidate_padding</code> 5 · <b>候选项间距</b> <code>candidate_spacing</code> 0.0</li>
+        <li><b>候选边框</b>的宽度与圆角，拖到 0 就是无边框</li>
+        <li>按组分页（当前「候选栏」共 8 项），改完上方键盘预览同步刷新</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/style.jpg" alt="键盘样式编辑：候选栏参数列表"></div>
+      <p class="cap">键盘样式 · 候选栏</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">04 / LAYOUT</div>
+      <h2>在画布上拖，把键排好
+        <small>36 个键，连占位键都算得清</small>
+      </h2>
+      <p class="desc">
+        键盘布局不是表格，是画布。点中任意一个键（图里是空格键），下方立刻变成它的属性面板：
+        文字、宽度、单击动作、长按动作。宽度用滑杆配加减键，按 5 一档调，不用敲数字。
+      </p>
+      <ul class="feat">
+        <li>标题栏实时统计：<b>36 个键（其中 2 个占位键）· 当前第 34 个</b></li>
+        <li><b>label</b> 改键面文字，<b>width</b> 改宽度（空格当前 35）</li>
+        <li><b>click</b> / <b>long_click</b> 指定单击和长按要发送什么</li>
+        <li>底部六个动作：加键、删键、左移、右移、<b>撤销、重做</b></li>
+        <li>改动先进草稿，点「保存」才写回文件——中途退出不会写坏主题</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/layout-edit.jpg" alt="键盘布局编辑：画布选中空格键及其属性面板"></div>
+      <p class="cap">键盘布局 · 编辑中</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">05 / LAYOUTS</div>
+      <h2>每套布局都有一张真缩略图
+        <small>不是占位图，是照真数据画的</small>
+      </h2>
+      <p class="desc">
+        一份主题里通常有字母、符号、数字好几套布局，来回切。这里每套都按自己的实际键位画缩略图，
+        再标上行数和键数——26 键符号那套 5 行 44 键，一眼就能看出比字母布局多一行。
+      </p>
+      <ul class="feat">
+        <li><b>真实缩略图</b>：按键比例、行数、特殊键位都对得上</li>
+        <li>「4 行 · 36 键」这样的规模标注，旁边提示<b>有占位键</b></li>
+        <li>顶部可直接搜索布局名或 id</li>
+        <li>新增、删除、重命名布局都在这一页</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/layout-list.jpg" alt="键盘布局列表：三套布局的真实缩略图"></div>
+      <p class="cap">键盘布局 · 列表</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="txt">
+      <div class="idx">06 / ACTIONS</div>
+      <h2>90 个动作，说清每个键干什么
+        <small>中文名 / 动作 id / 实际发送内容</small>
+      </h2>
+      <p class="desc">
+        输入法里能自定义的不只是字母键。这里把主题定义的全部按键动作列出来，
+        每一行都写明白它叫什么、内部 id 是什么、最终向输入法发送什么指令。
+      </p>
+      <ul class="feat">
+        <li><b>删音节</b> · <code>BackToPreviousSyllable</code> · send: Control+BackSpace</li>
+        <li><b>编码</b> · <code>CommitComment</code> · send: Control+Shift+Return</li>
+        <li><b>配色</b> · <code>Color_switch</code> · send: PROG_RED —— 一个键切整套配色</li>
+        <li>支持搜索动作名或 id，改动作的发送内容、增删动作</li>
+        <li>定义好的动作可以在布局页直接挂到任意键的 <b>click</b> / <b>long_click</b> 上</li>
+      </ul>
+    </div>
+    <div class="shot">
+      <div class="frame"><img src="img/key-action.jpg" alt="按键动作列表：中文名、动作 id 与发送指令"></div>
+      <p class="cap">按键动作 · 列表</p>
+    </div>
+  </section>
+
+</main>
+
+<section class="principles">
+  <h2>写在文件上，不是写在数据库里</h2>
+  <p>
+    这个编辑器没有自己的存储。所有改动都直接落到那份 <code>.trime.yaml</code>，
+    输入法读到就是新的——这也是它敢让你随便试的原因：最坏情况只是文件里多了一行你看得懂的配置。
+  </p>
+  <div class="cards">
+    <div class="card">
+      <h3><span>1</span>只改你动的那一行</h3>
+      <p>YAML 按文本级修改，不重新序列化。注释、缩进、空行、行尾是 LF 还是 CRLF，全部原样保留，改一项就只产生一行 diff。</p>
+    </div>
+    <div class="card">
+      <h3><span>2</span>别人改过会告诉你</h3>
+      <p>在文件管理器或电脑上动过同一份主题，回来时顶部会出现提示，而不是闷头覆盖掉对方的改动。</p>
+    </div>
+    <div class="card">
+      <h3><span>3</span>改坏了能回头</h3>
+      <p>布局编辑带完整的撤销 / 重做栈；主题改到一半退出，草稿不写盘。真要重来，把那一行注释掉就能恢复默认。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <div><b>同文编辑器</b> · 同文输入法（Rime）的配套主题编辑器</div>
+    <div>v0.4.0 · Android 8.0+ · 不需要 root</div>
+  </div>
+</footer>
+
+</body>
+</html>

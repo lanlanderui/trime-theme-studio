@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Rime community
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<!--
+  滑杆的轨道：4dp 一道，左端主色填充，其余是规则线色（稿子 .b-step 的
+  track 就是 surface3 上一条 4px 的槽）。
+
+  为什么用 <size> + gravity 而不是把 SeekBar 压到 4dp 高：拇指还要占高度，
+  压 view 会把拇指一起裁掉。这里让轨道自己在拇指的高度里垂直居中。
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background"
+        android:gravity="center_vertical">
+        <shape android:shape="rectangle">
+            <corners android:radius="2dp" />
+            <solid android:color="?attr/ui_rule_strong" />
+            <size android:height="4dp" />
+        </shape>
+    </item>
+    <item
+        android:id="@android:id/progress"
+        android:gravity="center_vertical">
+        <clip>
+            <shape android:shape="rectangle">
+                <corners android:radius="2dp" />
+                <solid android:color="?attr/ui_primary" />
+                <size android:height="4dp" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

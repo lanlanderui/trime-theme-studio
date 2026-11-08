@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  API 21..25 的回落图标。那时候还没有自适应图标，桌面不会替我们裁形状，
+  所以自己画一块 6..102、圆角 20 的底板（形状沿用改版前那版图标）。
+  前景沿用 30..78 的键帽，在 96 宽的底板上留 24 边距。
+  API 26+ 一律走 mipmap-anydpi-v26 的 adaptive-icon，不会读到这个文件。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="#2C5F55"
+        android:pathData="M26,6 L82,6 A20,20 0 0 1 102,26 L102,82 A20,20 0 0 1 82,102 L26,102 A20,20 0 0 1 6,82 L6,26 A20,20 0 0 1 26,6 Z" />
+
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M43,30 L65,30 A13,13 0 0 1 78,43 L78,65 A13,13 0 0 1 65,78 L43,78 A13,13 0 0 1 30,65 L30,43 A13,13 0 0 1 43,30 Z"
+        android:strokeColor="#F7F5F0"
+        android:strokeWidth="5" />
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="-45">
+
+        <path
+            android:fillColor="#C77B4E"
+            android:pathData="M53,34 L55,34 A2,2 0 0 1 57,36 L57,64 L54,74 L51,64 L51,36 A2,2 0 0 1 53,34 Z" />
+
+        <path
+            android:fillColor="#F7F5F0"
+            android:pathData="M51,41.5 L57,41.5 L57,43.3 L51,43.3 Z" />
+    </group>
+</vector>
